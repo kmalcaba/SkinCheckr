@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.example.trishiaanne.skincheckr.imgProcessing.GLCM;
+import com.example.trishiaanne.skincheckr.imgProcessing.ImageProcessing;
 
 public class Camera extends AppCompatActivity {
 
@@ -28,6 +28,7 @@ public class Camera extends AppCompatActivity {
     private Button takePhoto, importPhoto;
 
     File photoFile = null;
+    Bitmap importedImage = null;
 
     private String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 0;
@@ -78,13 +79,13 @@ public class Camera extends AppCompatActivity {
                     }
                 } catch (Exception ex) {
                     // Error occurred while creating the File
-                    displayMessage(getBaseContext(),ex.getMessage().toString());
+                    displayMessage(getBaseContext(),ex.getMessage());
                 }
 
 
             }else
             {
-                displayMessage(getBaseContext(),"Nullll");
+                displayMessage(getBaseContext(),"Null");
             }
         }
 
@@ -116,8 +117,8 @@ public class Camera extends AppCompatActivity {
                     String picDirectory = photoFile.getAbsolutePath();
                     Bitmap capturedImage = BitmapFactory.decodeFile(picDirectory);
                     imageView.setImageBitmap(capturedImage);
-                    //Pass the image to Image Processing and GLCM UNIT
-                    Intent passValue = new Intent(Camera.this, GLCM.class);
+                    //Pass the image to Image Processing and ImageProcessing UNIT
+                    Intent passValue = new Intent(Camera.this, ImageProcessing.class);
                     passValue.putExtra("path_value", photoFile.getAbsolutePath());
                     startActivity(passValue);
                 }
@@ -125,9 +126,14 @@ public class Camera extends AppCompatActivity {
                 break;
             case 1:
                 if (resultCode == RESULT_OK) {
-                    Uri importedImage = imageReturnedIntent.getData();
-                    //Intent passImportedImage = new Intent(Camera.this, GLCM.class);
-                    imageView.setImageURI(importedImage);
+                    Uri importedImageURI = imageReturnedIntent.getData();
+                    try {
+                        importedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), importedImageURI);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //Intent passImportedImage = new Intent(Camera.this, ImageProcessing.class);
+                    imageView.setImageBitmap(importedImage);
                 }
                 break;
         }
