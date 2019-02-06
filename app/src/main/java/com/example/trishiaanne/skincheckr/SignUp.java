@@ -121,24 +121,20 @@ public class SignUp extends AppCompatActivity {
                                 });
 
                             } else {
-                                Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                //Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(SignUp.this, Login.class));
+                                finish();
                             }
                         }
                     });
         }
 
         public void onClick (View v) {
-            button = (Button) findViewById(R.id.signupBtn);
             switch (v.getId()) {
                 case R.id.signupBtn:
                     registerUser();
-                    button.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent myIntent = new Intent(SignUp.this, Login.class);
-                            startActivity(myIntent);
-                        }
-                    });
+                    break;
+
             }
         }
     }

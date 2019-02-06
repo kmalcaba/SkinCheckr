@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity {
     Button button;
+    Button logBtn;
     private EditText enterEmail, enterPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
@@ -37,11 +38,11 @@ public class Login extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        /*if (auth.getCurrentUser() == null) {
+        if (auth.getCurrentUser() == null) {
             //if the user is not logged in
-            startActivity(new Intent(Login.this, MainActivity.class));
+            startActivity(new Intent(Login.this, UserCam.class));
             finish();
-        }*/
+        }
         setContentView(R.layout.activity_login);
 
         enterEmail = (EditText) findViewById(R.id.emailAdd);
@@ -61,7 +62,7 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = enterEmail.getText().toString();
+                final String email = enterEmail.getText().toString();
                 final String password = enterPassword.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
@@ -77,33 +78,36 @@ public class Login extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
 
                 //authenticate user
-                auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                progressBar.setVisibility(View.GONE);
-                                if (!task.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "User does not exists! Check your email or password!", Toast.LENGTH_SHORT).show();
+                        auth.signInWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        progressBar.setVisibility(View.GONE);
+                                        if (!task.isSuccessful()) {
+                                            Toast.makeText(getApplicationContext(), "User does not exists! Check your email or password!", Toast.LENGTH_SHORT).show();
                                     /* there was an error
                                     if (password.length() < 6) {
                                         enterPassword.setError(getString(R.string.input_plength));
                                     } else {
                                         Toast.makeText(Login.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }*/
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "SUCCESS!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(Login.this, UserCam.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }
-                        });
+                                        } else {
+                                            //Toast.makeText(getApplicationContext(), "SUCCESS!", Toast.LENGTH_SHORT).show();
+                                           // Intent intent = new Intent(Login.this, UserCam.class);
+                                            startActivity(new Intent(getApplicationContext(), UserCam.class));
+                                            finish();
+                                        }
+                                    }
+                                });
+                    }
+                });
+
             }
-        });
-    }
     public void onClick(View v) {
         text = (TextView) findViewById(R.id.signUp);
         Intent myIntent = new Intent(Login.this, SignUp.class);
         startActivity(myIntent);
     }
+
+
 }
