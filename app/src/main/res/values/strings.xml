@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">SkinCheckr</string>
+    <string name="input_fname">Firstname is required</string>
+    <string name="input_lname">Lastname is required</string>
+    <string name="input_email">Email is required</string>
+    <string name="input_password">password required</string>
+    <string name="input_plength">Password should be atleast 6 characters long</string>
+    <string name="registration_success">Registered Successfully</string>
+    <string name="input_validm">Enter a valid email</string>
+    <string name="reg_success">Registered Successfully</string>
+    <string name="reg_unsuc">Unsuccessful</string>
+    <string name="auth_failed">Authentication Failed</string>
+    <string name="guest">Guest</string>
+
+</resources>

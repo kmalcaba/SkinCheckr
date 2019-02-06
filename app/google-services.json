@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "634049413125",
+    "firebase_url": "https://skincheckr.firebaseio.com",
+    "project_id": "skincheckr",
+    "storage_bucket": "skincheckr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634049413125:android:688856922c46e02c",
+        "android_client_info": {
+          "package_name": "com.example.trishiaanne.skincheckr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "634049413125-83nnj328mlb4r0fudpnq46sae3h5g0tf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.trishiaanne.skincheckr",
+            "certificate_hash": "11fdb79a5aad2760ae3a3fa05c592720c822e686"
+          }
+        },
+        {
+          "client_id": "634049413125-g4ulipbemu8abl310r3osiap3jra6vh6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.trishiaanne.skincheckr",
+            "certificate_hash": "c7b001734b6ae93246dccdd85fc61f0f8c054c95"
+          }
+        },
+        {
+          "client_id": "634049413125-ljfdunn6fppcvj1oslblatvsjlontp1n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-MN7vqy4wz85M7pwb1Ie2E3FGXUTKASc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "634049413125-ljfdunn6fppcvj1oslblatvsjlontp1n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

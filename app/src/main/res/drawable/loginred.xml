@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#F25D59"/>
+            <stroke android:width="2dp" />
+            <stroke android:width="3dp" android:color="#F25D59" /> <!--border ng round login white-->
+            <!--round ng button rad-->
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+</selector>
+
