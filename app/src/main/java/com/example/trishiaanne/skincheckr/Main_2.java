@@ -22,7 +22,7 @@ public class Main_2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_usercamra);
+        setContentView(R.layout.activity_usercam);
 
         auth = FirebaseAuth.getInstance();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

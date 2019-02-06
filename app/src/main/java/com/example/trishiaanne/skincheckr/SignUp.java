@@ -141,6 +141,7 @@ public class SignUp extends AppCompatActivity {
     }
 
 
+
        /* button = (Button) findViewById(R.id.SignupBtn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
