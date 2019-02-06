@@ -19,7 +19,7 @@ public class UserCam extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_usercam);
+        setContentView(R.layout.activity_usercamra);
 
         dl = (DrawerLayout) findViewById(R.id.navView);
         t = new ActionBarDrawerToggle(this, dl, R.string.open, R.string.close);

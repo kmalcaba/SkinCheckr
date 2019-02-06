@@ -18,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import android.widget.ProgressBar;
 
-
 public class SignUp extends AppCompatActivity {
     Button singUp;
     Button button;
