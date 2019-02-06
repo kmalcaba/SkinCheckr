@@ -1,20 +1,17 @@
-package imgpro_GLCM;
+package com.example.trishiaanne.skincheckr.imgProcessing;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.trishiaanne.skincheckr.Camera;
-
 /**
  *
  * @author Kirsten A. Malcaba
  */
-public class Main extends AppCompatActivity{
+public class GLCM extends AppCompatActivity{
     int days;
     int itch;
     int scale;
@@ -125,6 +122,6 @@ public class Main extends AppCompatActivity{
             
              writeFile(record); //write row to csv
         } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GLCM.class.getName()).log(Level.SEVERE, null, ex);
         }*/
 }

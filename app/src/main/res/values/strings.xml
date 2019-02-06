@@ -12,4 +12,5 @@
     <string name="auth_failed">Authentication Failed</string>
     <string name="guest">Guest</string>
 
+    <string name="model_path">/res/model.tflite</string>
 </resources>

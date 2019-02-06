@@ -1,35 +1,26 @@
 package com.example.trishiaanne.skincheckr;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
-import imgpro_GLCM.Main;
+import com.example.trishiaanne.skincheckr.imgProcessing.GLCM;
 
 public class Camera extends AppCompatActivity {
 
@@ -126,7 +117,7 @@ public class Camera extends AppCompatActivity {
                     Bitmap capturedImage = BitmapFactory.decodeFile(picDirectory);
                     imageView.setImageBitmap(capturedImage);
                     //Pass the image to Image Processing and GLCM UNIT
-                    Intent passValue = new Intent(Camera.this, Main.class);
+                    Intent passValue = new Intent(Camera.this, GLCM.class);
                     passValue.putExtra("path_value", photoFile.getAbsolutePath());
                     startActivity(passValue);
                 }
@@ -135,7 +126,7 @@ public class Camera extends AppCompatActivity {
             case 1:
                 if (resultCode == RESULT_OK) {
                     Uri importedImage = imageReturnedIntent.getData();
-                    //Intent passImportedImage = new Intent(Camera.this, Main.class);
+                    //Intent passImportedImage = new Intent(Camera.this, GLCM.class);
                     imageView.setImageURI(importedImage);
                 }
                 break;
