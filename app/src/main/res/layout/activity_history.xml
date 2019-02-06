@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.trishiaanne.skincheckr.History"
+    tools:layout_editor_absoluteY="25dp">
+
+    <SeekBar
+        android:id="@+id/itchSeekbar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:max="9"
+        app:layout_constraintBottom_toTopOf="@+id/scalingProgress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itchProgress" />
+
+    <TextView
+        android:id="@+id/itchProgress"
+        android:layout_width="134dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="64dp"
+        android:text="Itchiness: 1/10"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/itchSeekbar"
+        app:layout_constraintStart_toStartOf="@+id/itchSeekbar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SeekBar
+        android:id="@+id/scalingSeekbar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:max="9"
+        app:layout_constraintBottom_toTopOf="@+id/burningProgress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scalingProgress" />
+
+    <TextView
+        android:id="@+id/scalingProgress"
+        android:layout_width="202dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="11dp"
+        android:text="Scaling/Peeling: 1/10"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/scalingSeekbar"
+        app:layout_constraintStart_toStartOf="@+id/scalingSeekbar"
+        app:layout_constraintTop_toBottomOf="@+id/itchSeekbar" />
+
+    <SeekBar
+        android:id="@+id/burningSeekbar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:max="9"
+        app:layout_constraintBottom_toTopOf="@+id/sweatingProgress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/burningProgress" />
+
+    <TextView
+        android:id="@+id/burningProgress"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginStart="15dp"
+        android:text="Burning: 1/10"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/burningSeekbar"
+        app:layout_constraintEnd_toEndOf="@+id/sweatingProgress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scalingSeekbar" />
+
+    <SeekBar
+        android:id="@+id/sweatingSeekbar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:max="9"
+        app:layout_constraintBottom_toTopOf="@+id/crustingProgress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sweatingProgress" />
+
+    <TextView
+        android:id="@+id/sweatingProgress"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="15dp"
+        android:text="Sweating: 1/10"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/sweatingSeekbar"
+        app:layout_constraintEnd_toEndOf="@+id/crustingProgress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/burningSeekbar" />
+
+    <SeekBar
+        android:id="@+id/crustingSeekbar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="19dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:max="9"
+        app:layout_constraintBottom_toTopOf="@+id/reviewHistory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/crustingProgress" />
+
+    <TextView
+        android:id="@+id/crustingProgress"
+        android:layout_width="258dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginStart="16dp"
+        android:text="Crusting: 1/10"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/crustingSeekbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sweatingSeekbar" />
+
+    <Button
+        android:id="@+id/reviewHistory"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="49dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginStart="28dp"
+        android:background="@drawable/buttoncurve"
+        android:text="REVIEW HISTORY"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/crustingSeekbar" />
+
+</android.support.constraint.ConstraintLayout>
