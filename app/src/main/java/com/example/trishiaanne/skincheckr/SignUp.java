@@ -127,19 +127,19 @@ public class SignUp extends AppCompatActivity {
                     });
         }
 
-        public void onClick (View v){
+        public void onClick (View v) {
+            button = (Button) findViewById(R.id.signupBtn);
             switch (v.getId()) {
                 case R.id.signupBtn:
                     registerUser();
-                    break;
-                button = (Button) findViewById(R.id.signupBtn);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent myIntent = new Intent(SignUp.this, Login.class);
-                        startActivity(myIntent);
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent myIntent = new Intent(SignUp.this, Login.class);
+                            startActivity(myIntent);
+                        }
+                    });
             }
-            });
         }
     }
 
