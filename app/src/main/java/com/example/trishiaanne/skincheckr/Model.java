@@ -14,7 +14,7 @@ import java.nio.channels.FileChannel;
 
 public class Model {
     Activity a;
-    protected Interpreter tflite = new Interpreter(loadModelFile(a));
+    //protected Interpreter tflite = new Interpreter(loadModelFile(a));
 
     public Model(Activity activity) {
         a = activity;
