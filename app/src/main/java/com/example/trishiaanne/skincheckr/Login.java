@@ -38,11 +38,11 @@ public class Login extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        if (auth.getCurrentUser() == null) {
+        /*if (auth.getCurrentUser() == null) {
             //if the user is not logged in
-            startActivity(new Intent(Login.this, UserCam.class));
+            startActivity(new Intent(Login.this, Main_2.class));
             finish();
-        }
+        }*/
         setContentView(R.layout.activity_login);
 
         enterEmail = (EditText) findViewById(R.id.emailAdd);
@@ -75,26 +75,19 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                progressBar.setVisibility(View.VISIBLE);
+             //   progressBar.setVisibility(View.VISIBLE);
 
                 //authenticate user
                         auth.signInWithEmailAndPassword(email, password)
                                 .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
-                                        progressBar.setVisibility(View.GONE);
+//                                        progressBar.setVisibility(View.GONE);
                                         if (!task.isSuccessful()) {
                                             Toast.makeText(getApplicationContext(), "User does not exists! Check your email or password!", Toast.LENGTH_SHORT).show();
-                                    /* there was an error
-                                    if (password.length() < 6) {
-                                        enterPassword.setError(getString(R.string.input_plength));
-                                    } else {
-                                        Toast.makeText(Login.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
-                                    }*/
                                         } else {
-                                            //Toast.makeText(getApplicationContext(), "SUCCESS!", Toast.LENGTH_SHORT).show();
-                                           // Intent intent = new Intent(Login.this, UserCam.class);
-                                            startActivity(new Intent(getApplicationContext(), UserCam.class));
+                                            Intent intent = new Intent(Login.this, Main_2.class);
+                                            startActivity(intent);
                                             finish();
                                         }
                                     }

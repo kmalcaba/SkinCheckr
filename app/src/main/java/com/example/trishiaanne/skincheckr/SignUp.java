@@ -114,6 +114,8 @@ public class SignUp extends AppCompatActivity {
                                         progressBar.setVisibility(View.GONE);
                                         if (task.isSuccessful()) {
                                             Toast.makeText(SignUp.this, getString(R.string.reg_success), Toast.LENGTH_LONG).show();
+                                            startActivity(new Intent(SignUp.this, Login.class));
+                                            finish();
                                         } else {
                                             Toast.makeText(SignUp.this, getString(R.string.reg_unsuc), Toast.LENGTH_LONG).show();
                                         }
@@ -121,9 +123,9 @@ public class SignUp extends AppCompatActivity {
                                 });
 
                             } else {
-                                //Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(SignUp.this, Login.class));
-                                finish();
+                                //
+                                Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+
                             }
                         }
                     });
@@ -138,7 +140,6 @@ public class SignUp extends AppCompatActivity {
             }
         }
     }
-
 
 
        /* button = (Button) findViewById(R.id.SignupBtn);
