@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import com.example.trishiaanne.skincheckr.R;
 import com.example.trishiaanne.skincheckr.imgProcessing.ImageProcessing;
 import com.google.firebase.auth.FirebaseAuth;
-
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.DrawerLayout;
@@ -65,6 +64,8 @@ public class UserCam extends AppCompatActivity {
                 switch (id) {
                     case R.id.editProfile:
                         Toast.makeText(UserCam.this, "Profile", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(UserCam.this, EditProfile.class);
+                        startActivity(i);
                     case R.id.records:
                         Toast.makeText(UserCam.this, "Records", Toast.LENGTH_SHORT).show();
                     case R.id.signout:
