@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 
 public class SignUp extends AppCompatActivity {
     Button singUp;
+    Button button;
     private EditText firstn, lastn, email_id, pw;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
@@ -131,7 +132,14 @@ public class SignUp extends AppCompatActivity {
                 case R.id.signupBtn:
                     registerUser();
                     break;
+                button = (Button) findViewById(R.id.signupBtn);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent myIntent = new Intent(SignUp.this, Login.class);
+                        startActivity(myIntent);
             }
+            });
         }
     }
 

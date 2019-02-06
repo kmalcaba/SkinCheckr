@@ -11,6 +11,8 @@
     <string name="reg_unsuc">Unsuccessful</string>
     <string name="auth_failed">Authentication Failed</string>
     <string name="guest">Guest</string>
+    <string name="close">Close</string>
+    <string name="open">Open</string>
 
     <string name="model_path">/res/model.tflite</string>
 </resources>
