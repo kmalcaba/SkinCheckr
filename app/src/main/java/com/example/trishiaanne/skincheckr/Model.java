@@ -15,6 +15,8 @@ import java.nio.channels.FileChannel;
 public class Model {
     Activity a;
     //protected Interpreter tflite = new Interpreter(loadModelFile(a));
+    //to put in an activity file
+    //then run with tflite.run(inputs, outputs)
 
     public Model(Activity activity) {
         a = activity;
