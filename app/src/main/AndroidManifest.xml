@@ -30,6 +30,10 @@
             android:hardwareAccelerated="false"
             android:parentActivityName=".Camera" />
         <activity
+            android:name=".UserCam"
+            android:hardwareAccelerated="false"
+            android:parentActivityName=".Camera" />
+        <activity
             android:name=".Login"
             android:parentActivityName=".Login" />
         <activity android:name=".History"/>
