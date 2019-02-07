@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">SkinCheckr</string>
     <string name="input_fname">Firstname is required</string>
     <string name="input_lname">Lastname is required</string>
     <string name="input_email">Email is required</string>

@@ -18,10 +18,13 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -35,16 +38,13 @@ import java.util.Date;
 
 
 public class UserCam extends AppCompatActivity {
-    private ImageView imageView;
-    private Button takePhoto, importPhoto;
-    private DrawerLayout dl;
-    private ActionBarDrawerToggle t;
-    private NavigationView nv;
+    private ImageView userImageView;
+    private Button userTakePhoto, userImportPhoto;
+
+    private DrawerLayout mDrawerLayout;
 
     File photoFile = null;
     String importedFile = null;
-
-    Bitmap importedImage = null;
 
     private String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 0;
@@ -55,43 +55,11 @@ public class UserCam extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usercam);
 
-        dl = (DrawerLayout) findViewById(R.id.navView);
-        t = new ActionBarDrawerToggle(this, dl, R.string.open, R.string.close);
+        userImageView = findViewById(R.id.userImageView);
+        userTakePhoto= findViewById(R.id.userTakePhoto);
+        userImportPhoto= findViewById(R.id.userImportPhoto);
 
-        dl.addDrawerListener(t);
-        t.syncState();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        nv = (NavigationView) findViewById(R.id.navView);
-
-        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                switch (id) {
-                    case R.id.editProfile:
-                        Toast.makeText(UserCam.this, "Profile", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(UserCam.this, EditProfile.class);
-                        startActivity(i);
-                    case R.id.records:
-                        Toast.makeText(UserCam.this, "Records", Toast.LENGTH_SHORT).show();
-                    case R.id.signout:
-                        Toast.makeText(UserCam.this, "Sign Out", Toast.LENGTH_SHORT).show();
-                        if (id == R.id.signout) {
-                            logout();
-                        }
-                    default:
-                        return true;
-                }
-            }
-        });
-
-        imageView = findViewById(R.id.userImageView);
-        takePhoto = findViewById(R.id.userTakePhoto);
-        importPhoto = findViewById(R.id.userImportPhoto);
-
-        takePhoto.setOnClickListener(new View.OnClickListener() {
+        userTakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //call the Capture image function with save functionality
@@ -99,12 +67,49 @@ public class UserCam extends AppCompatActivity {
             }
         });
 
-        importPhoto.setOnClickListener(new View.OnClickListener() {
+        userImportPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 importImage();
             }
         });
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        menuItem.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        int id = menuItem.getItemId();
+                        switch (id) {
+                            case R.id.editProfile:
+                                Toast.makeText(UserCam.this, "Profile", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(UserCam.this, EditProfile.class);
+                                startActivity(i);
+                                break;
+                            case R.id.records:
+                                Toast.makeText(UserCam.this, "Records", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.signout:
+                                Toast.makeText(UserCam.this, "Sign Out", Toast.LENGTH_SHORT).show();
+                                if (id == R.id.signout) {
+                                    logout();
+                                }
+                            default:
+                                return true;
+                        }
+                        return true;
+                    }
+                }
+        );
     }
 
     private void captureImage() {
@@ -182,7 +187,7 @@ public class UserCam extends AppCompatActivity {
                     //Save the directory in this string variable
                     String picDirectory = photoFile.getAbsolutePath();
                     Bitmap capturedImage = BitmapFactory.decodeFile(picDirectory);
-                    imageView.setImageBitmap(capturedImage);
+                    userImageView.setImageBitmap(capturedImage);
 
                     //Pass the captured image to Image Processing and GLCM UNIT
                     Intent passCapturedImage = new Intent(UserCam.this, ImageProcessing.class);
@@ -200,7 +205,7 @@ public class UserCam extends AppCompatActivity {
                         e.printStackTrace();
                     }*/
                     Bitmap importedImage = BitmapFactory.decodeFile(importedFile);
-                    imageView.setImageBitmap(importedImage);
+                    userImageView.setImageBitmap(importedImage);
                     //Pass the imported image to Image Processing and GLCM UNIT
                     Intent passImportedImage = new Intent(UserCam.this, ImageProcessing.class);
                     passImportedImage.putExtra("import_value", importedFile);
@@ -212,10 +217,11 @@ public class UserCam extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected (MenuItem item){
-
-        if (t.onOptionsItemSelected(item))
-            return true;
-
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
