@@ -32,7 +32,7 @@ public class Main_2 extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
                     startActivity(new Intent(Main_2.this, UserCam.class));
-                    finish();
+                    //finish();
                 }
             }
         };

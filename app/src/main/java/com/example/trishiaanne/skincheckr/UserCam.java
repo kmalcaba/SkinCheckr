@@ -1,7 +1,10 @@
 package com.example.trishiaanne.skincheckr;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -12,6 +15,8 @@ import com.example.trishiaanne.skincheckr.R;
 import com.example.trishiaanne.skincheckr.imgProcessing.ImageProcessing;
 import com.google.firebase.auth.FirebaseAuth;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -35,7 +40,10 @@ public class UserCam extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
+
     File photoFile = null;
+    String importedFile = null;
+
     Bitmap importedImage = null;
 
     private String mCurrentPhotoPath;
@@ -45,7 +53,7 @@ public class UserCam extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera);
+        setContentView(R.layout.activity_usercam);
 
         dl = (DrawerLayout) findViewById(R.id.navView);
         t = new ActionBarDrawerToggle(this, dl, R.string.open, R.string.close);
@@ -79,9 +87,9 @@ public class UserCam extends AppCompatActivity {
             }
         });
 
-        imageView = findViewById(R.id.imageView);
-        takePhoto = findViewById(R.id.takePhoto);
-        importPhoto = findViewById(R.id.importPhoto);
+        imageView = findViewById(R.id.userImageView);
+        takePhoto = findViewById(R.id.userTakePhoto);
+        importPhoto = findViewById(R.id.userImportPhoto);
 
         takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,8 +102,7 @@ public class UserCam extends AppCompatActivity {
         importPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent fromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(fromGallery, REQUEST_IMPORT_PHOTO);
+                importImage();
             }
         });
     }
@@ -109,7 +116,7 @@ public class UserCam extends AppCompatActivity {
                 photoFile = createImageFile();
                 // Continue only if the File was successfully created
                 if (photoFile != null) {
-                    displayMessage(getBaseContext(),"File path successfully generated!" + photoFile.getAbsolutePath()); //for debugging
+                    //displayMessage(getBaseContext(),"File path successfully generated!" + photoFile.getAbsolutePath()); //for debugging
                     Uri photoURI = FileProvider.getUriForFile(this,
                             "com.example.trishiaanne.skincheckr.fileprovider",
                             photoFile);
@@ -126,6 +133,26 @@ public class UserCam extends AppCompatActivity {
         {
             displayMessage(getBaseContext(),"Null");
         }
+    }
+
+    private void importImage() {
+        //Allow storage access
+        if(ContextCompat.checkSelfPermission(UserCam.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(UserCam.this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+            } else {
+                ActivityCompat.requestPermissions(UserCam.this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        1);
+            }
+        } else {
+            //Permission granted
+        }
+        Intent fromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(fromGallery, REQUEST_IMPORT_PHOTO);
     }
 
     private File createImageFile() throws IOException {
@@ -156,30 +183,35 @@ public class UserCam extends AppCompatActivity {
                     String picDirectory = photoFile.getAbsolutePath();
                     Bitmap capturedImage = BitmapFactory.decodeFile(picDirectory);
                     imageView.setImageBitmap(capturedImage);
-                    //Pass the image to Image Processing and ImageProcessing UNIT
-                    Intent passValue = new Intent(UserCam.this, ImageProcessing.class);
-                    passValue.putExtra("path_value", photoFile.getAbsolutePath());
-                    startActivity(passValue);
-                }
 
+                    //Pass the captured image to Image Processing and GLCM UNIT
+                    Intent passCapturedImage = new Intent(UserCam.this, ImageProcessing.class);
+                    passCapturedImage.putExtra("capture_value", photoFile.getAbsolutePath());
+                    startActivity(passCapturedImage);
+                }
                 break;
             case 1:
                 if (resultCode == RESULT_OK) {
                     Uri importedImageURI = imageReturnedIntent.getData();
-                    try {
+                    importedFile = getRealPathFromURI(getBaseContext(), importedImageURI);
+                    /*try {
                         importedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), importedImageURI);
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
-                    //Intent passImportedImage = new Intent(Camera.this, ImageProcessing.class);
+                    }*/
+                    Bitmap importedImage = BitmapFactory.decodeFile(importedFile);
                     imageView.setImageBitmap(importedImage);
+                    //Pass the imported image to Image Processing and GLCM UNIT
+                    Intent passImportedImage = new Intent(UserCam.this, ImageProcessing.class);
+                    passImportedImage.putExtra("import_value", importedFile);
+                    startActivity(passImportedImage);
                 }
                 break;
         }
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected (MenuItem item){
 
         if (t.onOptionsItemSelected(item))
             return true;
@@ -187,10 +219,25 @@ public class UserCam extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void logout(){
+    private void logout () {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if(cursor != null) {
+                cursor.close();
+            }
+        }
     }
 }
