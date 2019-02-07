@@ -13,6 +13,8 @@
     <string name="guest">Guest</string>
     <string name="close">Close</string>
     <string name="open">Open</string>
+    <string name="confirm">Password does not match</string>
+
 
     <string name="model_path">/res/model.tflite</string>
 </resources>

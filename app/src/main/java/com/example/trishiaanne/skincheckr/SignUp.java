@@ -21,7 +21,7 @@ import android.widget.ProgressBar;
 public class SignUp extends AppCompatActivity {
     Button singUp;
     Button button;
-    private EditText firstn, lastn, email_id, pw;
+    private EditText firstn, lastn, email_id, pw, conpw;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
 
@@ -36,6 +36,7 @@ public class SignUp extends AppCompatActivity {
         lastn = (EditText) findViewById(R.id.lname);
         email_id = (EditText) findViewById(R.id.emailAddress);
         pw = (EditText) findViewById(R.id.pass);
+        conpw = (EditText) findViewById(R.id.conPass);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
@@ -54,6 +55,7 @@ public class SignUp extends AppCompatActivity {
             final String lname = lastn.getText().toString().trim();
             final String email = email_id.getText().toString().trim();
             final String password = pw.getText().toString().trim();
+            final String confirm = conpw.getText().toString().trim();
 
 
             if (fname.isEmpty()) {
@@ -92,6 +94,12 @@ public class SignUp extends AppCompatActivity {
                 return;
             }
 
+            if(!password.equals(confirm)){
+                conpw.setError(getString(R.string.confirm));
+                return;
+
+            }
+
             progressBar.setVisibility(View.VISIBLE);
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -114,10 +122,11 @@ public class SignUp extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             Toast.makeText(SignUp.this, getString(R.string.reg_success), Toast.LENGTH_LONG).show();
                                             startActivity(new Intent(SignUp.this, Login.class));
-                                            finish();
-                                        } else {
+
+                                            //finish();
+                                        } else
                                             Toast.makeText(SignUp.this, getString(R.string.reg_unsuc), Toast.LENGTH_LONG).show();
-                                        }
+
                                     }
                                 });
 
