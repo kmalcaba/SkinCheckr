@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".History" />
+        <activity android:name=".Main_2" />
         <activity
             android:name=".Camera"
             android:hardwareAccelerated="false"

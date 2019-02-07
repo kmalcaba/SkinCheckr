@@ -18,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import android.widget.ProgressBar;
 
-
 public class SignUp extends AppCompatActivity {
     Button singUp;
     Button button;
@@ -114,6 +113,8 @@ public class SignUp extends AppCompatActivity {
                                         progressBar.setVisibility(View.GONE);
                                         if (task.isSuccessful()) {
                                             Toast.makeText(SignUp.this, getString(R.string.reg_success), Toast.LENGTH_LONG).show();
+                                            startActivity(new Intent(SignUp.this, Login.class));
+                                            finish();
                                         } else {
                                             Toast.makeText(SignUp.this, getString(R.string.reg_unsuc), Toast.LENGTH_LONG).show();
                                         }
@@ -121,24 +122,20 @@ public class SignUp extends AppCompatActivity {
                                 });
 
                             } else {
+                                //
                                 Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+
                             }
                         }
                     });
         }
 
         public void onClick (View v) {
-            button = (Button) findViewById(R.id.signupBtn);
             switch (v.getId()) {
                 case R.id.signupBtn:
                     registerUser();
-                    button.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent myIntent = new Intent(SignUp.this, Login.class);
-                            startActivity(myIntent);
-                        }
-                    });
+                    break;
+
             }
         }
     }
