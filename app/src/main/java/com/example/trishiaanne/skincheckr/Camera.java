@@ -1,13 +1,17 @@
 package com.example.trishiaanne.skincheckr;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -71,7 +75,7 @@ public class Camera extends AppCompatActivity {
                     photoFile = createImageFile();
                     // Continue only if the File was successfully created
                     if (photoFile != null) {
-                        displayMessage(getBaseContext(),"File path successfully generated!" + photoFile.getAbsolutePath()); //for debugging
+                        //displayMessage(getBaseContext(),"File path successfully generated!" + photoFile.getAbsolutePath()); //for debugging
                         Uri photoURI = FileProvider.getUriForFile(this,
                                 "com.example.trishiaanne.skincheckr.fileprovider",
                                 photoFile);
@@ -90,6 +94,21 @@ public class Camera extends AppCompatActivity {
             }
         }
     private void importImage() {
+        //Allow storage access
+        if(ContextCompat.checkSelfPermission(Camera.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(Camera.this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+            } else {
+                ActivityCompat.requestPermissions(Camera.this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        1);
+            }
+        } else {
+            //Permission granted
+        }
         Intent fromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(fromGallery, REQUEST_IMPORT_PHOTO);
     }
@@ -123,20 +142,11 @@ public class Camera extends AppCompatActivity {
                     Bitmap capturedImage = BitmapFactory.decodeFile(picDirectory);
                     imageView.setImageBitmap(capturedImage);
 
-                    //Pass the image to Image Processing and ImageProcessing UNIT
-                    Intent passValue = new Intent(Camera.this, ImageProcessing.class);
-                    //Intent history = new Intent(Camera.this, History.class);
-                    //startActivity(history);
-                    passValue.putExtra("path_value", photoFile.getAbsolutePath());
-                    startActivity(passValue);
-
                     //Pass the captured image to Image Processing and GLCM UNIT
                     Intent passCapturedImage = new Intent(Camera.this, ImageProcessing.class);
                     passCapturedImage.putExtra("capture_value", photoFile.getAbsolutePath());
                     startActivity(passCapturedImage);
-
                 }
-
                 break;
             case 1:
                 if (resultCode == RESULT_OK) {

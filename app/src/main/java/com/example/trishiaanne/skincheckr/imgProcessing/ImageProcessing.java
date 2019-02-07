@@ -53,29 +53,15 @@ public class ImageProcessing extends AppCompatActivity{
         //check if passed key is capture or import image
         if(i.getExtras().containsKey("capture_value")) {//captured image
             capturePath = i.getStringExtra("capture_value");
-            displayMessage(getBaseContext(),"CAPTURE PATH: " + capturePath);
+            //displayMessage(getBaseContext(),"CAPTURE PATH: " + capturePath); //for debugging
             Log.i("PATH: ",capturePath);
             chosenImage = BitmapFactory.decodeFile(capturePath);
             imageView.setImageBitmap(chosenImage);
         } else {//imported image
             importPath = i.getStringExtra("import_value");
-            displayMessage(getBaseContext(),"IMPORT PATH: " + importPath);
+            //displayMessage(getBaseContext(),"IMPORT PATH: " + importPath); //for debugging
             Log.i("PATH: ",importPath);
-            //Allow storage access
-            if(ContextCompat.checkSelfPermission(ImageProcessing.this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(ImageProcessing.this,
-                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
-                } else {
-                    ActivityCompat.requestPermissions(ImageProcessing.this,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            1);
-                }
-            } else {
-                //Permission granted
-            }
             chosenImage = BitmapFactory.decodeFile(importPath);
             imageView.setImageBitmap(chosenImage);
         }
