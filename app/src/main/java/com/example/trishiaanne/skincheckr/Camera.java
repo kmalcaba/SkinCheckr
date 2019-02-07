@@ -122,19 +122,19 @@ public class Camera extends AppCompatActivity {
                     String picDirectory = photoFile.getAbsolutePath();
                     Bitmap capturedImage = BitmapFactory.decodeFile(picDirectory);
                     imageView.setImageBitmap(capturedImage);
-<<<<<<< HEAD
+
                     //Pass the image to Image Processing and ImageProcessing UNIT
                     Intent passValue = new Intent(Camera.this, ImageProcessing.class);
                     //Intent history = new Intent(Camera.this, History.class);
                     //startActivity(history);
                     passValue.putExtra("path_value", photoFile.getAbsolutePath());
                     startActivity(passValue);
-=======
+
                     //Pass the captured image to Image Processing and GLCM UNIT
                     Intent passCapturedImage = new Intent(Camera.this, ImageProcessing.class);
                     passCapturedImage.putExtra("capture_value", photoFile.getAbsolutePath());
                     startActivity(passCapturedImage);
->>>>>>> 04c8eb8e6e2278aaf925c72276bca8bda180f8ad
+
                 }
 
                 break;
