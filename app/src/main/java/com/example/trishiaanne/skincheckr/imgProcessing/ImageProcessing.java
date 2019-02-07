@@ -19,9 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.trishiaanne.skincheckr.History;
 import com.example.trishiaanne.skincheckr.R;
-import com.example.trishiaanne.skincheckr.ReviewHistory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -83,24 +81,22 @@ public class ImageProcessing extends AppCompatActivity{
         confirmPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Bitmap med = MedianFilter.filter(chosenImage);
+                Bitmap med = MedianFilter.filter(chosenImage);
                 //otsu's method thresholding
                 Otsu o = new Otsu(med,chosenImage);
                 int threshold = o.getThreshold();
                 displayMessage(getBaseContext(),"Threshold: " + threshold);
                 Bitmap thresh = o.applyThreshold();
                 Bitmap dilate = o.dilateImage(thresh);
-                Bitmap mask = o.applyMask(dilate);*/
-                Intent intent = new Intent(ImageProcessing.this, History.class);
-                startActivity(intent);
+                Bitmap mask = o.applyMask(dilate);
 
 
                 //Feature Extraction
-                //FeatureExtraction fe = new FeatureExtraction();
-                /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                FeatureExtraction fe = new FeatureExtraction();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 mask.compress(Bitmap.CompressFormat.JPEG, 90, stream);
                 FeatureExtraction.imageArray = new byte[]{};
-                FeatureExtraction.imageArray = stream.toByteArray();*/
+                FeatureExtraction.imageArray = stream.toByteArray();
 
 //                FeatureExtraction fe = null;
 //                try {
@@ -156,4 +152,4 @@ public class ImageProcessing extends AppCompatActivity{
             System.out.println("Mean: " + fe.getMean());
             System.out.println("Variance: " + fe.getVariance());
 */
-            }
+}
