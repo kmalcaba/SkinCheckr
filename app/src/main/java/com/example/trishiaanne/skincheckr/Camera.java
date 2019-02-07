@@ -2,6 +2,7 @@ package com.example.trishiaanne.skincheckr;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -20,7 +21,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.example.trishiaanne.skincheckr.imgProcessing.ImageProcessing;
+import com.example.trishiaanne.skincheckr.imgProcessing.*;
 
 public class Camera extends AppCompatActivity {
 
@@ -28,6 +29,7 @@ public class Camera extends AppCompatActivity {
     private Button takePhoto, importPhoto;
 
     File photoFile = null;
+    String importedFile = null;
     Bitmap importedImage = null;
 
     private String mCurrentPhotoPath;
@@ -55,8 +57,7 @@ public class Camera extends AppCompatActivity {
         importPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent fromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(fromGallery, REQUEST_IMPORT_PHOTO);
+                importImage();
             }
         });
     }
@@ -88,6 +89,10 @@ public class Camera extends AppCompatActivity {
                 displayMessage(getBaseContext(),"Null");
             }
         }
+    private void importImage() {
+        Intent fromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(fromGallery, REQUEST_IMPORT_PHOTO);
+    }
 
     private File createImageFile() throws IOException {
         //Create an image File name
@@ -117,27 +122,54 @@ public class Camera extends AppCompatActivity {
                     String picDirectory = photoFile.getAbsolutePath();
                     Bitmap capturedImage = BitmapFactory.decodeFile(picDirectory);
                     imageView.setImageBitmap(capturedImage);
+<<<<<<< HEAD
                     //Pass the image to Image Processing and ImageProcessing UNIT
                     Intent passValue = new Intent(Camera.this, ImageProcessing.class);
                     //Intent history = new Intent(Camera.this, History.class);
                     //startActivity(history);
                     passValue.putExtra("path_value", photoFile.getAbsolutePath());
                     startActivity(passValue);
+=======
+                    //Pass the captured image to Image Processing and GLCM UNIT
+                    Intent passCapturedImage = new Intent(Camera.this, ImageProcessing.class);
+                    passCapturedImage.putExtra("capture_value", photoFile.getAbsolutePath());
+                    startActivity(passCapturedImage);
+>>>>>>> 04c8eb8e6e2278aaf925c72276bca8bda180f8ad
                 }
 
                 break;
             case 1:
                 if (resultCode == RESULT_OK) {
                     Uri importedImageURI = imageReturnedIntent.getData();
-                    try {
+                    importedFile = getRealPathFromURI(getBaseContext(), importedImageURI);
+                    /*try {
                         importedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), importedImageURI);
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
-                    //Intent passImportedImage = new Intent(Camera.this, ImageProcessing.class);
+                    }*/
+                    Bitmap importedImage = BitmapFactory.decodeFile(importedFile);
                     imageView.setImageBitmap(importedImage);
+                    //Pass the imported image to Image Processing and GLCM UNIT
+                    Intent passImportedImage = new Intent(Camera.this, ImageProcessing.class);
+                    passImportedImage.putExtra("import_value", importedFile);
+                    startActivity(passImportedImage);
                 }
                 break;
         }
     }
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if(cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
 }
