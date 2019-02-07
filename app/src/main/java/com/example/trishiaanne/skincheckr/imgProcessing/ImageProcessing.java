@@ -104,7 +104,7 @@ public class ImageProcessing extends AppCompatActivity{
                     arrayInputs[0][i] = inputs.get(i);
                 }
 
-
+                displayMessage(getApplicationContext(), "Image processing complete");
                 Intent intent = new Intent(ImageProcessing.this, History.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("inputs", arrayInputs);

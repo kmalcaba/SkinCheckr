@@ -2,13 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/editProfile"
-            android:icon="@drawable/setting"
+            android:id="@+id/profile"
+            android:icon="@drawable/icon"
             android:title="Profile" />
         <item
-            android:id="@+id/records"
-            android:icon="@drawable/icon"
-            android:title="Saved Records" />
+            android:id="@+id/uv"
+            android:icon="@drawable/uv"
+            android:title="UV Index" />
+        <item
+            android:id="@+id/derma"
+            android:icon="@drawable/find"
+            android:title="Find Nearby Dermatologist" />
         <item
             android:id="@+id/signout"
             android:icon="@drawable/signout"
