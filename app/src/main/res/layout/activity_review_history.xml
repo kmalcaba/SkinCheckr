@@ -7,83 +7,149 @@
     tools:context="com.example.trishiaanne.skincheckr.ReviewHistory"
     tools:layout_editor_absoluteY="25dp">
 
+    <Button
+        android:id="@+id/resultButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginStart="28dp"
+        android:background="@drawable/buttoncurve"
+        android:text="RESULT"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/backButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/burningTextview" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginStart="28dp"
+        android:background="@drawable/buttonlogin"
+        android:text="BACK"
+        android:textColor="#DB4C3E"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resultButton" />
+
     <TextView
         android:id="@+id/itchTextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="31dp"
-        android:text="Itch"
-        app:layout_constraintStart_toStartOf="@+id/crustingTextview"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        android:layout_width="140dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginStart="16dp"
+        android:text="Itchiness: "
+        app:layout_constraintBottom_toTopOf="@+id/scalingTextview"
+        app:layout_constraintEnd_toStartOf="@+id/crustingTextview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/daysTextview" />
 
     <TextView
         android:id="@+id/scalingTextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="46dp"
-        android:layout_marginLeft="46dp"
-        android:layout_marginTop="173dp"
-        android:layout_marginEnd="45dp"
-        android:layout_marginRight="45dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="@+id/daysTextview"
+        android:layout_width="140dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginStart="16dp"
+        android:text="Scaling/Peeling: "
+        app:layout_constraintBottom_toTopOf="@+id/burningTextview"
+        app:layout_constraintEnd_toStartOf="@+id/bleedingTextview"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/itchTextview" />
 
     <TextView
         android:id="@+id/burningTextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:layout_marginLeft="6dp"
-        android:layout_marginTop="31dp"
-        android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-    <TextView
-        android:id="@+id/sweatingTextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="@+id/crustingTextview"
-        app:layout_constraintStart_toStartOf="@+id/crustingTextview"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="39dp"
+        android:text="Burning: "
+        app:layout_constraintBottom_toTopOf="@+id/resultButton"
+        app:layout_constraintEnd_toEndOf="@+id/scalingTextview"
+        app:layout_constraintStart_toStartOf="@+id/scalingTextview"
         app:layout_constraintTop_toBottomOf="@+id/scalingTextview" />
 
     <TextView
+        android:id="@+id/sweatingTextview"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginEnd="46dp"
+        android:text="Sweating: "
+        app:layout_constraintBottom_toTopOf="@+id/crustingTextview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/daysTextview"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <TextView
         android:id="@+id/crustingTextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="11dp"
-        android:layout_marginLeft="11dp"
-        android:layout_marginBottom="21dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/scalingTextview"
-        app:layout_constraintStart_toStartOf="@+id/scalingTextview" />
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="46dp"
+        android:text="Crusting: "
+        app:layout_constraintBottom_toTopOf="@+id/bleedingTextview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/itchTextview"
+        app:layout_constraintTop_toBottomOf="@+id/sweatingTextview" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="8dp"
         android:text="Review History"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/daysTextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="91dp"
-        android:layout_marginLeft="91dp"
-        android:layout_marginBottom="273dp"
-        android:text="TextView"
+        android:layout_width="140dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginStart="16dp"
+        android:text="Days: "
+        app:layout_constraintBottom_toTopOf="@+id/itchTextview"
+        app:layout_constraintEnd_toStartOf="@+id/sweatingTextview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <TextView
+        android:id="@+id/bleedingTextview"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="187dp"
+        android:layout_marginEnd="46dp"
+        android:text="Bleeding: "
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/scalingTextview"
+        app:layout_constraintTop_toBottomOf="@+id/crustingTextview" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/sweatingTextview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/common_google_signin_btn_text_dark_disabled" />
+
 </android.support.constraint.ConstraintLayout>
