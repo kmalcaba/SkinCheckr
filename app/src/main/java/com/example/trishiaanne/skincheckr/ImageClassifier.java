@@ -1,7 +1,7 @@
 package com.example.trishiaanne.skincheckr;
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
-import android.media.Image;
+import android.util.Log;
 
 import org.tensorflow.lite.Interpreter;
 
@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.PriorityQueue;
 
 public class ImageClassifier {
 
+    private static final String TAG = "SkinCheckr";
     private static final String MODEL_PATH = "model.tflite";
     private static final String LABEL_PATH = "labels.txt";
     private static final int RESULTS_TO_SHOW = 3;
@@ -26,7 +28,7 @@ public class ImageClassifier {
     private Interpreter tflite;
 
     private List<String> labelList;
-    private float[][] labelProbArray = null;
+    private float[][] outputs = null;
 
     private PriorityQueue<Map.Entry<String, Float>> sortedLabels
             = new PriorityQueue<>(
@@ -40,7 +42,7 @@ public class ImageClassifier {
     public ImageClassifier(Activity activity) throws IOException {
         tflite = new Interpreter(loadModelFile(activity));
         labelList = loadLabelList(activity);
-        labelProbArray = new float[1][labelList.size()];
+        outputs = new float[1][labelList.size()];
     }
 
     private List<String> loadLabelList(Activity activity) {
@@ -65,5 +67,32 @@ public class ImageClassifier {
         long declaredLength = fileDescriptor.getDeclaredLength();
 
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
+    }
+
+    public float[][] getOutputs(float [][] inputs) {
+        tflite.run(inputs, outputs);
+        return outputs;
+    }
+
+    public void close() {
+        tflite.close();
+        tflite = null;
+    }
+
+    private String printTopLabels() {
+        for (int i = 0; i < labelList.size(); i++) {
+            sortedLabels.add(
+                    new AbstractMap.SimpleEntry<String, Float>(labelList.get(i), outputs[0][i])
+            );
+            if (sortedLabels.size() > RESULTS_TO_SHOW)
+                sortedLabels.poll();
+        }
+        String topLabels = "";
+        final int size = sortedLabels.size();
+        for (int i = 0; i < size; i++) {
+            Map.Entry<String, Float> label = sortedLabels.poll();
+            topLabels = String.format("\n%s: %4.2f %s", label.getKey(), label.getValue()) + topLabels;
+        }
+        return topLabels;
     }
 }

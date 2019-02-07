@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.trishiaanne.skincheckr.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
@@ -83,36 +84,42 @@ public class ImageProcessing extends AppCompatActivity{
                 Bitmap med = MedianFilter.filter(chosenImage);
                 //otsu's method thresholding
                 Otsu o = new Otsu(med,chosenImage);
-                o = new Otsu(med);
                 int threshold = o.getThreshold();
                 displayMessage(getBaseContext(),"Threshold: " + threshold);
                 Bitmap thresh = o.applyThreshold();
                 Bitmap dilate = o.dilateImage(thresh);
                 Bitmap mask = o.applyMask(dilate);
 
-                //Image Processing
-                FeatureExtraction fe = null;
-                try {
-                    fe = new FeatureExtraction(mask,8);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                fe.extract();
-                Log.d("Contrast: ", String.valueOf(fe.getContrast()));
-                Log.d("Correlation: ", String.valueOf(fe.getCorrelation()));
-                Log.d("Energy: ", String.valueOf(fe.getEnergy()));
-                Log.d("Entropy: ", String.valueOf(fe.getEntropy()));
-                Log.d("Homogeneity: ", String.valueOf(fe.getHomogeneity()));
-                Log.d("Mean: ", String.valueOf(fe.getMean()));
-                Log.d("Variance: ", String.valueOf(fe.getVariance()));
 
-                displayMessage(getBaseContext(), "Contrast: " + fe.getContrast() +
-                "\nCorrelation: " + fe.getCorrelation() +
-                "\nEnergy: " + fe.getEnergy() +
-                "\nEntropy: " + fe.getEntropy() +
-                "\nHomogeneity: " + fe.getHomogeneity() +
-                "\nMean: " + fe.getMean() +
-                "\nVariance: " + fe.getVariance());
+                //Feature Extraction
+                FeatureExtraction fe = new FeatureExtraction();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                mask.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+                FeatureExtraction.imageArray = new byte[]{};
+                FeatureExtraction.imageArray = stream.toByteArray();
+
+//                FeatureExtraction fe = null;
+//                try {
+//                    fe = new FeatureExtraction(mask);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                fe.extract();
+//                Log.d("Contrast: ", String.valueOf(fe.getContrast()));
+//                Log.d("Correlation: ", String.valueOf(fe.getCorrelation()));
+//                Log.d("Energy: ", String.valueOf(fe.getEnergy()));
+//                Log.d("Entropy: ", String.valueOf(fe.getEntropy()));
+//                Log.d("Homogeneity: ", String.valueOf(fe.getHomogeneity()));
+//                Log.d("Mean: ", String.valueOf(fe.getMean()));
+//                Log.d("Variance: ", String.valueOf(fe.getVariance()));
+//
+//                displayMessage(getBaseContext(), "Contrast: " + fe.getContrast() +
+//                "\nCorrelation: " + fe.getCorrelation() +
+//                "\nEnergy: " + fe.getEnergy() +
+//                "\nEntropy: " + fe.getEntropy() +
+//                "\nHomogeneity: " + fe.getHomogeneity() +
+//                "\nMean: " + fe.getMean() +
+//                "\nVariance: " + fe.getVariance());
             }
         });
     }
