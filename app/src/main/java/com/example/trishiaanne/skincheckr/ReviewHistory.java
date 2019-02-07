@@ -12,6 +12,7 @@ public class ReviewHistory extends AppCompatActivity {
     private TextView burn;
     private TextView sweat;
     private TextView crust;
+    private TextView days;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +24,17 @@ public class ReviewHistory extends AppCompatActivity {
         burn = findViewById(R.id.burningTextview);
         sweat = findViewById(R.id.sweatingTextview);
         crust = findViewById(R.id.crustingTextview);
+        days = findViewById(R.id.daysTextview);
 
         Intent intent = getIntent();
-        int itching = intent.getIntExtra("itch", 0);
-        int scaling = intent.getIntExtra("scaling", 0);
-        int burning = intent.getIntExtra("burn", 0);
-        int sweating = intent.getIntExtra("sweat", 0);
-        int crusting = intent.getIntExtra("crust", 0);
+        int daysSymptom = intent.getIntExtra("days", 1);
+        int itching = intent.getIntExtra("itch", 1);
+        int scaling = intent.getIntExtra("scaling", 1);
+        int burning = intent.getIntExtra("burn", 1);
+        int sweating = intent.getIntExtra("sweat", 1);
+        int crusting = intent.getIntExtra("crust", 1);
 
+        days.setText("Days: " + String.valueOf(daysSymptom));
         itch.setText("Itching " + String.valueOf(itching));
         scale.setText("Scaling " + String.valueOf(scaling));
         burn.setText("Burning " + String.valueOf(burning));

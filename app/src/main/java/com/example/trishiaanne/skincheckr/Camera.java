@@ -119,6 +119,8 @@ public class Camera extends AppCompatActivity {
                     imageView.setImageBitmap(capturedImage);
                     //Pass the image to Image Processing and ImageProcessing UNIT
                     Intent passValue = new Intent(Camera.this, ImageProcessing.class);
+                    //Intent history = new Intent(Camera.this, History.class);
+                    //startActivity(history);
                     passValue.putExtra("path_value", photoFile.getAbsolutePath());
                     startActivity(passValue);
                 }

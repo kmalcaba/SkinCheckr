@@ -3,8 +3,11 @@ package com.example.trishiaanne.skincheckr;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -23,7 +26,10 @@ public class History extends AppCompatActivity {
     private TextView textview3;
     private TextView textview4;
 
+    private EditText editText;
+
     // Values containers
+    private int days = 0;
     private int itch = 1;
     private int scaling = 1;
     private int burn = 1;
@@ -37,6 +43,8 @@ public class History extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         final int max = 10;
+
+        editText = findViewById(R.id.editDays);
 
         seek = findViewById(R.id.itchSeekbar);
         seek1 = findViewById(R.id.scalingSeekbar);
@@ -55,6 +63,7 @@ public class History extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(History.this, ReviewHistory.class);
+                myIntent.putExtra("days", days);
                 myIntent.putExtra("itch", itch + 1);
                 myIntent.putExtra("scaling", scaling + 1);
                 myIntent.putExtra("burn", burn + 1);
@@ -62,6 +71,27 @@ public class History extends AppCompatActivity {
                 myIntent.putExtra("crust", crust + 1);
                 myIntent.putExtra("bleeding", bleeding + 1);
                 startActivity(myIntent);
+            }
+        });
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(editText.getText().toString().matches("")){
+                }
+                else{
+                    days = Integer.valueOf(editText.getText().toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 

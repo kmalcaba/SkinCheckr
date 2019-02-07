@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="31dp"
         android:text="Itch"
         app:layout_constraintStart_toStartOf="@+id/crustingTextview"
@@ -22,8 +23,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="46dp"
+        android:layout_marginLeft="46dp"
         android:layout_marginTop="173dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginRight="45dp"
         android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/daysTextview"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"
         android:layout_marginTop="31dp"
         android:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/textView5"
@@ -51,8 +57,9 @@
         android:id="@+id/crustingTextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
         android:layout_marginStart="11dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginBottom="21dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/scalingTextview"
         app:layout_constraintStart_toStartOf="@+id/scalingTextview" />
@@ -62,9 +69,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:text="Review History"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/daysTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="91dp"
+        android:layout_marginLeft="91dp"
+        android:layout_marginBottom="273dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>
