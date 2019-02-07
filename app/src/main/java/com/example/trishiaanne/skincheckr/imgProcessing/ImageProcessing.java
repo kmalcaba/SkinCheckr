@@ -1,26 +1,38 @@
 package com.example.trishiaanne.skincheckr.imgProcessing;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.trishiaanne.skincheckr.R;
+
+import java.io.IOException;
 
 /**
  *
  * @author Kirsten A. Malcaba
  */
 public class ImageProcessing extends AppCompatActivity{
-    int days;
-    int itch;
-    int scale;
-    int burn;
-    int sweat;
-    int crust;
-    int bleed;
-    int disease;
-    String path="";
+    String capturePath="";
+    String importPath="";
+    private Bitmap chosenImage;
+    private ImageView imageView;
+    private Button confirmPhoto;
 
 
     private void displayMessage(Context context, String mess) {
@@ -29,17 +41,89 @@ public class ImageProcessing extends AppCompatActivity{
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_confirm_image);
+
+        imageView = findViewById(R.id.imageView2);
+        confirmPhoto = findViewById(R.id.imgProButton);
 
         Intent i = getIntent();
-        path = i.getStringExtra("path_value");
-        displayMessage(getBaseContext(),"PATH: " + path);
-        Log.i("PATH: ",path);
+        //check if passed key is capture or import image
+        if(i.getExtras().containsKey("capture_value")) {//captured image
+            capturePath = i.getStringExtra("capture_value");
+            displayMessage(getBaseContext(),"CAPTURE PATH: " + capturePath);
+            Log.i("PATH: ",capturePath);
+            chosenImage = BitmapFactory.decodeFile(capturePath);
+            imageView.setImageBitmap(chosenImage);
+        } else {//imported image
+            importPath = i.getStringExtra("import_value");
+            displayMessage(getBaseContext(),"IMPORT PATH: " + importPath);
+            Log.i("PATH: ",importPath);
+            //Allow storage access
+            if(ContextCompat.checkSelfPermission(ImageProcessing.this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(ImageProcessing.this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
+                } else {
+                    ActivityCompat.requestPermissions(ImageProcessing.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            1);
+                }
+            } else {
+                //Permission granted
+            }
+            chosenImage = BitmapFactory.decodeFile(importPath);
+            imageView.setImageBitmap(chosenImage);
+        }
+        //img pro
+        confirmPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bitmap med = MedianFilter.filter(chosenImage);
+                //otsu's method thresholding
+                Otsu o = new Otsu(med,chosenImage);
+                o = new Otsu(med);
+                int threshold = o.getThreshold();
+                displayMessage(getBaseContext(),"Threshold: " + threshold);
+                Bitmap thresh = o.applyThreshold();
+                Bitmap dilate = o.dilateImage(thresh);
+                Bitmap mask = o.applyMask(dilate);
+
+                //Image Processing
+                FeatureExtraction fe = null;
+                try {
+                    fe = new FeatureExtraction(mask,8);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                fe.extract();
+                Log.d("Contrast: ", String.valueOf(fe.getContrast()));
+                Log.d("Correlation: ", String.valueOf(fe.getCorrelation()));
+                Log.d("Energy: ", String.valueOf(fe.getEnergy()));
+                Log.d("Entropy: ", String.valueOf(fe.getEntropy()));
+                Log.d("Homogeneity: ", String.valueOf(fe.getHomogeneity()));
+                Log.d("Mean: ", String.valueOf(fe.getMean()));
+                Log.d("Variance: ", String.valueOf(fe.getVariance()));
+
+                displayMessage(getBaseContext(), "Contrast: " + fe.getContrast() +
+                "\nCorrelation: " + fe.getCorrelation() +
+                "\nEnergy: " + fe.getEnergy() +
+                "\nEntropy: " + fe.getEntropy() +
+                "\nHomogeneity: " + fe.getHomogeneity() +
+                "\nMean: " + fe.getMean() +
+                "\nVariance: " + fe.getVariance());
+            }
+        });
     }
     /*
         String path_value = Intent.getIntentOld("")
-        //img pro
-        //median filter - noise reduction
+        File f = new File("test/20.jpg");
+            BufferedImage img = ImageIO.read(f);
+
+            //img pro
+            //median filter - noise reduction
+            BufferedImage med = MedianFilter.filter(img);
         BufferedImage med = MedianFilter.filter(img);
         //otsu's method thresholding
         Otsu o = new Otsu(med, img); //if mask
