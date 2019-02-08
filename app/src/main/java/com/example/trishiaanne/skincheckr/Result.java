@@ -44,25 +44,26 @@ public class Result extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
                         int id = menuItem.getItemId();
                         switch (id) {
-                            case R.id.profile:
-                                startActivity(new Intent(Result.this, Profile.class));
-                                break;
-                            case R.id.uv:
-                                startActivity(new Intent(Result.this, Uv.class));
-                                break;
-                            case R.id.derma:
-                                Toast.makeText(Result.this, "Find Nearby Dermatologist", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(Result.this, Derma.class));
-                                break;
+//                            case R.id.editProfile:
+//                                Toast.makeText(Result.this, "Profile", Toast.LENGTH_SHORT).show();
+//                                Intent i = new Intent(Result.this, EditProfile.class);
+//                                startActivity(i);
+//                                break;
+//                            case R.id.records:
+//                                Toast.makeText(Result.this, "Records", Toast.LENGTH_SHORT).show();
+//                                break;
                             case R.id.signout:
-                                Toast.makeText(Result.this, "Signed Out", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Result.this, "Sign Out", Toast.LENGTH_SHORT).show();
                                 if (id == R.id.signout) {
-                                    logout();
+                                    FirebaseAuth.getInstance().signOut();
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
                                 }
                             default:
                                 return true;
                         }
-                        return true;
+//                        return true;
                     }
                 }
         );
@@ -76,12 +77,5 @@ public class Result extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void logout () {
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
     }
 }

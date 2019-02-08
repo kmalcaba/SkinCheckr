@@ -21,7 +21,7 @@ import java.util.PriorityQueue;
 public class ImageClassifier {
 
     private static final String TAG = "SkinCheckr";
-    private static final String MODEL_PATH = "model.tflite";
+    private static final String MODEL_PATH = "model.pb";
     private static final String LABEL_PATH = "labels.txt";
     private static final int RESULTS_TO_SHOW = 3;
 

@@ -3,9 +3,13 @@ package com.example.trishiaanne.skincheckr;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 public class ReviewHistory extends AppCompatActivity {
 
@@ -20,7 +24,10 @@ public class ReviewHistory extends AppCompatActivity {
     private TextView days;
     private TextView bleed;
 
-    private float [][] inputs;
+    private float [] inputs;
+    private float [][] arrayInput;
+
+    private ImageClassifier classifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +53,8 @@ public class ReviewHistory extends AppCompatActivity {
         int sweating = intent.getIntExtra("sweat", 1);
         int crusting = intent.getIntExtra("crust", 1);
         int bleeding = intent.getIntExtra("bleed", 0);
+        inputs = intent.getFloatArrayExtra("inputs");
 
-        inputs = null;
-        Object [] objectArray = (Object[]) getIntent().getExtras().getSerializable("inputs");
-        if(inputs!=null) {
-            inputs = new float[1][objectArray.length + 7];
-            for (int i = 0; i < objectArray.length; i++) {
-                inputs[0][i] = (float) objectArray[i];
-            }
-        }
 
         result.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,5 +81,36 @@ public class ReviewHistory extends AppCompatActivity {
         }else{
             bleed.setText("Bleeding: " + "No");
         }
+
+        arrayInput = new float[1][14];
+        for(int i = 0; i < inputs.length; i++) {
+            arrayInput[0][i] = inputs[i];
+        }
+        arrayInput[0][7] = (float) daysSymptom;
+        arrayInput[0][8] = (float) itching;
+        arrayInput[0][9] = (float) scaling;
+        arrayInput[0][10] = (float) burning;
+        arrayInput[0][11] = (float) sweating;
+        arrayInput[0][12] = (float) crusting;
+        arrayInput[0][13] = (float) bleeding;
+
+        try {
+            classifier = new ImageClassifier(this);
+            classify();
+            classifier.close();
+        } catch (IOException e) {
+            Log.e("Classifier: ", "Failed to initialize an image classifier.");
+        }
+    }
+
+    private void classify() {
+        if(classifier==null) {
+            Toast.makeText(getApplicationContext(), "Uninitialized classifier.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        float [][] outputs = new float[1][11];
+        outputs = classifier.getOutputs(arrayInput);
+        Log.d("Classifier: ", "Prediction successful");
     }
 }
