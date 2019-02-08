@@ -2,6 +2,7 @@ package com.example.trishiaanne.skincheckr;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -65,52 +66,47 @@ public class Login extends AppCompatActivity {
             }
         });
 
-      /*  btnForgot.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onclick (View v){
-                resetPassword();
-             //   startActivity(new Intent(Login.this, ResetPassword.class));
-            }
-        });*/
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String email = enterEmail.getText().toString();
-                final String password = enterPassword.getText().toString();
+                if (checkInternet(getApplicationContext())) {
+                    final String email = enterEmail.getText().toString();
+                    final String password = enterPassword.getText().toString();
 
-                if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "Enter e-mail address!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                //   progressBar.setVisibility(View.VISIBLE);
-
-                //authenticate user
-                auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Intent intent = new Intent(Login.this, UserCam.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (e instanceof FirebaseAuthInvalidUserException) { //account does not exist
-                            Toast.makeText(getApplicationContext(), "User does not exist in the database. Please sign up.", Toast.LENGTH_LONG).show();
-                        } else if (e instanceof FirebaseAuthInvalidCredentialsException) { //incorrect e-mail or password
-                            Toast.makeText(getApplicationContext(), "Invalid e-mail or password", Toast.LENGTH_LONG).show();
-                        }
+                    if (TextUtils.isEmpty(email)) {
+                        Toast.makeText(getApplicationContext(), "Enter e-mail address!", Toast.LENGTH_SHORT).show();
+                        return;
                     }
-                });
+
+                    if (TextUtils.isEmpty(password)) {
+                        Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    //authenticate user
+                    auth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        Intent intent = new Intent(Login.this, UserCam.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            if (e instanceof FirebaseAuthInvalidUserException) { //account does not exist
+                                Toast.makeText(getApplicationContext(), "User does not exist in the database. Please sign up.", Toast.LENGTH_LONG).show();
+                            } else if (e instanceof FirebaseAuthInvalidCredentialsException) { //incorrect e-mail or password
+                                Toast.makeText(getApplicationContext(), "Invalid e-mail or password", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), "Internet connection required to log in", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -120,6 +116,14 @@ public class Login extends AppCompatActivity {
         text = (TextView) findViewById(R.id.signUp);
         Intent myIntent = new Intent(Login.this, SignUp.class);
         startActivity(myIntent);
+    }
+
+    public static boolean checkInternet(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        android.net.NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        android.net.NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+        return wifi.isConnected() || mobile.isConnected();
     }
 
     private void resetPassword() {
@@ -155,9 +159,5 @@ public class Login extends AppCompatActivity {
             }
         });
         dialog.show();
-    }
-
-    private void displayMessage(Context context, String mess) {
-        Toast.makeText(context, mess, Toast.LENGTH_LONG).show();
     }
 }
