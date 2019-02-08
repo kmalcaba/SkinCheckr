@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -56,36 +57,38 @@ public class ImageProcessing extends AppCompatActivity{
             chosenImage = BitmapFactory.decodeFile(importPath);
             imageView.setImageBitmap(chosenImage);
         }
-        //img pro
+
+        /*
+
+                IMAGE PROCESSING
+
+         */
+
         confirmPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                long startTime = SystemClock.uptimeMillis();
+
                 Bitmap img = chosenImage.copy(chosenImage.getConfig(), chosenImage.isMutable());
-//                Bitmap med = MedianFilter.filter(chosenImage);
-//                //otsu's method thresholding
-//                Otsu o = new Otsu(med,chosenImage);
-//                int threshold = o.getThreshold();
-//                displayMessage(getBaseContext(),"Threshold: " + threshold);
-//                Bitmap thresh = o.applyThreshold();
-//                Bitmap dilate = o.dilateImage(thresh);
-//                Bitmap mask = o.applyMask(dilate);
+
+                //Median Filtering
+                Bitmap med = MedianFilter.filter(img);
+
+//                //Otsu's Method of Thresholding
+                Otsu o = new Otsu(med,img);
+                int threshold = o.getThreshold();
+                Log.d("Threshold: ", Integer.toString(threshold));
+                Bitmap thresh = o.applyThreshold();
+                Bitmap dilate = o.dilateImage(thresh);
+                Bitmap mask = o.applyMask(dilate);
 
                 //Feature Extraction
-                FeatureExtraction fe = new FeatureExtraction(img);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                img.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-                FeatureExtraction.imageArray = new byte[]{};
-                FeatureExtraction.imageArray = stream.toByteArray();
-
-
-//                FeatureExtraction fe = null;
-//                try {
-//                    fe = new FeatureExtraction(mask);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
+                FeatureExtraction fe = new FeatureExtraction(mask);
                 fe.extract();
+
+                long endTime = SystemClock.uptimeMillis();
+                Log.d("SkinCheckr:", "Timecost to run image processing: " + Long.toString(endTime - startTime));
                 Log.d("Contrast: ", String.valueOf(fe.getContrast()));
                 Log.d("Correlation: ", String.valueOf(fe.getCorrelation()));
                 Log.d("Energy: ", String.valueOf(fe.getEnergy()));
@@ -94,46 +97,9 @@ public class ImageProcessing extends AppCompatActivity{
                 Log.d("Mean: ", String.valueOf(fe.getMean()));
                 Log.d("Variance: ", String.valueOf(fe.getVariance()));
 
-                displayMessage(getBaseContext(), "Contrast: " + fe.getContrast() +
-                "\nCorrelation: " + fe.getCorrelation() +
-                "\nEnergy: " + fe.getEnergy() +
-                "\nEntropy: " + fe.getEntropy() +
-                "\nHomogeneity: " + fe.getHomogeneity() +
-                "\nMean: " + fe.getMean() +
-                "\nVariance: " + fe.getVariance());
-
                 Intent intent = new Intent(ImageProcessing.this, History.class);
                 startActivity(intent);
             }
         });
     }
-    /*
-        String path_value = Intent.getIntentOld("")
-        File f = new File("test/20.jpg");
-            BufferedImage img = ImageIO.read(f);
-
-            //img pro
-            //median filter - noise reduction
-            BufferedImage med = MedianFilter.filter(img);
-        BufferedImage med = MedianFilter.filter(img);
-        //otsu's method thresholding
-        Otsu o = new Otsu(med, img); //if mask
-//      Otsu o = new Otsu(med); //if binary img only
-        int threshold = o.getThreshold();
-        System.out.println("Threshold: " + threshold);
-        BufferedImage thresh = o.applyThreshold();
-        BufferedImage dilate = o.dilateImage(thresh);BufferedImage mask = o.applyMask(dilate); //replace white with orig img
-
-            //ImageProcessing
-            FeatureExtraction fe = new FeatureExtraction(mask, 8);
-            fe.extract();
-
-            System.out.println("Contrast: " + fe.getContrast());
-            System.out.println("Correlation: " + fe.getCorrelation());
-            System.out.println("Energy: " + fe.getEnergy());
-            System.out.println("Entropy: " + fe.getEntropy());
-            System.out.println("Homogeneity: " + fe.getHomogeneity());
-            System.out.println("Mean: " + fe.getMean());
-            System.out.println("Variance: " + fe.getVariance());
-*/
 }
