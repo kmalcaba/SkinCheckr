@@ -71,7 +71,7 @@ public class History extends AppCompatActivity {
         textview4 = findViewById(R.id.crustingProgress);
 
         button = (Button) findViewById(R.id.resultButton);
-     //   group = (RadioGroup) findViewById(R.id.radioButtonChoices);
+        group = (RadioGroup) findViewById(R.id.radioButtonChoices);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,17 +214,4 @@ public class History extends AppCompatActivity {
 
     }
 
-    /*private void createRadioButtons() {
-        RadioGroup group = findViewById(R.id.radioButtonChoices);
-
-        String[] stringPanels = getResources().getStringArray(R.array.radio_buttons_choices);
-
-        for(int i = 0; i < stringPanels.length; i++){
-            String stringPanel = stringPanels[i];
-            RadioButton button = new RadioButton(this);
-            button.setText(stringPanel);
-            group.addView(button);
-        }
-
-    }*/
 }

@@ -53,7 +53,7 @@ public class ReviewHistory extends AppCompatActivity {
         int sweating = intent.getIntExtra("sweat", 1);
         int crusting = intent.getIntExtra("crust", 1);
         int bleeding = intent.getIntExtra("bleed", 0);
-        inputs = intent.getFloatArrayExtra("inputs");
+        inputs = intent.getFloatArrayExtra("features");
 
 
         result.setOnClickListener(new View.OnClickListener() {
