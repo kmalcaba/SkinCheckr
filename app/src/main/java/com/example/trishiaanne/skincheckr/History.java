@@ -9,12 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class History extends AppCompatActivity {
-    private RadioButton yesRadio;
-    private RadioButton noRadio;
+
+    private RadioGroup group;
+    private RadioButton radioButton;
+    private Button btnDisplay;
 
     private Button button;
 
@@ -34,14 +38,14 @@ public class History extends AppCompatActivity {
 
     // Values containers
     private int days = 0;
-    private int itch = 1;
-    private int scaling = 1;
-    private int burn = 1;
-    private int sweat = 1;
-    private int crust = 1;
+    private int itch = 0;
+    private int scaling = 0;
+    private int burn = 0;
+    private int sweat = 0;
+    private int crust = 0;
     private int bleeding = 0;
 
-    private float [][] inputs;
+    private float[][] inputs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +54,16 @@ public class History extends AppCompatActivity {
 
         final int max = 10;
 
-        inputs = null;
+        /*inputs = null;
         Object [] objectArray = (Object[]) getIntent().getExtras().getSerializable("inputs");
         if(inputs!=null) {
             inputs = new float[1][objectArray.length + 7];
             for (int i = 0; i < objectArray.length; i++) {
                 inputs[0][i] = (float) objectArray[i];
             }
-        }
+        }*/
 
-        yesRadio = findViewById(R.id.yesRadio);
-        noRadio = findViewById(R.id.noRadio);
+        //createRadioButtons();
 
         editText = findViewById(R.id.editDays);
 
@@ -76,45 +79,32 @@ public class History extends AppCompatActivity {
         textview3 = findViewById(R.id.sweatingProgress);
         textview4 = findViewById(R.id.crustingProgress);
 
-        button = (Button) findViewById(R.id.reviewHistory);
+        button = (Button) findViewById(R.id.resultButton);
+        group = (RadioGroup) findViewById(R.id.radioButtonChoices);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(History.this, ReviewHistory.class);
-                myIntent.putExtra("days", days);
-                myIntent.putExtra("itch", itch + 1);
-                myIntent.putExtra("scaling", scaling + 1);
-                myIntent.putExtra("burn", burn + 1);
-                myIntent.putExtra("sweat", sweat + 1);
-                myIntent.putExtra("crust", crust + 1);
-                myIntent.putExtra("bleeding", bleeding + 1);
-                startActivity(myIntent);
-            }
-        });
-
-        yesRadio.setOnClickListener(new RadioButton.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch(view.getId()){
-                    case R.id.yesRadio:
-                        if(yesRadio.isSelected()){
-                            noRadio.setSelected(false);
-                            noRadio.setChecked(false);
-                            break;
-                        }
-                }
-            }
-        });
-
-        noRadio.setOnClickListener(new RadioButton.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch(view.getId()){
-                    case R.id.noRadio:
-                        if(noRadio.isSelected()){
-                            yesRadio.setSelected(false);
-                            yesRadio.setChecked(false);
-                        }
+                int selectedId = group.getCheckedRadioButtonId();
+                radioButton = (RadioButton) findViewById(selectedId);
+                if (editText.getText().toString().matches("")) {
+                    Toast.makeText(getApplicationContext(), "Days is empty", Toast.LENGTH_LONG).show();
+                } else if (group.getCheckedRadioButtonId() == -1) {
+                    Toast.makeText(getApplicationContext(), "Bleeding is empty", Toast.LENGTH_LONG).show();
+                } else {
+                    if (radioButton.getText().equals("Yes")) {
+                        bleeding = 1;
+                    } else {
+                        bleeding = 0;
+                    }
+                    Intent myIntent = new Intent(History.this, ReviewHistory.class);
+                    myIntent.putExtra("days", days);
+                    myIntent.putExtra("itch", itch + 1);
+                    myIntent.putExtra("scale", scaling + 1);
+                    myIntent.putExtra("burn", burn + 1);
+                    myIntent.putExtra("sweat", sweat + 1);
+                    myIntent.putExtra("crust", crust + 1);
+                    myIntent.putExtra("bleed", bleeding);
+                    startActivity(myIntent);
                 }
             }
         });
@@ -127,9 +117,9 @@ public class History extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(editText.getText().toString().matches("")){
-                }
-                else{
+                if (editText.getText().toString().matches("")) {
+
+                } else {
                     days = Integer.valueOf(editText.getText().toString());
                 }
             }
@@ -145,7 +135,7 @@ public class History extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                textview.setText("Itchiness: " + String.valueOf(i+1) + "/" + String.valueOf(max));
+                textview.setText("Itchiness: " + String.valueOf(i + 1) + "/" + String.valueOf(max));
                 itch = i;
             }
 
@@ -162,7 +152,7 @@ public class History extends AppCompatActivity {
         seek1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                textview1.setText("Scaling/Peeling: " + String.valueOf(i+1) + "/" + String.valueOf(max));
+                textview1.setText("Scaling/Peeling: " + String.valueOf(i + 1) + "/" + String.valueOf(max));
                 scaling = i;
             }
 
@@ -180,7 +170,7 @@ public class History extends AppCompatActivity {
         seek2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                textview2.setText("Burning: " + String.valueOf(i+1) + "/" + String.valueOf(max));
+                textview2.setText("Burning: " + String.valueOf(i + 1) + "/" + String.valueOf(max));
                 burn = i;
             }
 
@@ -198,7 +188,7 @@ public class History extends AppCompatActivity {
         seek3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                textview3.setText("Sweating: " + String.valueOf(i+1) + "/" + String.valueOf(max));
+                textview3.setText("Sweating: " + String.valueOf(i + 1) + "/" + String.valueOf(max));
                 sweat = i;
             }
 
@@ -216,7 +206,7 @@ public class History extends AppCompatActivity {
         seek4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                textview4.setText("Crusting: " + String.valueOf(i+1) + "/" + String.valueOf(max));
+                textview4.setText("Crusting: " + String.valueOf(i + 1) + "/" + String.valueOf(max));
                 crust = i;
             }
 
@@ -231,4 +221,18 @@ public class History extends AppCompatActivity {
         });
 
     }
+
+    /*private void createRadioButtons() {
+        RadioGroup group = findViewById(R.id.radioButtonChoices);
+
+        String[] stringPanels = getResources().getStringArray(R.array.radio_buttons_choices);
+
+        for(int i = 0; i < stringPanels.length; i++){
+            String stringPanel = stringPanels[i];
+            RadioButton button = new RadioButton(this);
+            button.setText(stringPanel);
+            group.addView(button);
+        }
+
+    }*/
 }
