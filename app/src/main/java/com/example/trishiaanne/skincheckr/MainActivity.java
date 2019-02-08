@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         guestButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent guestIntent = new Intent(MainActivity.this, Camera.class);
+                Intent guestIntent = new Intent(MainActivity.this, UserCam.class);
                 startActivity(guestIntent);
             }
         });
@@ -32,11 +32,7 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
                 Intent userIntent = new Intent(MainActivity.this, Result.class);
-=======
-                Intent userIntent = new Intent(MainActivity.this, UserCam.class);
->>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
                 startActivity(userIntent);
             }
         });

@@ -59,7 +59,7 @@ public class ReviewHistory extends AppCompatActivity {
         result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(ReviewHistory.this, Result.class));
             }
         });
 
