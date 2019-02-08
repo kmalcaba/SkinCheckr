@@ -18,8 +18,8 @@ public class Otsu {
         threshold(pixels);
     }
 
-    public Otsu(Bitmap grayImg, Bitmap srcImg) {
-        origImage = Bitmap.createBitmap(srcImg);
+    Otsu(Bitmap grayImg, Bitmap srcImg) {
+        origImage = srcImg.copy(srcImg.getConfig(), srcImg.isMutable());
         pixels = createMatrix(grayImg);
 
         threshold(pixels);
@@ -58,9 +58,9 @@ public class Otsu {
     private int[] histogram(int[][] pixels) {
         int[] hist = new int[256];
 
-        for (int i = 0; i < pixels.length; i++) {
-            for (int j = 0; j < pixels[0].length; j++) {
-                hist[pixels[i][j]]++;
+        for (int[] pixel : pixels) {
+            for (int pix: pixel) {
+                hist[pixel[pix]]++;
             }
         }
 
@@ -112,6 +112,9 @@ public class Otsu {
             t++;
         }
 
+        //threshold manipulation
+        //increases the threshold if it is too small
+        //a small threshold does not capture many details
         if (threshold <= 10) {
             threshold += 100;
         } else if (threshold <= 50) {
@@ -121,11 +124,10 @@ public class Otsu {
         }
     }
 
-    public Bitmap applyThreshold() {
+    Bitmap applyThreshold() {
         Bitmap img = Bitmap.createBitmap(pixels.length, pixels[0].length, origImage.getConfig());
         int white = Color.rgb(255, 255, 255);
         int center = pixels[(pixels.length - 1) / 2][(pixels[0].length - 1) / 2] - 10;
-//        System.out.println("Center: " + center);
 
         for (int i = 0; i < pixels.length; i++) {
             for (int j = 0; j < pixels[0].length; j++) {
@@ -148,7 +150,7 @@ public class Otsu {
         return img;
     }
 
-    public Bitmap dilateImage(Bitmap binaryImg) {
+    Bitmap dilateImage(Bitmap binaryImg) {
         Bitmap img = Bitmap.createBitmap(pixels.length, pixels[0].length, origImage.getConfig());
         int white = Color.rgb(255, 255, 255);
 
@@ -177,20 +179,15 @@ public class Otsu {
         return img;
     }
 
-    public Bitmap applyMask(Bitmap mask) {
-        Bitmap img = Bitmap.createBitmap(pixels.length, pixels[0].length, origImage.getConfig());
+    Bitmap applyMask(Bitmap mask) {
+        Bitmap img = Bitmap.createBitmap(origImage.getWidth(), origImage.getHeight(), origImage.getConfig());
         int white = Color.rgb(255, 255, 255);
 
         for (int i = 0; i < mask.getWidth(); i++) {
             for (int j = 0; j < mask.getHeight(); j++) {
                 if (mask.getPixel(i, j) == white) {
-                    int p = origImage.getPixel(i, j);
-                    int r = (p >> 16) & 0xff;
-                    int g = (p >> 8) & 0xff;
-                    int b = p & 0xff;
-                    int rgb = ((r) << 16) | ((g) << 8) | (b);
 //                  original color threshold
-                    img.setPixel(i, j, rgb);
+                    img.setPixel(i, j, origImage.getPixel(i, j));
                 }
             }
         }
@@ -198,7 +195,7 @@ public class Otsu {
         return img;
     }
 
-    public int getThreshold(){
+    int getThreshold(){
         return threshold;
     }
 

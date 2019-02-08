@@ -1,29 +1,24 @@
 package com.example.trishiaanne.skincheckr.imgProcessing;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.trishiaanne.skincheckr.History;
 import com.example.trishiaanne.skincheckr.R;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  *
@@ -33,8 +28,6 @@ public class ImageProcessing extends AppCompatActivity{
     String capturePath="";
     String importPath="";
     private Bitmap chosenImage;
-    private ImageView imageView;
-    private Button confirmPhoto;
 
 
     private void displayMessage(Context context, String mess) {
@@ -45,8 +38,8 @@ public class ImageProcessing extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_image);
 
-        imageView = findViewById(R.id.imageView2);
-        confirmPhoto = findViewById(R.id.imgProButton);
+        ImageView imageView = findViewById(R.id.imageView2);
+        Button confirmPhoto = findViewById(R.id.imgProButton);
 
         Intent i = getIntent();
         //check if passed key is capture or import image
@@ -64,37 +57,38 @@ public class ImageProcessing extends AppCompatActivity{
             chosenImage = BitmapFactory.decodeFile(importPath);
             imageView.setImageBitmap(chosenImage);
         }
-        //img pro
+
+        /*
+
+                IMAGE PROCESSING
+
+         */
+
         confirmPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ImageProcessing.this, History.class);
-                startActivity(intent);
-//                Bitmap med = MedianFilter.filter(chosenImage);
-//                //otsu's method thresholding
-//                Otsu o = new Otsu(med,chosenImage);
-//                int threshold = o.getThreshold();
-//                displayMessage(getBaseContext(),"Threshold: " + threshold);
-//                Bitmap thresh = o.applyThreshold();
-//                Bitmap dilate = o.dilateImage(thresh);
-//                Bitmap mask = o.applyMask(dilate);
-//
-//
-//                //Feature Extraction
-//                FeatureExtraction fe = new FeatureExtraction();
-//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                mask.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-//                FeatureExtraction.imageArray = new byte[]{};
-//                FeatureExtraction.imageArray = stream.toByteArray();
 
+                long startTime = SystemClock.uptimeMillis();
 
-//                FeatureExtraction fe = null;
-//                try {
-//                    fe = new FeatureExtraction(mask);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                fe.extract();
+                Bitmap img = chosenImage.copy(chosenImage.getConfig(), chosenImage.isMutable());
+
+                //Median Filtering
+                Bitmap med = MedianFilter.filter(img);
+
+//                //Otsu's Method of Thresholding
+                Otsu o = new Otsu(med, img);
+                int threshold = o.getThreshold();
+                Log.d("Threshold: ", Integer.toString(threshold));
+                Bitmap thresh = o.applyThreshold();
+                Bitmap dilate = o.dilateImage(thresh);
+                Bitmap mask = o.applyMask(dilate);
+
+                //Feature Extraction
+                FeatureExtraction fe = new FeatureExtraction(mask);
+                fe.extract();
+
+                long endTime = SystemClock.uptimeMillis();
+                Log.d("SkinCheckr:", "Timecost to run image processing: " + Long.toString((endTime - startTime)/1000));
 //                Log.d("Contrast: ", String.valueOf(fe.getContrast()));
 //                Log.d("Correlation: ", String.valueOf(fe.getCorrelation()));
 //                Log.d("Energy: ", String.valueOf(fe.getEnergy()));
@@ -102,44 +96,25 @@ public class ImageProcessing extends AppCompatActivity{
 //                Log.d("Homogeneity: ", String.valueOf(fe.getHomogeneity()));
 //                Log.d("Mean: ", String.valueOf(fe.getMean()));
 //                Log.d("Variance: ", String.valueOf(fe.getVariance()));
-//
-//                displayMessage(getBaseContext(), "Contrast: " + fe.getContrast() +
-//                "\nCorrelation: " + fe.getCorrelation() +
-//                "\nEnergy: " + fe.getEnergy() +
-//                "\nEntropy: " + fe.getEntropy() +
-//                "\nHomogeneity: " + fe.getHomogeneity() +
-//                "\nMean: " + fe.getMean() +
-//                "\nVariance: " + fe.getVariance());
+
+                ArrayList<Float> inputs = new ArrayList<>();
+                inputs.add((float) fe.getContrast());
+                inputs.add((float) fe.getCorrelation());
+                inputs.add((float) fe.getEnergy());
+                inputs.add((float) fe.getEntropy());
+                inputs.add((float) fe.getHomogeneity());
+                inputs.add((float) fe.getMean());
+                inputs.add((float) fe.getVariance());
+
+                float [][] arrayInputs = new float[1][14];
+                for(int i = 0; i < inputs.size(); i++) {
+                    arrayInputs[0][i] = inputs.get(i);
+                }
+
+
+                Intent intent = new Intent(ImageProcessing.this, History.class);
+                startActivity(intent);
             }
         });
     }
-    /*
-        String path_value = Intent.getIntentOld("")
-        File f = new File("test/20.jpg");
-            BufferedImage img = ImageIO.read(f);
-
-            //img pro
-            //median filter - noise reduction
-            BufferedImage med = MedianFilter.filter(img);
-        BufferedImage med = MedianFilter.filter(img);
-        //otsu's method thresholding
-        Otsu o = new Otsu(med, img); //if mask
-//      Otsu o = new Otsu(med); //if binary img only
-        int threshold = o.getThreshold();
-        System.out.println("Threshold: " + threshold);
-        BufferedImage thresh = o.applyThreshold();
-        BufferedImage dilate = o.dilateImage(thresh);BufferedImage mask = o.applyMask(dilate); //replace white with orig img
-
-            //ImageProcessing
-            FeatureExtraction fe = new FeatureExtraction(mask, 8);
-            fe.extract();
-
-            System.out.println("Contrast: " + fe.getContrast());
-            System.out.println("Correlation: " + fe.getCorrelation());
-            System.out.println("Energy: " + fe.getEnergy());
-            System.out.println("Entropy: " + fe.getEntropy());
-            System.out.println("Homogeneity: " + fe.getHomogeneity());
-            System.out.println("Mean: " + fe.getMean());
-            System.out.println("Variance: " + fe.getVariance());
-*/
 }
