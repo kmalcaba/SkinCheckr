@@ -3,34 +3,37 @@ package com.example.trishiaanne.skincheckr;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    Button button;
+    Button guestButton, loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        button = (Button) findViewById(R.id.guestBtn);
-        button.setOnClickListener(new OnClickListener() {
+        guestButton = (Button) findViewById(R.id.guestBtn);
+        loginButton = (Button) findViewById(R.id.loginBtn);
+
+        guestButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, Camera.class);
-                startActivity(myIntent);
+                Intent guestIntent = new Intent(MainActivity.this, Camera.class);
+                startActivity(guestIntent);
             }
         });
 
-        button = (Button) findViewById(R.id.loginBtn);
-        button.setOnClickListener(new OnClickListener() {
+        loginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, Login.class);
-                startActivity(myIntent);
+                Intent userIntent = new Intent(MainActivity.this, Login.class);
+                startActivity(userIntent);
             }
         });
     }
