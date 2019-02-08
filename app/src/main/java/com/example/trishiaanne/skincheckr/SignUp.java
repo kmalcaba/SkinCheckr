@@ -11,9 +11,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import android.widget.ProgressBar;
@@ -39,8 +41,6 @@ public class SignUp extends AppCompatActivity {
         conpw = (EditText) findViewById(R.id.conPass);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
-
-        //findViewById(R.id.sign).setOnClickListener();
 
     }
         @Override
@@ -124,9 +124,17 @@ public class SignUp extends AppCompatActivity {
                                             startActivity(new Intent(SignUp.this, Login.class));
 
                                             //finish();
-                                        } else
-                                            Toast.makeText(SignUp.this, getString(R.string.reg_unsuc), Toast.LENGTH_LONG).show();
-
+                                        }
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        if (e instanceof FirebaseAuthUserCollisionException) {
+                                            String errorCode = ((FirebaseAuthUserCollisionException) e).getErrorCode();
+                                            if(errorCode.equals("ERROR_EMAIL_ALREADY_IN_USE")) {
+                                                Toast.makeText(getApplicationContext(), "The e-mail address is already taken. Please enter a different e-mail.", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
                                     }
                                 });
 
