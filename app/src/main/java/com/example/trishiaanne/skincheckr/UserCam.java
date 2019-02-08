@@ -11,7 +11,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import com.example.trishiaanne.skincheckr.R;
+
 import com.example.trishiaanne.skincheckr.imgProcessing.ImageProcessing;
 import com.google.firebase.auth.FirebaseAuth;
 import android.support.design.widget.NavigationView;
@@ -21,7 +21,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -90,16 +89,18 @@ public class UserCam extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
                         int id = menuItem.getItemId();
                         switch (id) {
-                            case R.id.editProfile:
-                                Toast.makeText(UserCam.this, "Profile", Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(UserCam.this, EditProfile.class);
-                                startActivity(i);
+                            case R.id.profile:
+                                startActivity(new Intent(UserCam.this, Profile.class));
                                 break;
-                            case R.id.records:
-                                Toast.makeText(UserCam.this, "Records", Toast.LENGTH_SHORT).show();
+                            case R.id.uv:
+                                startActivity(new Intent(UserCam.this, Uv.class));
+                                break;
+                            case R.id.derma:
+                                Toast.makeText(UserCam.this, "Find Nearby Dermatologist", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(UserCam.this, Derma.class));
                                 break;
                             case R.id.signout:
-                                Toast.makeText(UserCam.this, "Sign Out", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(UserCam.this, "Signed Out", Toast.LENGTH_SHORT).show();
                                 if (id == R.id.signout) {
                                     logout();
                                 }
@@ -231,6 +232,20 @@ public class UserCam extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
+
+    /*private void profile () {
+        Intent intent = new Intent(UserCam.this, Profile.class);
+        startActivity(intent);
+    }
+
+    private void uv () {
+        Intent intent = new Intent(UserCam.this, Uv.class);
+        startActivity(intent);
+    }
+    private void derma () {
+        Intent intent = new Intent(UserCam.this, Derma.class);
+        startActivity(intent);
+    }*/
 
     public String getRealPathFromURI(Context context, Uri contentUri) {
         Cursor cursor = null;
