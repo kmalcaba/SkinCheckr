@@ -7,6 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".Profile">
 
+    <ImageView
+        android:id="@+id/img1"
+        android:layout_width="128dp"
+        android:layout_height="95dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.082"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.217" />
+
     <TextView
         android:id="@+id/textView18"
         android:layout_width="80dp"
@@ -23,13 +41,13 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.025"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.062" />
+        app:layout_constraintVertical_bias="0.027" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/fname"
         android:layout_width="80dp"
         android:layout_height="31dp"
         android:layout_marginStart="8dp"
@@ -47,4 +65,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.061" />
+
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="627dp"
+        android:columnWidth="80dp"
+        android:gravity="center"
+        android:horizontalSpacing="16dp"
+        android:numColumns="auto_fit"
+        android:padding="16dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="16dp"
+        tools:layout_editor_absoluteY="104dp" />
+
 </android.support.constraint.ConstraintLayout>

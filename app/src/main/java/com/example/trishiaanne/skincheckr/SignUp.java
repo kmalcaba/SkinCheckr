@@ -57,6 +57,10 @@ public class SignUp extends AppCompatActivity {
             final String password = pw.getText().toString().trim();
             final String confirm = conpw.getText().toString().trim();
 
+            User user = new User();
+            user.setFname (fname);
+            user.setLname (lname);
+            user.setEmail (email);
 
             if (fname.isEmpty()) {
                 firstn.setError(getString(R.string.input_fname));
