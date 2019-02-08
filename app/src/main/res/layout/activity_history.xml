@@ -12,13 +12,13 @@
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginLeft="17dp"
+        android:layout_marginBottom="7dp"
         android:layout_marginEnd="17dp"
+        android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
-        android:layout_marginBottom="39dp"
+        android:layout_marginStart="17dp"
         android:max="9"
-        app:layout_constraintBottom_toTopOf="@+id/scalingSeekbar"
+        app:layout_constraintBottom_toTopOf="@+id/scalingProgress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itchProgress" />
@@ -30,97 +30,93 @@
         android:text="Itchiness: 1/10"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/itchSeekbar"
-        app:layout_constraintEnd_toEndOf="@+id/textView12"
-        app:layout_constraintStart_toStartOf="@+id/itchSeekbar"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintEnd_toStartOf="@+id/editDays"
+        app:layout_constraintStart_toStartOf="@+id/scalingProgress"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <SeekBar
         android:id="@+id/scalingSeekbar"
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginLeft="17dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginEnd="17dp"
+        android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
-        android:layout_marginBottom="37dp"
+        android:layout_marginStart="17dp"
         android:max="9"
-        app:layout_constraintBottom_toTopOf="@+id/burningSeekbar"
+        app:layout_constraintBottom_toTopOf="@+id/burningProgress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itchSeekbar" />
+        app:layout_constraintTop_toBottomOf="@+id/scalingProgress" />
 
     <TextView
         android:id="@+id/scalingProgress"
         android:layout_width="163dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginBottom="42dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:text="Scaling/Peeling: 1/10"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/burningProgress"
-        app:layout_constraintStart_toStartOf="@+id/scalingSeekbar"
-        app:layout_constraintTop_toTopOf="@+id/itchSeekbar" />
+        app:layout_constraintBottom_toTopOf="@+id/scalingSeekbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itchSeekbar" />
 
     <SeekBar
         android:id="@+id/burningSeekbar"
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginLeft="17dp"
+        android:layout_marginBottom="13dp"
         android:layout_marginEnd="17dp"
+        android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
-        android:layout_marginBottom="7dp"
+        android:layout_marginStart="17dp"
         android:max="9"
         app:layout_constraintBottom_toTopOf="@+id/sweatingProgress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scalingSeekbar" />
+        app:layout_constraintTop_toBottomOf="@+id/burningProgress" />
 
     <TextView
         android:id="@+id/burningProgress"
         android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginRight="3dp"
-        android:layout_marginBottom="29dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
         android:text="Burning: 1/10"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/burningSeekbar"
-        app:layout_constraintEnd_toEndOf="@+id/itchProgress"
-        app:layout_constraintStart_toStartOf="@+id/sweatingProgress"
-        app:layout_constraintTop_toTopOf="@+id/scalingSeekbar" />
+        app:layout_constraintBottom_toTopOf="@+id/burningSeekbar"
+        app:layout_constraintEnd_toEndOf="@+id/crustingProgress"
+        app:layout_constraintStart_toStartOf="@+id/scalingProgress"
+        app:layout_constraintTop_toBottomOf="@+id/scalingSeekbar" />
 
     <SeekBar
         android:id="@+id/sweatingSeekbar"
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginLeft="17dp"
+        android:layout_marginBottom="22dp"
         android:layout_marginEnd="17dp"
+        android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
-        android:layout_marginBottom="7dp"
+        android:layout_marginStart="17dp"
         android:max="9"
-        app:layout_constraintBottom_toTopOf="@+id/crustingProgress"
+        app:layout_constraintBottom_toTopOf="@+id/crustingSeekbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sweatingProgress" />
 
     <TextView
         android:id="@+id/sweatingProgress"
-        android:layout_width="127dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="1dp"
         android:text="Sweating: 1/10"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/sweatingSeekbar"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/spinner"
+        app:layout_constraintStart_toStartOf="@+id/burningProgress"
         app:layout_constraintTop_toBottomOf="@+id/burningSeekbar" />
 
     <SeekBar
@@ -128,37 +124,44 @@
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginLeft="17dp"
+        android:layout_marginBottom="15dp"
         android:layout_marginEnd="17dp"
+        android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
+        android:layout_marginStart="17dp"
         android:max="9"
         app:layout_constraintBottom_toTopOf="@+id/textView15"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/crustingProgress" />
+        app:layout_constraintTop_toBottomOf="@+id/sweatingSeekbar" />
 
     <TextView
         android:id="@+id/crustingProgress"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="1dp"
+        android:layout_height="29dp"
+        android:layout_marginBottom="70dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="71dp"
         android:text="Crusting: 1/10"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/crustingSeekbar"
-        app:layout_constraintEnd_toEndOf="@+id/burningProgress"
-        app:layout_constraintStart_toStartOf="@+id/crustingSeekbar"
-        app:layout_constraintTop_toBottomOf="@+id/sweatingSeekbar" />
+        app:layout_constraintBottom_toTopOf="@+id/reviewHistory"
+        app:layout_constraintEnd_toEndOf="@+id/textView15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sweatingProgress" />
 
     <Button
         android:id="@+id/reviewHistory"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginRight="28dp"
-        android:layout_marginBottom="29dp"
+        android:layout_width="328dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/buttoncurve"
         android:text="DONE"
         android:textColor="@android:color/white"
@@ -167,19 +170,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginBottom="21dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="13dp"
         android:text="Patient History"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView8"
+        app:layout_constraintBottom_toTopOf="@+id/textView12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -187,49 +190,63 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginBottom="18dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginBottom="22dp"
+        android:layout_marginStart="16dp"
         android:text="Number of days: "
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/itchProgress"
+        app:layout_constraintBottom_toTopOf="@+id/textView8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="22dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginStart="1dp"
         android:text="1 = No Symptom   2-4 = Mild Symptom   7-10 = Extreme Symptom"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView12"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/itchProgress"
+        app:layout_constraintStart_toStartOf="@+id/itchProgress"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <EditText
         android:id="@+id/editDays"
         android:layout_width="56dp"
         android:layout_height="42dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
+        android:layout_marginLeft="134dp"
+        android:layout_marginStart="134dp"
         android:ems="10"
         android:inputType="number"
         android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView12"
-        app:layout_constraintStart_toStartOf="@+id/textView12" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView15"
         android:layout_width="127dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="142dp"
+        android:layout_marginBottom="83dp"
         android:text="Is it bleeding?"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/reviewHistory"
-        app:layout_constraintStart_toStartOf="@+id/crustingSeekbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/crustingSeekbar"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="119dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="@+id/textView15"
         app:layout_constraintTop_toBottomOf="@+id/crustingSeekbar" />
 
 </android.support.constraint.ConstraintLayout>
