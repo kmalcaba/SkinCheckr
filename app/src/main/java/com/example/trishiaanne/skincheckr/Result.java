@@ -44,13 +44,15 @@ public class Result extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
                         int id = menuItem.getItemId();
                         switch (id) {
-                            case R.id.editProfile:
-                                Toast.makeText(Result.this, "Profile", Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(Result.this, EditProfile.class);
-                                startActivity(i);
+                            case R.id.profile:
+                                startActivity(new Intent(Result.this, Profile.class));
                                 break;
-                            case R.id.records:
-                                Toast.makeText(Result.this, "Records", Toast.LENGTH_SHORT).show();
+                            case R.id.uv:
+                                startActivity(new Intent(Result.this, Uv.class));
+                                break;
+                            case R.id.derma:
+                                Toast.makeText(Result.this, "Find Nearby Dermatologist", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(Result.this, Derma.class));
                                 break;
                             case R.id.signout:
                                 Toast.makeText(Result.this, "Sign Out", Toast.LENGTH_SHORT).show();

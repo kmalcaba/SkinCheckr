@@ -30,14 +30,11 @@
         android:layout_marginTop="33dp"
         android:text="Itchiness: 1/10"
         android:textSize="16sp"
-<<<<<<< HEAD
         android:fontFamily="@font/san_francisco"
         app:layout_constraintBottom_toTopOf="@+id/itchSeekbar"
         app:layout_constraintEnd_toStartOf="@+id/noRadio"
-=======
         app:layout_constraintBottom_toTopOf="@+id/scalingProgress"
         app:layout_constraintEnd_toEndOf="@+id/sweatingProgress"
->>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
         app:layout_constraintStart_toStartOf="@+id/scalingProgress"
         app:layout_constraintTop_toTopOf="@+id/textView8" />
 
