@@ -41,12 +41,23 @@ public class History extends AppCompatActivity {
     private int crust = 1;
     private int bleeding = 0;
 
+    private float [][] inputs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
         final int max = 10;
+
+        inputs = null;
+        Object [] objectArray = (Object[]) getIntent().getExtras().getSerializable("inputs");
+        if(inputs!=null) {
+            inputs = new float[1][objectArray.length + 7];
+            for (int i = 0; i < objectArray.length; i++) {
+                inputs[0][i] = (float) objectArray[i];
+            }
+        }
 
         yesRadio = findViewById(R.id.yesRadio);
         noRadio = findViewById(R.id.noRadio);
