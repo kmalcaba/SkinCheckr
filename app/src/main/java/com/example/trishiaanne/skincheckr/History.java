@@ -80,7 +80,7 @@ public class History extends AppCompatActivity {
         textview4 = findViewById(R.id.crustingProgress);
 
         button = (Button) findViewById(R.id.resultButton);
-        group = (RadioGroup) findViewById(R.id.radioButtonChoices);
+     //   group = (RadioGroup) findViewById(R.id.radioButtonChoices);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
