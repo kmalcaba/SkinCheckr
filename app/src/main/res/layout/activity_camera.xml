@@ -16,6 +16,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/san_francisco"
         android:background="@drawable/buttonlogin"
         android:text="IMPORT PHOTO"
         android:textColor="#DB4C3E"
@@ -36,6 +37,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/san_francisco"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/buttoncurve"
@@ -53,6 +55,7 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="383dp"
+        android:fontFamily="@font/san_francisco"
         android:layout_height="372dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
