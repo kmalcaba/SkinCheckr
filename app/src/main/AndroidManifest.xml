@@ -46,6 +46,9 @@
         <activity
             android:name=".SignUp"
             android:parentActivityName=".SignUp" />
+        <activity android:name=".Profile"/>
+        <activity android:name=".Uv"/>
+        <activity android:name=".Derma"/>
         <activity android:name="com.example.trishiaanne.skincheckr.imgProcessing.ImageProcessing"
             android:parentActivityName="com.example.trishiaanne.skincheckr.imgProcessing.ImageProcessing"/>
 

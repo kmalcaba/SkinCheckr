@@ -12,38 +12,44 @@
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="31dp"
         android:layout_marginEnd="17dp"
         android:layout_marginStart="17dp"
         android:max="9"
         app:layout_constraintBottom_toTopOf="@+id/scalingSeekbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itchProgress" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
         android:id="@+id/itchProgress"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="1dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="33dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginTop="33dp"
         android:text="Itchiness: 1/10"
         android:textSize="16sp"
+<<<<<<< HEAD
         android:fontFamily="@font/san_francisco"
         app:layout_constraintBottom_toTopOf="@+id/itchSeekbar"
         app:layout_constraintEnd_toStartOf="@+id/noRadio"
+=======
+        app:layout_constraintBottom_toTopOf="@+id/scalingProgress"
+        app:layout_constraintEnd_toEndOf="@+id/sweatingProgress"
+>>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
         app:layout_constraintStart_toStartOf="@+id/scalingProgress"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toTopOf="@+id/textView8" />
 
     <SeekBar
         android:id="@+id/scalingSeekbar"
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="28dp"
         android:layout_marginEnd="17dp"
         android:layout_marginStart="17dp"
         android:max="9"
-        app:layout_constraintBottom_toTopOf="@+id/burningSeekbar"
+        app:layout_constraintBottom_toTopOf="@+id/burningProgress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itchSeekbar" />
@@ -51,42 +57,50 @@
     <TextView
         android:id="@+id/scalingProgress"
         android:layout_width="194dp"
-        android:layout_height="31dp"
-        android:layout_marginBottom="31dp"
+        android:layout_height="33dp"
+        android:layout_marginBottom="34dp"
         android:layout_marginStart="16dp"
+<<<<<<< HEAD
         android:layout_marginTop="31dp"
         android:fontFamily="@font/san_francisco"
+=======
+        android:layout_marginTop="34dp"
+>>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
         android:text="Scaling/Peeling: 1/10"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/scalingSeekbar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itchProgress" />
+        app:layout_constraintTop_toTopOf="@+id/itchSeekbar" />
 
     <SeekBar
         android:id="@+id/burningSeekbar"
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="30dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="31dp"
         android:layout_marginEnd="17dp"
         android:layout_marginStart="17dp"
+        android:layout_marginTop="31dp"
         android:max="9"
         app:layout_constraintBottom_toTopOf="@+id/sweatingSeekbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scalingSeekbar" />
+        app:layout_constraintTop_toTopOf="@+id/burningProgress" />
 
     <TextView
         android:id="@+id/burningProgress"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="59dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginStart="16dp"
         android:text="Burning: 1/10"
         android:fontFamily="@font/san_francisco"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/yesRadio"
-        app:layout_constraintStart_toStartOf="@+id/scalingProgress"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/sweatingSeekbar"
+        app:layout_constraintEnd_toEndOf="@+id/sweatingProgress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scalingSeekbar" />
 
     <SeekBar
         android:id="@+id/sweatingSeekbar"
@@ -99,31 +113,35 @@
         app:layout_constraintBottom_toTopOf="@+id/crustingProgress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/burningSeekbar" />
+        app:layout_constraintTop_toBottomOf="@+id/burningProgress" />
 
     <TextView
         android:id="@+id/sweatingProgress"
         android:layout_width="171dp"
         android:layout_height="31dp"
-        android:layout_marginBottom="59dp"
+        android:layout_marginBottom="98dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="59dp"
+        android:layout_marginTop="98dp"
         android:text="Sweating: 1/10"
         android:textSize="16sp"
+<<<<<<< HEAD
         android:fontFamily="@font/san_francisco"
         app:layout_constraintBottom_toBottomOf="@+id/crustingProgress"
+=======
+        app:layout_constraintBottom_toTopOf="@+id/textView15"
+>>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scalingSeekbar" />
+        app:layout_constraintTop_toBottomOf="@+id/scalingProgress" />
 
     <SeekBar
         android:id="@+id/crustingSeekbar"
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="31dp"
         android:layout_marginEnd="17dp"
         android:layout_marginStart="17dp"
         android:max="9"
-        app:layout_constraintBottom_toTopOf="@+id/textView15"
+        app:layout_constraintBottom_toBottomOf="@+id/crustingProgress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/crustingProgress" />
@@ -132,20 +150,27 @@
         android:id="@+id/crustingProgress"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="29dp"
         android:layout_marginEnd="1dp"
         android:text="Crusting: 1/10"
         android:textSize="16sp"
+<<<<<<< HEAD
         android:fontFamily="@font/san_francisco"
         app:layout_constraintBottom_toTopOf="@+id/crustingSeekbar"
         app:layout_constraintEnd_toEndOf="@+id/yesRadio"
         app:layout_constraintStart_toStartOf="@+id/sweatingProgress"
+=======
+        app:layout_constraintBottom_toTopOf="@+id/radioButtonChoices"
+        app:layout_constraintEnd_toEndOf="@+id/burningProgress"
+        app:layout_constraintStart_toStartOf="@+id/textView15"
+>>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
         app:layout_constraintTop_toBottomOf="@+id/sweatingSeekbar" />
 
     <Button
-        android:id="@+id/reviewHistory"
+        android:id="@+id/resultButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="41dp"
+        android:layout_marginBottom="15dp"
         android:layout_marginEnd="28dp"
         android:layout_marginStart="28dp"
         android:background="@drawable/buttoncurve"
@@ -157,12 +182,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/radioButtonChoices" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
+<<<<<<< HEAD
         android:layout_height="22dp"
+=======
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+>>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="23dp"
@@ -177,7 +207,7 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="19dp"
         android:layout_marginStart="16dp"
         android:fontFamily="@font/san_francisco"
         android:text="Number of days: "
@@ -190,15 +220,18 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginBottom="304dp"
+        android:layout_marginBottom="29dp"
         android:layout_marginStart="1dp"
+<<<<<<< HEAD
         android:layout_marginTop="108dp"
         android:fontFamily="@font/san_francisco"
+=======
+>>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
         android:text="1 = No Symptom   2-4 = Mild Symptom   7-10 = Extreme Symptom"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/noRadio"
+        app:layout_constraintBottom_toTopOf="@+id/itchSeekbar"
         app:layout_constraintStart_toStartOf="@+id/itchProgress"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <EditText
         android:id="@+id/editDays"
@@ -213,13 +246,14 @@
 
     <TextView
         android:id="@+id/textView15"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="23dp"
-        android:layout_marginEnd="39dp"
+        android:layout_width="131dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="11dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
         android:text="Is it bleeding?"
         android:textSize="16sp"
+<<<<<<< HEAD
         android:fontFamily="@font/san_francisco"
         app:layout_constraintBottom_toTopOf="@+id/reviewHistory"
         app:layout_constraintEnd_toStartOf="@+id/noRadio"
@@ -252,5 +286,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/yesRadio"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
+=======
+        app:layout_constraintBottom_toBottomOf="@+id/radioButtonChoices"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/crustingSeekbar" />
+
+    <RadioGroup
+        android:id="@+id/radioButtonChoices"
+        android:layout_width="186dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="45dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/resultButton"
+        app:layout_constraintEnd_toEndOf="@+id/resultButton"
+        app:layout_constraintTop_toBottomOf="@+id/crustingProgress" >
+
+        <RadioButton
+            android:id="@+id/radioYes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yes"
+            android:checked="false" />
+
+        <RadioButton
+            android:id="@+id/radioNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No"
+            android:checked="false" />
+    </RadioGroup>
+>>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
 
 </android.support.constraint.ConstraintLayout>
