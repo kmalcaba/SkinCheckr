@@ -1,17 +1,10 @@
 package com.example.trishiaanne.skincheckr.imgProcessing;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +16,6 @@ import com.example.trishiaanne.skincheckr.History;
 import com.example.trishiaanne.skincheckr.R;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 /**
  *
@@ -68,8 +60,8 @@ public class ImageProcessing extends AppCompatActivity{
         confirmPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ImageProcessing.this, History.class);
-                startActivity(intent);
+
+                Bitmap img = chosenImage.copy(chosenImage.getConfig(), chosenImage.isMutable());
 //                Bitmap med = MedianFilter.filter(chosenImage);
 //                //otsu's method thresholding
 //                Otsu o = new Otsu(med,chosenImage);
@@ -78,14 +70,13 @@ public class ImageProcessing extends AppCompatActivity{
 //                Bitmap thresh = o.applyThreshold();
 //                Bitmap dilate = o.dilateImage(thresh);
 //                Bitmap mask = o.applyMask(dilate);
-//
-//
-//                //Feature Extraction
-//                FeatureExtraction fe = new FeatureExtraction();
-//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                mask.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-//                FeatureExtraction.imageArray = new byte[]{};
-//                FeatureExtraction.imageArray = stream.toByteArray();
+
+                //Feature Extraction
+                FeatureExtraction fe = new FeatureExtraction(img);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                img.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+                FeatureExtraction.imageArray = new byte[]{};
+                FeatureExtraction.imageArray = stream.toByteArray();
 
 
 //                FeatureExtraction fe = null;
@@ -94,22 +85,25 @@ public class ImageProcessing extends AppCompatActivity{
 //                } catch (IOException e) {
 //                    e.printStackTrace();
 //                }
-//                fe.extract();
-//                Log.d("Contrast: ", String.valueOf(fe.getContrast()));
-//                Log.d("Correlation: ", String.valueOf(fe.getCorrelation()));
-//                Log.d("Energy: ", String.valueOf(fe.getEnergy()));
-//                Log.d("Entropy: ", String.valueOf(fe.getEntropy()));
-//                Log.d("Homogeneity: ", String.valueOf(fe.getHomogeneity()));
-//                Log.d("Mean: ", String.valueOf(fe.getMean()));
-//                Log.d("Variance: ", String.valueOf(fe.getVariance()));
-//
-//                displayMessage(getBaseContext(), "Contrast: " + fe.getContrast() +
-//                "\nCorrelation: " + fe.getCorrelation() +
-//                "\nEnergy: " + fe.getEnergy() +
-//                "\nEntropy: " + fe.getEntropy() +
-//                "\nHomogeneity: " + fe.getHomogeneity() +
-//                "\nMean: " + fe.getMean() +
-//                "\nVariance: " + fe.getVariance());
+                fe.extract();
+                Log.d("Contrast: ", String.valueOf(fe.getContrast()));
+                Log.d("Correlation: ", String.valueOf(fe.getCorrelation()));
+                Log.d("Energy: ", String.valueOf(fe.getEnergy()));
+                Log.d("Entropy: ", String.valueOf(fe.getEntropy()));
+                Log.d("Homogeneity: ", String.valueOf(fe.getHomogeneity()));
+                Log.d("Mean: ", String.valueOf(fe.getMean()));
+                Log.d("Variance: ", String.valueOf(fe.getVariance()));
+
+                displayMessage(getBaseContext(), "Contrast: " + fe.getContrast() +
+                "\nCorrelation: " + fe.getCorrelation() +
+                "\nEnergy: " + fe.getEnergy() +
+                "\nEntropy: " + fe.getEntropy() +
+                "\nHomogeneity: " + fe.getHomogeneity() +
+                "\nMean: " + fe.getMean() +
+                "\nVariance: " + fe.getVariance());
+
+                Intent intent = new Intent(ImageProcessing.this, History.class);
+                startActivity(intent);
             }
         });
     }

@@ -11,7 +11,7 @@ public class FeatureExtraction {
     private final int GRAY_LEVEL = 32;
     private final int GRAY_RANGE = 256;
 
-    //    private final Bitmap image;
+    private final Bitmap image;
     private final double[][] grayLevelMatrix;
     private final int distance = 1;
     private final int[] grayValue;
@@ -32,7 +32,7 @@ public class FeatureExtraction {
     private double correlation;
 
     public FeatureExtraction(Bitmap image) {
-//        this.image = image;
+        this.image = image;
         //initialize matrix size
 //        grayLevelMatrix = new int[this.image.getWidth()][this.image.getHeight()];
         grayLevelMatrix = new double[GRAY_LEVEL][GRAY_LEVEL];
@@ -41,7 +41,7 @@ public class FeatureExtraction {
         histogram = new double[GRAY_RANGE];
     }
 
-    public void calculateGrayValues() {
+    private void calculateGrayValues() {
         final int size = grayValue.length;
         double graySum = 0;
         for (int i = 0; i < size; i++) {
@@ -59,7 +59,17 @@ public class FeatureExtraction {
 
     public void extract() {
         calculateGrayValues();
-        normalizeMatrix(grayLevelMatrix);
+        normalizeMatrix();
+
+        contrast = calcContrast();
+        homogeneity = calcHomogenity();
+        entropy = calcEntropy();
+        energy = calcEnergy();
+        mean = calcMean();
+        variance = calcVariance();
+        correlation = calcCorrelation();
+
+
 //        this.createMatrix();
 //
 //        //0 angle
@@ -94,18 +104,16 @@ public class FeatureExtraction {
 //            for (int j = 0; j < image.getHeight(); j++) {
 //                //get the image's colors
 //                int rgb = image.getPixel(i, j);
-//                int newRed = Color.red(rgb);
-//                int newGreen = Color.green(rgb);
-//                int newBlue = Color.blue(rgb);
+//                int r = (rgb >> 16) & 0xff;
+//                int g = (rgb >> 8) & 0xff;
+//                int b = rgb & 0xff;
+////                int newRed = Color.red(rgb);
+////                int newGreen = Color.green(rgb);
+////                int newBlue = Color.blue(rgb);
 //                //convert to grayscale
-//                int grayscale = (newRed + newGreen + newBlue) / 3;
+//                int grayscale = (r + g + b) / 3;
 //
-//                //idk what this is for?
-//                if (GRAY_LEVEL > 0 && GRAY_LEVEL < 255) {
-//                    grayLevelMatrix[i][j] = grayscale * GRAY_LEVEL / 255;
-//                } else {
-//                    grayLevelMatrix[i][j] = grayscale;
-//                }
+//                grayLevelMatrix[i][j] = (double) grayscale * GRAY_LEVEL / 255;
 //            }
 //        }
 //    }
@@ -175,16 +183,16 @@ public class FeatureExtraction {
 //        return temp;
 //    }
 //
-    private int[][] transposeMatrix(int[][] m) {
-        int[][] temp = new int[m[0].length][m.length];
-        for (int i = 0; i < m.length; i++) {
-            for (int j = 0; j < m[0].length; j++) {
-                temp[j][i] = m[i][j];
-            }
-        }
-
-        return temp;
-    }
+//    private double[][] transposeMatrix(double[][] grayLevelMatrix) {
+//        double[][] temp = new double[grayLevelMatrix[0].length][grayLevelMatrix.length];
+//        for (int i = 0; i < grayLevelMatrix.length; i++) {
+//            for (int j = 0; j < grayLevelMatrix[0].length; j++) {
+//                temp[j][i] = grayLevelMatrix[i][j];
+//            }
+//        }
+//
+//        return temp;
+//    }
 //
 //    //add the matrix to its transpose to make it symmetrical
 //    private int[][] add(int[][] m2, int[][] m1) {
@@ -198,11 +206,11 @@ public class FeatureExtraction {
 //        return temp;
 //    }
 //
-    private double getTotal(double[][] m) {
+    private double getTotal() {
         double temp = 0;
-        for (int i = 0; i < m.length; i++) {
-            for (int j = 0; j < m[0].length; j++) {
-                temp += m[i][j];
+        for (int i = 0; i < grayLevelMatrix.length; i++) {
+            for (int j = 0; j < grayLevelMatrix[0].length; j++) {
+                temp += grayLevelMatrix[i][j];
             }
         }
 
@@ -210,70 +218,70 @@ public class FeatureExtraction {
     }
 
     //normalizing involves dividing by the sum of values
-    private double[][] normalizeMatrix(double[][] m) {
-        double[][] temp = new double[m[0].length][m.length];
-        double total = getTotal(m);
-        for (int i = 0; i < m.length; i++) {
-            for (int j = 0; j < m[0].length; j++) {
-                temp[j][i] = (double) m[i][j] / total;
+    private double[][] normalizeMatrix() {
+        double[][] temp = new double[grayLevelMatrix[0].length][grayLevelMatrix.length];
+        double total = getTotal();
+        for (int i = 0; i < grayLevelMatrix.length; i++) {
+            for (int j = 0; j < grayLevelMatrix[0].length; j++) {
+                temp[j][i] = (double) grayLevelMatrix[i][j] / total;
             }
         }
 
         return temp;
     }
-//
-//    /*
-//
-//        STATISTICAL FEATURES
-//
-//     */
-//    //multiply each cell by the weight = (x-y)^2
-//    //x is the cell's row and y is the cell's column
-//    //add all values
-//    private double calcContrast(double[][] matrix) {
-//        double temp = 0;
-//        for (int i = 0; i < matrix.length; i++) {
-//            for (int j = 0; j < matrix[0].length; j++) {
-//                temp += matrix[i][j] * Math.pow(i - j, 2);
-//            }
-//        }
-//        return temp;
-//    }
-//
-//    //weights are the inverse of the contrast weight
-//    private double calcHomogenity(double[][] matrix) {
-//        double temp = 0;
-//        for (int i = 0; i < matrix.length; i++) {
-//            for (int j = 0; j < matrix[0].length; j++) {
-//                temp += matrix[i][j] / (1 + Math.pow(i - j, 2));
-//            }
-//        }
-//        return temp;
-//    }
-//
-//    private double calcEntropy(double[][] matrix) {
-//        double temp = 0;
-//        for (int i = 0; i < matrix.length; i++) {
-//            for (int j = 0; j < matrix[0].length; j++) {
-//                if (matrix[i][j] != 0) {
-//                    temp += (matrix[i][j] * Math.log10(matrix[i][j])) * -1;
-//                }
-//            }
-//        }
-//        return temp;
-//    }
-//
-//    private double calcEnergy(double[][] matrix) {
-//        double temp = 0;
-//        for (int i = 0; i < matrix.length; i++) {
-//            for (int j = 0; j < matrix[0].length; j++) {
-//                temp += Math.pow(matrix[i][j], 2);
-//            }
-//        }
-//        return temp;
-//    }
-//
-//    //weights increase linearly
+
+    /*
+
+        STATISTICAL FEATURES
+
+     */
+    //multiply each cell by the weight = (x-y)^2
+    //x is the cell's row and y is the cell's column
+    //add all values
+    private double calcContrast() {
+        double temp = 0;
+        for (int i = 0; i < grayLevelMatrix.length; i++) {
+            for (int j = 0; j < grayLevelMatrix[0].length; j++) {
+                temp += grayLevelMatrix[i][j] * Math.pow(i - j, 2);
+            }
+        }
+        return temp;
+    }
+
+    //weights are the inverse of the contrast weight
+    private double calcHomogenity() {
+        double temp = 0;
+        for (int i = 0; i < grayLevelMatrix.length; i++) {
+            for (int j = 0; j < grayLevelMatrix[0].length; j++) {
+                temp += grayLevelMatrix[i][j] / (1 + Math.pow(i - j, 2));
+            }
+        }
+        return temp;
+    }
+
+    private double calcEntropy() {
+        double temp = 0;
+        for (int i = 0; i < grayLevelMatrix.length; i++) {
+            for (int j = 0; j < grayLevelMatrix[0].length; j++) {
+                if (grayLevelMatrix[i][j] != 0) {
+                    temp += (grayLevelMatrix[i][j] * Math.log10(grayLevelMatrix[i][j])) * -1;
+                }
+            }
+        }
+        return temp;
+    }
+
+    private double calcEnergy() {
+        double temp = 0;
+        for (int i = 0; i < grayLevelMatrix.length; i++) {
+            for (int j = 0; j < grayLevelMatrix[0].length; j++) {
+                temp += Math.pow(grayLevelMatrix[i][j], 2);
+            }
+        }
+        return temp;
+    }
+
+    //weights increase linearly
 //    private double calcDissimilarity(double[][] matrix) {
 //        double temp = 0;
 //        for (int i = 0; i < matrix.length; i++) {
@@ -283,70 +291,70 @@ public class FeatureExtraction {
 //        }
 //        return temp;
 //    }
-//
-//    private double calcMean(double[][] matrix) {
-//        double temp = 0;
-//        for (int i = 0; i < matrix.length; i++) {
-//            for (int j = 0; j < matrix[0].length; j++) {
-//                temp += matrix[i][j] * i;
-//            }
-//        }
-//        return temp;
-//    }
-//
-//    //standard deviation
-//    private double calcVariance(double[][] matrix) {
-//        double temp = 0;
-//        for (int i = 0; i < matrix.length; i++) {
-//            for (int j = 0; j < matrix[0].length; j++) {
-//                temp += matrix[i][j] * Math.pow(i - mean, 2);
-//            }
-//        }
-//
-//        //temp = Math.sqrt(temp);
-//        return temp;
-//    }
-//
-//    private double calcCorrelation(double[][] matrix) {
-//        double temp = 0;
-//        for (int i = 0; i < matrix.length; i++) {
-//            for (int j = 0; j < matrix[0].length; j++) {
-//                //temp += matrix[i][j] * ( ((i-mean)*(j-mean)) / (Math.sqrt(Math.pow(variance,2))) );
-//                temp += matrix[i][j] * (((i - mean) * (j - mean)) / (variance));
-//            }
-//        }
-//        return temp;
-//    }
-//
-//    public double getContrast() {
-//        return contrast;
-//    }
-//
-//    public double getHomogeneity() {
-//        return homogeneity;
-//    }
-//
-//    public double getEntropy() {
-//        return entropy;
-//    }
-//
-//    public double getEnergy() {
-//        return energy;
-//    }
-//
-//    public double getDissimilarity() {
-//        return dissimilarity;
-//    }
-//
-//    public double getMean() {
-//        return mean;
-//    }
-//
-//    public double getVariance() {
-//        return variance;
-//    }
-//
-//    public double getCorrelation() {
-//        return correlation;
-//    }
+
+    private double calcMean() {
+        double temp = 0;
+        for (int i = 0; i < grayLevelMatrix.length; i++) {
+            for (int j = 0; j < grayLevelMatrix[0].length; j++) {
+                temp += grayLevelMatrix[i][j] * i;
+            }
+        }
+        return temp;
+    }
+
+    //standard deviation
+    private double calcVariance() {
+        double temp = 0;
+        for (int i = 0; i < grayLevelMatrix.length; i++) {
+            for (int j = 0; j < grayLevelMatrix[0].length; j++) {
+                temp += grayLevelMatrix[i][j] * Math.pow(i - mean, 2);
+            }
+        }
+
+        //temp = Math.sqrt(temp);
+        return temp;
+    }
+
+    private double calcCorrelation() {
+        double temp = 0;
+        for (int i = 0; i < grayLevelMatrix.length; i++) {
+            for (int j = 0; j < grayLevelMatrix[0].length; j++) {
+                //temp += grayLevelMatrix[i][j] * ( ((i-mean)*(j-mean)) / (Math.sqrt(Math.pow(variance,2))) );
+                temp += grayLevelMatrix[i][j] * (((i - mean) * (j - mean)) / (variance));
+            }
+        }
+        return temp;
+    }
+
+    public double getContrast() {
+        return contrast;
+    }
+
+    public double getHomogeneity() {
+        return homogeneity;
+    }
+
+    public double getEntropy() {
+        return entropy;
+    }
+
+    public double getEnergy() {
+        return energy;
+    }
+
+    public double getDissimilarity() {
+        return dissimilarity;
+    }
+
+    public double getMean() {
+        return mean;
+    }
+
+    public double getVariance() {
+        return variance;
+    }
+
+    public double getCorrelation() {
+        return correlation;
+    }
 }
