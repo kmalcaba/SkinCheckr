@@ -73,10 +73,10 @@ public class ImageProcessing extends AppCompatActivity{
                 Bitmap img = chosenImage.copy(chosenImage.getConfig(), chosenImage.isMutable());
 
                 //Median Filtering
-                Bitmap med = MedianFilter.filter(img);
+//                Bitmap med = MedianFilter.filter(img);
 
 //                //Otsu's Method of Thresholding
-                Otsu o = new Otsu(med, img);
+                Otsu o = new Otsu(img, img);
                 int threshold = o.getThreshold();
                 Log.d("Threshold: ", Integer.toString(threshold));
                 Bitmap thresh = o.applyThreshold();
@@ -90,25 +90,18 @@ public class ImageProcessing extends AppCompatActivity{
                 long endTime = SystemClock.uptimeMillis();
                 Log.d("SkinCheckr:", "Timecost to run image processing: " + Long.toString((endTime - startTime)/1000));
 
-                ArrayList<Float> inputs = new ArrayList<>();
-                inputs.add((float) fe.getContrast());
-                inputs.add((float) fe.getCorrelation());
-                inputs.add((float) fe.getEnergy());
-                inputs.add((float) fe.getEntropy());
-                inputs.add((float) fe.getHomogeneity());
-                inputs.add((float) fe.getMean());
-                inputs.add((float) fe.getVariance());
-
-                float [][] arrayInputs = new float[1][14];
-                for(int i = 0; i < inputs.size(); i++) {
-                    arrayInputs[0][i] = inputs.get(i);
-                }
+                float [] arrayInputs = new float[7];
+                arrayInputs[0] = (float) fe.getContrast();
+                arrayInputs[1] = (float) fe.getCorrelation();
+                arrayInputs[2] = (float) fe.getEnergy();
+                arrayInputs[3] = (float) fe.getEntropy();
+                arrayInputs[4] = (float) fe.getHomogeneity();
+                arrayInputs[5] = (float) fe.getMean();
+                arrayInputs[6] = (float) fe.getVariance();
 
                 displayMessage(getApplicationContext(), "Image processing complete");
                 Intent intent = new Intent(ImageProcessing.this, History.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("inputs", arrayInputs);
-                intent.putExtras(bundle);
+                intent.putExtra("features", arrayInputs);
                 startActivity(intent);
             }
         });

@@ -45,7 +45,7 @@ public class History extends AppCompatActivity {
     private int crust = 0;
     private int bleeding = 0;
 
-    private float[][] inputs;
+    private float[] inputs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +54,7 @@ public class History extends AppCompatActivity {
 
         final int max = 10;
 
-        /*inputs = null;
-        Object [] objectArray = (Object[]) getIntent().getExtras().getSerializable("inputs");
-        if(inputs!=null) {
-            inputs = new float[1][objectArray.length + 7];
-            for (int i = 0; i < objectArray.length; i++) {
-                inputs[0][i] = (float) objectArray[i];
-            }
-        }*/
-
-        //createRadioButtons();
+        inputs = getIntent().getFloatArrayExtra("features");
 
         editText = findViewById(R.id.editDays);
 
@@ -104,6 +95,7 @@ public class History extends AppCompatActivity {
                     myIntent.putExtra("sweat", sweat + 1);
                     myIntent.putExtra("crust", crust + 1);
                     myIntent.putExtra("bleed", bleeding);
+                    myIntent.putExtra("features", inputs);
                     startActivity(myIntent);
                 }
             }
@@ -222,17 +214,4 @@ public class History extends AppCompatActivity {
 
     }
 
-    /*private void createRadioButtons() {
-        RadioGroup group = findViewById(R.id.radioButtonChoices);
-
-        String[] stringPanels = getResources().getStringArray(R.array.radio_buttons_choices);
-
-        for(int i = 0; i < stringPanels.length; i++){
-            String stringPanel = stringPanels[i];
-            RadioButton button = new RadioButton(this);
-            button.setText(stringPanel);
-            group.addView(button);
-        }
-
-    }*/
 }

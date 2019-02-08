@@ -1,9 +1,15 @@
 package com.example.trishiaanne.skincheckr;
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.Path;
+import android.media.Image;
 import android.util.Log;
 
-import org.tensorflow.lite.Interpreter;
+//import org.tensorflow.lite.Interpreter;
+import org.tensorflow.Operation;
+import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -18,17 +24,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-public class ImageClassifier {
+public class ImageClassifier implements Classifier {
 
-    private static final String TAG = "SkinCheckr";
-    private static final String MODEL_PATH = "model.tflite";
+    private static final String MODEL_PATH = "model.pb";
     private static final String LABEL_PATH = "labels.txt";
     private static final int RESULTS_TO_SHOW = 3;
 
-    private Interpreter tflite;
+//    private Interpreter tflite;
 
-    private List<String> labelList;
-    private float[][] outputs = null;
+    private TensorFlowInferenceInterface inferenceInterface;
+
+    private ImageClassifier() {}
+
+    private static List<String> labelList;
+    private float[] outputs = null;
 
     private PriorityQueue<Map.Entry<String, Float>> sortedLabels
             = new PriorityQueue<>(
@@ -39,13 +48,27 @@ public class ImageClassifier {
         }
     });
 
-    public ImageClassifier(Activity activity) throws IOException {
-        tflite = new Interpreter(loadModelFile(activity));
-        labelList = loadLabelList(activity);
-        outputs = new float[1][labelList.size()];
+//    public ImageClassifier(Activity activity) throws IOException {
+////        tflite = new Interpreter(loadModelFile(activity));
+//        labelList = loadLabelList(activity);
+//        outputs = new float[1][labelList.size()];
+//    }
+
+    public static Classifier create(Activity a, AssetManager assetManager){
+        ImageClassifier imageClassifier = new ImageClassifier();
+        labelList = loadLabelList(a);
+
+        imageClassifier.inferenceInterface = new TensorFlowInferenceInterface(assetManager, MODEL_PATH);
+
+        final Operation o = imageClassifier.inferenceInterface.graphOperation("output");
+        final int numClasses = (int) o.output(0).shape().size(1);
+        Log.i("Classifier: ", "Read " + labelList.size() + " labels, output layer size is " + numClasses);
+
+        imageClassifier.outputs = new float[numClasses];
+        return imageClassifier;
     }
 
-    private List<String> loadLabelList(Activity activity) {
+    private static List<String> loadLabelList(Activity activity) {
         List<String> labelList = new ArrayList<String>();
         try {
             BufferedReader b = new BufferedReader(new InputStreamReader(activity.getAssets().open(LABEL_PATH)));
@@ -69,20 +92,35 @@ public class ImageClassifier {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
 
-    public float[][] getOutputs(float [][] inputs) {
-        tflite.run(inputs, outputs);
+    public float[] getOutputs(float [][] inputs) {
+//        tflite.run(inputs, outputs);
         return outputs;
     }
 
+    @Override
+    public List<Recognition> recognizeImage(Bitmap bitmap) {
+        return null;
+    }
+
+    @Override
+    public void enableStatLogging(boolean debug) {
+
+    }
+
+    @Override
+    public String getStatString() {
+        return null;
+    }
+
     public void close() {
-        tflite.close();
-        tflite = null;
+//        tflite.close();
+//        tflite = null;
     }
 
     private String printTopLabels() {
         for (int i = 0; i < labelList.size(); i++) {
             sortedLabels.add(
-                    new AbstractMap.SimpleEntry<String, Float>(labelList.get(i), outputs[0][i])
+                    new AbstractMap.SimpleEntry<String, Float>(labelList.get(i), outputs[i])
             );
             if (sortedLabels.size() > RESULTS_TO_SHOW)
                 sortedLabels.poll();

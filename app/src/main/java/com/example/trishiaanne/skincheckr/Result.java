@@ -135,6 +135,14 @@ public class Result extends AppCompatActivity {
                                 Toast.makeText(Result.this, "Find Nearby Dermatologist", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(Result.this, Derma.class));
                                 break;
+//                            case R.id.editProfile:
+//                                Toast.makeText(Result.this, "Profile", Toast.LENGTH_SHORT).show();
+//                                Intent i = new Intent(Result.this, EditProfile.class);
+//                                startActivity(i);
+//                                break;
+//                            case R.id.records:
+//                                Toast.makeText(Result.this, "Records", Toast.LENGTH_SHORT).show();
+//                                break;
                             case R.id.signout:
                                 Toast.makeText(Result.this, "Sign Out", Toast.LENGTH_SHORT).show();
                                 if (id == R.id.signout) {
