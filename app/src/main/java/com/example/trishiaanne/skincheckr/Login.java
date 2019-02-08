@@ -1,5 +1,6 @@
 package com.example.trishiaanne.skincheckr;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -38,7 +39,6 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        auth = FirebaseAuth.getInstance();
 
         /*if (auth.getCurrentUser() == null) {
             //if the user is not logged in
@@ -96,7 +96,8 @@ public class Login extends AppCompatActivity {
                                         if (!task.isSuccessful()) {
                                             Toast.makeText(getApplicationContext(), "User does not exists! Check your email or password!", Toast.LENGTH_SHORT).show();
                                         } else {
-                                            Intent intent = new Intent(Login.this, Main_2.class);
+                                            displayMessage(getApplicationContext(), "Login class, PASOK NA!!!");
+                                            Intent intent = new Intent(Login.this, UserCam.class);
                                             startActivity(intent);
                                             finish();
                                         }
@@ -145,5 +146,8 @@ public class Login extends AppCompatActivity {
             }
         });
         dialog.show();
+    }
+    private void displayMessage(Context context, String mess) {
+        Toast.makeText(context, mess, Toast.LENGTH_LONG).show();
     }
 }
