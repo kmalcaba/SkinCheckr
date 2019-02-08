@@ -2,6 +2,7 @@ package com.example.trishiaanne.skincheckr.imgProcessing;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.support.annotation.ColorLong;
 
 /**
  * Created by RenzAlbandia on 2/6/2019.
@@ -27,8 +28,8 @@ class Grayscale {
                 int avg = (r + g + b) / 3;
 
                 //replace RGB value with avg
-                p = Color.argb(a, Color.red(avg), Color.green(avg), Color.blue(avg));
-
+//                p = Color.argb(a, (avg << 16), (avg << 8), avg);
+                p = Color.argb(a, r, g, b);
                 grayscale.setPixel(i, j, p);
             }
         }

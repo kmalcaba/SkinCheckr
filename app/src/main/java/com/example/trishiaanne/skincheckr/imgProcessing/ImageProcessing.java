@@ -11,12 +11,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.trishiaanne.skincheckr.History;
 import com.example.trishiaanne.skincheckr.R;
 
-import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  *
@@ -26,8 +28,6 @@ public class ImageProcessing extends AppCompatActivity{
     String capturePath="";
     String importPath="";
     private Bitmap chosenImage;
-    private ImageView imageView;
-    private Button confirmPhoto;
 
 
     private void displayMessage(Context context, String mess) {
@@ -38,8 +38,8 @@ public class ImageProcessing extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_image);
 
-        imageView = findViewById(R.id.imageView2);
-        confirmPhoto = findViewById(R.id.imgProButton);
+        ImageView imageView = findViewById(R.id.imageView2);
+        Button confirmPhoto = findViewById(R.id.imgProButton);
 
         Intent i = getIntent();
         //check if passed key is capture or import image
@@ -76,7 +76,7 @@ public class ImageProcessing extends AppCompatActivity{
                 Bitmap med = MedianFilter.filter(img);
 
 //                //Otsu's Method of Thresholding
-                Otsu o = new Otsu(med,img);
+                Otsu o = new Otsu(med, img);
                 int threshold = o.getThreshold();
                 Log.d("Threshold: ", Integer.toString(threshold));
                 Bitmap thresh = o.applyThreshold();
@@ -88,14 +88,29 @@ public class ImageProcessing extends AppCompatActivity{
                 fe.extract();
 
                 long endTime = SystemClock.uptimeMillis();
-                Log.d("SkinCheckr:", "Timecost to run image processing: " + Long.toString(endTime - startTime));
-                Log.d("Contrast: ", String.valueOf(fe.getContrast()));
-                Log.d("Correlation: ", String.valueOf(fe.getCorrelation()));
-                Log.d("Energy: ", String.valueOf(fe.getEnergy()));
-                Log.d("Entropy: ", String.valueOf(fe.getEntropy()));
-                Log.d("Homogeneity: ", String.valueOf(fe.getHomogeneity()));
-                Log.d("Mean: ", String.valueOf(fe.getMean()));
-                Log.d("Variance: ", String.valueOf(fe.getVariance()));
+                Log.d("SkinCheckr:", "Timecost to run image processing: " + Long.toString((endTime - startTime)/1000));
+//                Log.d("Contrast: ", String.valueOf(fe.getContrast()));
+//                Log.d("Correlation: ", String.valueOf(fe.getCorrelation()));
+//                Log.d("Energy: ", String.valueOf(fe.getEnergy()));
+//                Log.d("Entropy: ", String.valueOf(fe.getEntropy()));
+//                Log.d("Homogeneity: ", String.valueOf(fe.getHomogeneity()));
+//                Log.d("Mean: ", String.valueOf(fe.getMean()));
+//                Log.d("Variance: ", String.valueOf(fe.getVariance()));
+
+                ArrayList<Float> inputs = new ArrayList<>();
+                inputs.add((float) fe.getContrast());
+                inputs.add((float) fe.getCorrelation());
+                inputs.add((float) fe.getEnergy());
+                inputs.add((float) fe.getEntropy());
+                inputs.add((float) fe.getHomogeneity());
+                inputs.add((float) fe.getMean());
+                inputs.add((float) fe.getVariance());
+
+                float [][] arrayInputs = new float[1][14];
+                for(int i = 0; i < inputs.size(); i++) {
+                    arrayInputs[0][i] = inputs.get(i);
+                }
+
 
                 Intent intent = new Intent(ImageProcessing.this, History.class);
                 startActivity(intent);
