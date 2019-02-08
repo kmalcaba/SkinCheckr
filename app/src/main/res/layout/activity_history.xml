@@ -30,8 +30,14 @@
         android:layout_marginTop="33dp"
         android:text="Itchiness: 1/10"
         android:textSize="16sp"
+<<<<<<< HEAD
+        android:fontFamily="@font/san_francisco"
+        app:layout_constraintBottom_toTopOf="@+id/itchSeekbar"
+        app:layout_constraintEnd_toStartOf="@+id/noRadio"
+=======
         app:layout_constraintBottom_toTopOf="@+id/scalingProgress"
         app:layout_constraintEnd_toEndOf="@+id/sweatingProgress"
+>>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
         app:layout_constraintStart_toStartOf="@+id/scalingProgress"
         app:layout_constraintTop_toTopOf="@+id/textView8" />
 
@@ -54,7 +60,12 @@
         android:layout_height="33dp"
         android:layout_marginBottom="34dp"
         android:layout_marginStart="16dp"
+<<<<<<< HEAD
+        android:layout_marginTop="31dp"
+        android:fontFamily="@font/san_francisco"
+=======
         android:layout_marginTop="34dp"
+>>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
         android:text="Scaling/Peeling: 1/10"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/scalingSeekbar"
@@ -84,6 +95,7 @@
         android:layout_marginEnd="9dp"
         android:layout_marginStart="16dp"
         android:text="Burning: 1/10"
+        android:fontFamily="@font/san_francisco"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/sweatingSeekbar"
         app:layout_constraintEnd_toEndOf="@+id/sweatingProgress"
@@ -112,7 +124,12 @@
         android:layout_marginTop="98dp"
         android:text="Sweating: 1/10"
         android:textSize="16sp"
+<<<<<<< HEAD
+        android:fontFamily="@font/san_francisco"
+        app:layout_constraintBottom_toBottomOf="@+id/crustingProgress"
+=======
         app:layout_constraintBottom_toTopOf="@+id/textView15"
+>>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scalingProgress" />
 
@@ -137,9 +154,16 @@
         android:layout_marginEnd="1dp"
         android:text="Crusting: 1/10"
         android:textSize="16sp"
+<<<<<<< HEAD
+        android:fontFamily="@font/san_francisco"
+        app:layout_constraintBottom_toTopOf="@+id/crustingSeekbar"
+        app:layout_constraintEnd_toEndOf="@+id/yesRadio"
+        app:layout_constraintStart_toStartOf="@+id/sweatingProgress"
+=======
         app:layout_constraintBottom_toTopOf="@+id/radioButtonChoices"
         app:layout_constraintEnd_toEndOf="@+id/burningProgress"
         app:layout_constraintStart_toStartOf="@+id/textView15"
+>>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
         app:layout_constraintTop_toBottomOf="@+id/sweatingSeekbar" />
 
     <Button
@@ -154,6 +178,7 @@
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:fontFamily="@font/san_francisco"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -162,12 +187,18 @@
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
+<<<<<<< HEAD
+        android:layout_height="22dp"
+=======
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
+>>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="23dp"
         android:text="Patient History"
         android:textSize="20sp"
+        android:fontFamily="@font/san_francisco"
         app:layout_constraintBottom_toTopOf="@+id/textView12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -178,6 +209,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="19dp"
         android:layout_marginStart="16dp"
+        android:fontFamily="@font/san_francisco"
         android:text="Number of days: "
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/textView8"
@@ -190,6 +222,11 @@
         android:layout_height="0dp"
         android:layout_marginBottom="29dp"
         android:layout_marginStart="1dp"
+<<<<<<< HEAD
+        android:layout_marginTop="108dp"
+        android:fontFamily="@font/san_francisco"
+=======
+>>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
         android:text="1 = No Symptom   2-4 = Mild Symptom   7-10 = Extreme Symptom"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/itchSeekbar"
@@ -216,6 +253,40 @@
         android:layout_marginTop="14dp"
         android:text="Is it bleeding?"
         android:textSize="16sp"
+<<<<<<< HEAD
+        android:fontFamily="@font/san_francisco"
+        app:layout_constraintBottom_toTopOf="@+id/reviewHistory"
+        app:layout_constraintEnd_toStartOf="@+id/noRadio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/crustingSeekbar" />
+
+    <RadioButton
+        android:id="@+id/yesRadio"
+        android:fontFamily="@font/san_francisco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Yes"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/noRadio"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView15" />
+
+    <RadioButton
+        android:id="@+id/noRadio"
+        android:fontFamily="@font/san_francisco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="94dp"
+        android:layout_marginEnd="27dp"
+        android:text="No"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/yesRadio"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+=======
         app:layout_constraintBottom_toBottomOf="@+id/radioButtonChoices"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/crustingSeekbar" />
@@ -245,5 +316,6 @@
             android:text="No"
             android:checked="false" />
     </RadioGroup>
+>>>>>>> eb1d58627593fc2127b419256a5817b3e685b3e5
 
 </android.support.constraint.ConstraintLayout>
