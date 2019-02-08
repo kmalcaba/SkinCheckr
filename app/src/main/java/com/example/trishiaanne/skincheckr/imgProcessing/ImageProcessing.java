@@ -89,13 +89,6 @@ public class ImageProcessing extends AppCompatActivity{
 
                 long endTime = SystemClock.uptimeMillis();
                 Log.d("SkinCheckr:", "Timecost to run image processing: " + Long.toString((endTime - startTime)/1000));
-//                Log.d("Contrast: ", String.valueOf(fe.getContrast()));
-//                Log.d("Correlation: ", String.valueOf(fe.getCorrelation()));
-//                Log.d("Energy: ", String.valueOf(fe.getEnergy()));
-//                Log.d("Entropy: ", String.valueOf(fe.getEntropy()));
-//                Log.d("Homogeneity: ", String.valueOf(fe.getHomogeneity()));
-//                Log.d("Mean: ", String.valueOf(fe.getMean()));
-//                Log.d("Variance: ", String.valueOf(fe.getVariance()));
 
                 ArrayList<Float> inputs = new ArrayList<>();
                 inputs.add((float) fe.getContrast());
@@ -113,6 +106,9 @@ public class ImageProcessing extends AppCompatActivity{
 
                 displayMessage(getApplicationContext(), "Image processing complete");
                 Intent intent = new Intent(ImageProcessing.this, History.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("inputs", arrayInputs);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

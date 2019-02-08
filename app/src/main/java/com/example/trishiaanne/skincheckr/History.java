@@ -8,10 +8,14 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class History extends AppCompatActivity {
+    private RadioButton yesRadio;
+    private RadioButton noRadio;
+
     private Button button;
 
     private SeekBar seek;
@@ -37,12 +41,26 @@ public class History extends AppCompatActivity {
     private int crust = 1;
     private int bleeding = 0;
 
+    private float [][] inputs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
         final int max = 10;
+
+        inputs = null;
+        Object [] objectArray = (Object[]) getIntent().getExtras().getSerializable("inputs");
+        if(inputs!=null) {
+            inputs = new float[1][objectArray.length + 7];
+            for (int i = 0; i < objectArray.length; i++) {
+                inputs[0][i] = (float) objectArray[i];
+            }
+        }
+
+        yesRadio = findViewById(R.id.yesRadio);
+        noRadio = findViewById(R.id.noRadio);
 
         editText = findViewById(R.id.editDays);
 
@@ -71,6 +89,33 @@ public class History extends AppCompatActivity {
                 myIntent.putExtra("crust", crust + 1);
                 myIntent.putExtra("bleeding", bleeding + 1);
                 startActivity(myIntent);
+            }
+        });
+
+        yesRadio.setOnClickListener(new RadioButton.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch(view.getId()){
+                    case R.id.yesRadio:
+                        if(yesRadio.isSelected()){
+                            noRadio.setSelected(false);
+                            noRadio.setChecked(false);
+                            break;
+                        }
+                }
+            }
+        });
+
+        noRadio.setOnClickListener(new RadioButton.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch(view.getId()){
+                    case R.id.noRadio:
+                        if(noRadio.isSelected()){
+                            yesRadio.setSelected(false);
+                            yesRadio.setChecked(false);
+                        }
+                }
             }
         });
 

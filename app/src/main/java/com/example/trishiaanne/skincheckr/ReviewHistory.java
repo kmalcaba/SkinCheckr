@@ -14,6 +14,8 @@ public class ReviewHistory extends AppCompatActivity {
     private TextView crust;
     private TextView days;
 
+    private float [][] inputs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,15 @@ public class ReviewHistory extends AppCompatActivity {
         int burning = intent.getIntExtra("burn", 1);
         int sweating = intent.getIntExtra("sweat", 1);
         int crusting = intent.getIntExtra("crust", 1);
+
+        inputs = null;
+        Object [] objectArray = (Object[]) getIntent().getExtras().getSerializable("inputs");
+        if(inputs!=null) {
+            inputs = new float[1][objectArray.length + 7];
+            for (int i = 0; i < objectArray.length; i++) {
+                inputs[0][i] = (float) objectArray[i];
+            }
+        }
 
         days.setText("Days: " + String.valueOf(daysSymptom));
         itch.setText("Itching " + String.valueOf(itching));
