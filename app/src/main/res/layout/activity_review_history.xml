@@ -43,6 +43,7 @@
 
     <TextView
         android:id="@+id/itchTextview"
+<<<<<<< HEAD
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -60,6 +61,8 @@
         android:layout_marginRight="45dp"
         android:fontFamily="@font/san_francisco"
         app:layout_constraintEnd_toEndOf="@+id/daysTextview"
+=======
+>>>>>>> 5b1871df0734ea3a8217fdcfb8c3237aab4bd800
         android:layout_width="140dp"
         android:layout_height="20dp"
         android:layout_marginBottom="7dp"
@@ -86,6 +89,7 @@
 
     <TextView
         android:id="@+id/burningTextview"
+<<<<<<< HEAD
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
@@ -118,6 +122,8 @@
         android:fontFamily="@font/san_francisco"
         app:layout_constraintBottom_toTopOf="@+id/scalingTextview"
         app:layout_constraintStart_toStartOf="@+id/scalingTextview" />
+=======
+>>>>>>> 5b1871df0734ea3a8217fdcfb8c3237aab4bd800
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_marginBottom="39dp"
@@ -159,14 +165,18 @@
         android:layout_marginTop="8dp"
         android:text="Review History"
         android:textSize="24sp"
+<<<<<<< HEAD
         android:fontFamily="@font/san_francisco"
         app:layout_constraintStart_toStartOf="parent"
+=======
+>>>>>>> 5b1871df0734ea3a8217fdcfb8c3237aab4bd800
         app:layout_constraintBottom_toTopOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/daysTextview"
+<<<<<<< HEAD
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="91dp"
@@ -174,6 +184,11 @@
         android:layout_marginBottom="273dp"
         android:fontFamily="@font/san_francisco"
 
+=======
+        android:layout_width="140dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="8dp"
+>>>>>>> 5b1871df0734ea3a8217fdcfb8c3237aab4bd800
         android:layout_marginEnd="72dp"
         android:text="Days: "
         app:layout_constraintBottom_toTopOf="@+id/itchTextview"
