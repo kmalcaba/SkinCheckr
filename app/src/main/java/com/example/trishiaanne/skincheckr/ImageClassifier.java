@@ -2,21 +2,14 @@ package com.example.trishiaanne.skincheckr;
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.Path;
-import android.media.Image;
 import android.util.Log;
 
-//import org.tensorflow.lite.Interpreter;
 import org.tensorflow.Operation;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -26,11 +19,15 @@ import java.util.PriorityQueue;
 
 public class ImageClassifier implements Classifier {
 
-    private static final String MODEL_PATH = "model.pb";
+    private static final String MODEL_PATH = "optimized_f.pb";
     private static final String LABEL_PATH = "labels.txt";
     private static final int RESULTS_TO_SHOW = 3;
+    private static final String INPUT_NAME = "dense_63_input_6";
+    private static final String OUTPUT_NAME = "dense_65_6/Softmax";
+    private static final String [] OUTPUTS = {OUTPUT_NAME};
 
-//    private Interpreter tflite;
+    private static final int INPUT_SIZE = 14;
+    private static final float THRESHOLD = 0.1f;
 
     private TensorFlowInferenceInterface inferenceInterface;
 
@@ -48,19 +45,13 @@ public class ImageClassifier implements Classifier {
         }
     });
 
-//    public ImageClassifier(Activity activity) throws IOException {
-////        tflite = new Interpreter(loadModelFile(activity));
-//        labelList = loadLabelList(activity);
-//        outputs = new float[1][labelList.size()];
-//    }
-
     public static Classifier create(Activity a, AssetManager assetManager){
         ImageClassifier imageClassifier = new ImageClassifier();
         labelList = loadLabelList(a);
 
         imageClassifier.inferenceInterface = new TensorFlowInferenceInterface(assetManager, MODEL_PATH);
 
-        final Operation o = imageClassifier.inferenceInterface.graphOperation("Softmax");
+        final Operation o = imageClassifier.inferenceInterface.graphOperation(OUTPUT_NAME);
         final int numClasses = (int) o.output(0).shape().size(1);
         Log.i("Classifier: ", "Read " + labelList.size() + " labels, output layer size is " + numClasses);
 
@@ -82,24 +73,37 @@ public class ImageClassifier implements Classifier {
         return labelList;
     }
 
-    private MappedByteBuffer loadModelFile(Activity activity) throws IOException {
-        AssetFileDescriptor fileDescriptor = activity.getAssets().openFd(MODEL_PATH);
-        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
-        FileChannel fileChannel = inputStream.getChannel();
-        long startOffset = fileDescriptor.getStartOffset();
-        long declaredLength = fileDescriptor.getDeclaredLength();
-
-        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
-    }
-
-    public float[] getOutputs(float [][] inputs) {
-//        tflite.run(inputs, outputs);
-        return outputs;
-    }
 
     @Override
-    public List<Recognition> recognizeImage(Bitmap bitmap) {
-        return null;
+    public List<Recognition> recognizeImage(float[] inputs) {
+        inferenceInterface.feed(INPUT_NAME, inputs, 1, INPUT_SIZE);
+        inferenceInterface.run(OUTPUTS);
+        inferenceInterface.fetch(OUTPUT_NAME, outputs);
+
+        PriorityQueue<Recognition> predictions = new PriorityQueue<>(
+                RESULTS_TO_SHOW, new Comparator<Recognition>() {
+            @Override
+            public int compare(Recognition lhs, Recognition rhs) {
+                return Float.compare(rhs.getConfidence(), lhs.getConfidence());
+            }
+        }
+        );
+
+        for(int i = 0; i < outputs.length; i++) {
+            if(outputs[i] > THRESHOLD) {
+                predictions.add(new Recognition(
+                        "" + i, labelList.size() > i ? labelList.get(i) : "unknown", outputs[i], null
+                ));
+            }
+        }
+
+        final ArrayList<Recognition> topResults = new ArrayList<>();
+        int size = Math.min(predictions.size(), RESULTS_TO_SHOW);
+        for (int i = 0; i < size; i++) {
+            topResults.add(predictions.poll());
+        }
+
+        return topResults;
     }
 
     @Override
@@ -112,9 +116,10 @@ public class ImageClassifier implements Classifier {
         return null;
     }
 
+    @Override
     public void close() {
-//        tflite.close();
-//        tflite = null;
+        inferenceInterface.close();
+        inferenceInterface = null;
     }
 
     private String printTopLabels() {

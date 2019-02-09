@@ -1,7 +1,7 @@
 package com.example.trishiaanne.skincheckr;
 
 import android.content.Intent;
-import android.media.Image;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
+import java.util.List;
 
 public class ReviewHistory extends AppCompatActivity {
 
@@ -26,7 +26,6 @@ public class ReviewHistory extends AppCompatActivity {
     private TextView bleed;
 
     private float[] inputs;
-    private float[][] arrayInput;
 
     private Classifier classifier;
 
@@ -60,6 +59,7 @@ public class ReviewHistory extends AppCompatActivity {
         result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                processImage();
                 startActivity(new Intent(ReviewHistory.this, Result.class));
             }
         });
@@ -83,31 +83,25 @@ public class ReviewHistory extends AppCompatActivity {
             bleed.setText("Bleeding: " + "No");
         }
 
-        arrayInput = new float[1][14];
-        for (int i = 0; i < inputs.length; i++) {
-            arrayInput[0][i] = inputs[i];
-        }
-        arrayInput[0][7] = (float) daysSymptom;
-        arrayInput[0][8] = (float) itching;
-        arrayInput[0][9] = (float) scaling;
-        arrayInput[0][10] = (float) burning;
-        arrayInput[0][11] = (float) sweating;
-        arrayInput[0][12] = (float) crusting;
-        arrayInput[0][13] = (float) bleeding;
+        inputs[7] = (float) daysSymptom;
+        inputs[8] = (float) itching;
+        inputs[9] = (float) scaling;
+        inputs[10] = (float) burning;
+        inputs[11] = (float) sweating;
+        inputs[12] = (float) crusting;
+        inputs[13] = (float) bleeding;
 
-//        classifier = ImageClassifier.create(this, getAssets());
-//        classify();
-//        classifier.close();
+        classifier = ImageClassifier.create(this, getAssets());
     }
 
-    private void classify() {
-        if (classifier == null) {
-            Toast.makeText(getApplicationContext(), "Uninitialized classifier.", Toast.LENGTH_LONG).show();
-            return;
+    public void processImage() {
+        final long startTime = SystemClock.uptimeMillis();
+        final List<Classifier.Recognition> results = classifier.recognizeImage(inputs);
+        final long lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
+        Log.i("Detect: %s", Long.toString(lastProcessingTimeMs));
+        for (Classifier.Recognition r : results) {
+            Log.i("Results: ", r.getTitle());
         }
-
-        float[][] outputs = new float[1][11];
-//        outputs = classifier.getOutputs(arrayInput);
-//        Log.d("Classifier: ", "Prediction successful");
+        classifier.close();
     }
 }
