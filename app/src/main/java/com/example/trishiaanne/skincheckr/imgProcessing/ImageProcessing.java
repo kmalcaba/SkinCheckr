@@ -90,7 +90,7 @@ public class ImageProcessing extends AppCompatActivity{
                 long endTime = SystemClock.uptimeMillis();
                 Log.d("SkinCheckr:", "Timecost to run image processing: " + Long.toString((endTime - startTime)/1000));
 
-                float [] arrayInputs = new float[7];
+                float [] arrayInputs = new float[14];
                 arrayInputs[0] = (float) fe.getContrast();
                 arrayInputs[1] = (float) fe.getCorrelation();
                 arrayInputs[2] = (float) fe.getEnergy();

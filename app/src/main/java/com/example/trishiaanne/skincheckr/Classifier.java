@@ -82,7 +82,7 @@ public interface Classifier {
         }
     }
 
-    List<Recognition> recognizeImage(Bitmap bitmap);
+    List<Recognition> recognizeImage(float [] inputs);
 
     void enableStatLogging(final boolean debug);
 
