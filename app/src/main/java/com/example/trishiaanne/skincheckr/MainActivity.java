@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         guestButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent guestIntent = new Intent(MainActivity.this, Camera.class);
+                Intent guestIntent = new Intent(MainActivity.this, UserCam.class);
                 startActivity(guestIntent);
             }
         });
