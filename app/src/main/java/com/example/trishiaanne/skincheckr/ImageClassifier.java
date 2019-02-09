@@ -60,7 +60,7 @@ public class ImageClassifier implements Classifier {
 
         imageClassifier.inferenceInterface = new TensorFlowInferenceInterface(assetManager, MODEL_PATH);
 
-        final Operation o = imageClassifier.inferenceInterface.graphOperation("output");
+        final Operation o = imageClassifier.inferenceInterface.graphOperation("Softmax");
         final int numClasses = (int) o.output(0).shape().size(1);
         Log.i("Classifier: ", "Read " + labelList.size() + " labels, output layer size is " + numClasses);
 
