@@ -23,13 +23,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<String> dImgName = new ArrayList<>();
     private ArrayList<Bitmap> dImg = new ArrayList<>();
     private ArrayList<String> dImgSummary = new ArrayList<>();
+    private ArrayList<String> label = new ArrayList<>();
     private Context dContext;
 
-    public RecyclerViewAdapter( Context dContext, ArrayList<String> dImgName, ArrayList<Bitmap> dImg, ArrayList<String> dImgSummary) {
+    public RecyclerViewAdapter( Context dContext, ArrayList<String> dImgName, ArrayList<Bitmap> dImg, ArrayList<String> dImgSummary, ArrayList<String> label) {
         this.dContext = dContext;
         this.dImgName = dImgName;
         this.dImg = dImg;
         this.dImgSummary = dImgSummary;
+        this.label = label;
     }
 
     @Override
@@ -52,6 +54,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         //set the disease summary
         viewHolder.disease_summary.setText(dImgSummary.get(i));
 
+        //set the more information
+        viewHolder.label.setText(label.get(i));
+
         viewHolder.diagnosed_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,13 +74,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView diagnosed_image;
-        TextView disease_name, disease_summary;
+        TextView disease_name, disease_summary, label;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             diagnosed_image = itemView.findViewById(R.id.diagnosed_image);
             disease_name = itemView.findViewById(R.id.disease_name);
             disease_summary = itemView.findViewById(R.id.disease_summary);
+            label = itemView.findViewById(R.id.more_info);
         }
     }
 }
