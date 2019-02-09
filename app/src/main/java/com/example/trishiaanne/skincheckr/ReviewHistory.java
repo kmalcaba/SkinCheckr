@@ -95,9 +95,9 @@ public class ReviewHistory extends AppCompatActivity {
         arrayInput[0][12] = (float) crusting;
         arrayInput[0][13] = (float) bleeding;
 
-        classifier = ImageClassifier.create(this, getAssets());
-        classify();
-        classifier.close();
+//        classifier = ImageClassifier.create(this, getAssets());
+//        classify();
+//        classifier.close();
     }
 
     private void classify() {

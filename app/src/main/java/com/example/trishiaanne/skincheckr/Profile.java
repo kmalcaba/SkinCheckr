@@ -33,6 +33,8 @@ public class Profile extends AppCompatActivity {
            // Uri photoUrl = user.getPhotoUrl();
 
             String uid = user.getUid();
+            fname = uid;
         }
+
     }
 }
