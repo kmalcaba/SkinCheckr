@@ -19,8 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import android.widget.ProgressBar;
 
 public class SignUp extends AppCompatActivity {
-    Button singUp;
-    Button button;
+
     private EditText firstn, lastn, email_id, pw, conpw;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
