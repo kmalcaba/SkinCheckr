@@ -296,4 +296,13 @@ public class UserCam extends AppCompatActivity {
             }
         }
     }
+    //disable back button
+    @Override
+    public void onBackPressed() {
+        if (TYPE_OF_USER == 1) {
+
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

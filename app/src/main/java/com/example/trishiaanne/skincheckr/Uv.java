@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -56,6 +57,8 @@ public class Uv extends AppCompatActivity implements LocationListener {
     private DrawerLayout mDrawerLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
     private int LOCATION_PERMISSION_CODE = 1;
+    private Criteria criteria;
+    private String bestProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +99,7 @@ public class Uv extends AppCompatActivity implements LocationListener {
     }
 
     private void findUvIndex() {
+        //displayMessage(getApplicationContext(), "Lat and Long: " + latitude + " " + longitutde);
         String url = "http://api.openweathermap.org/data/2.5/uvi?appid=9acd5cafe1888d79a02ca97c69497737" +
                 "&lat=" + latitude + "&lon=" + longitutde;
 
@@ -108,7 +112,7 @@ public class Uv extends AppCompatActivity implements LocationListener {
                     //Get the UV Index
                     Integer uvI = response.getInt("value");
 
-                    displayMessage(getApplicationContext(),"UV INDEX: " + uvI);
+                    //displayMessage(getApplicationContext(),"UV INDEX: " + uvI);
                     uvIndex.setText(uvI.toString());
                     if (uvI == 0) {
                         String mess = "UV INDEX NOT APPLICABLE!" + "\nUV Index range values are greater than 0";
@@ -177,13 +181,12 @@ public class Uv extends AppCompatActivity implements LocationListener {
     }
 
     private void getGPS() {
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (ContextCompat.checkSelfPermission(Uv.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                //displayMessage(getApplicationContext(), "Permission is already granted");
-                Location loc = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
-                onLocationChanged(loc);
-                findUvIndex();
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            onLocationChanged(location);
+            findUvIndex();
         } else {
             requestLocation();
         }
@@ -230,6 +233,12 @@ public class Uv extends AppCompatActivity implements LocationListener {
                 displayMessage(getApplicationContext(), "Permission DENIED");
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(this);
     }
 
     @Override
