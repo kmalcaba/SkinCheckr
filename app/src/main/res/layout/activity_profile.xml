@@ -8,7 +8,7 @@
     tools:context=".Profile">
 
     <TextView
-        android:id="@+id/fname"
+        android:id="@+id/firstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
