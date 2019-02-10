@@ -18,8 +18,6 @@ public class History extends AppCompatActivity {
 
     private RadioGroup group;
     private RadioButton radioButton;
-    private Button btnDisplay;
-
     private Button button;
 
     private SeekBar seek;
@@ -44,6 +42,8 @@ public class History extends AppCompatActivity {
     private int sweat = 0;
     private int crust = 0;
     private int bleeding = 0;
+    private String imagePath;
+    private static int TYPE_OF_USER;
 
     private float[] inputs;
 
@@ -55,6 +55,8 @@ public class History extends AppCompatActivity {
         final int max = 10;
 
         inputs = getIntent().getFloatArrayExtra("features");
+        imagePath = getIntent().getStringExtra("image_path");
+        TYPE_OF_USER = getIntent().getExtras().getInt("user_type");
 
         editText = findViewById(R.id.editDays);
 
@@ -96,6 +98,8 @@ public class History extends AppCompatActivity {
                     myIntent.putExtra("crust", crust + 1);
                     myIntent.putExtra("bleed", bleeding);
                     myIntent.putExtra("features", inputs);
+                    myIntent.putExtra("image_path", imagePath);
+                    myIntent.putExtra("user_type", TYPE_OF_USER);
                     startActivity(myIntent);
                 }
             }
@@ -214,4 +218,8 @@ public class History extends AppCompatActivity {
 
     }
 
+    //disable back button
+    @Override
+    public void onBackPressed() {
+    }
 }

@@ -1,15 +1,20 @@
 package com.example.trishiaanne.skincheckr;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewHistory extends AppCompatActivity {
@@ -24,8 +29,13 @@ public class ReviewHistory extends AppCompatActivity {
     private TextView crust;
     private TextView days;
     private TextView bleed;
+    private ImageView skin_img;
+    private String imagePath;
+    private static int TYPE_OF_USER;
 
     private float[] inputs;
+
+    private ArrayList<String> diagnosed = new ArrayList<>();
 
     private Classifier classifier;
 
@@ -44,8 +54,9 @@ public class ReviewHistory extends AppCompatActivity {
         crust = findViewById(R.id.crustingTextview);
         days = findViewById(R.id.daysTextview);
         bleed = findViewById(R.id.bleedingTextview);
+        skin_img = findViewById(R.id.imageView4);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         int daysSymptom = intent.getIntExtra("days", 1);
         int itching = intent.getIntExtra("itch", 1);
         int scaling = intent.getIntExtra("scale", 1);
@@ -54,13 +65,26 @@ public class ReviewHistory extends AppCompatActivity {
         int crusting = intent.getIntExtra("crust", 1);
         int bleeding = intent.getIntExtra("bleed", 0);
         inputs = intent.getFloatArrayExtra("features");
-
+        imagePath = intent.getStringExtra("image_path");
+        TYPE_OF_USER = intent.getExtras().getInt("user_type");
 
         result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 processImage();
-                startActivity(new Intent(ReviewHistory.this, Result.class));
+                if (TYPE_OF_USER == 0) { //if guest
+                    displayMessage(getApplicationContext(), "User type is GUEST = " + TYPE_OF_USER);
+                    Intent guestIntent = new Intent (ReviewHistory.this, GuestResult.class);
+                    guestIntent.putExtra("image_path", imagePath);
+                    guestIntent.putStringArrayListExtra("result", diagnosed);
+                    startActivity(guestIntent);
+                } else { //if registered user
+                    displayMessage(getApplicationContext(), "User type is REGISTERED USER = " + TYPE_OF_USER);
+                    Intent registeredUserIntent = new Intent(ReviewHistory.this, Result.class);
+                    registeredUserIntent.putExtra("image_path", imagePath);
+                    registeredUserIntent.putStringArrayListExtra("result", diagnosed);
+                    startActivity(registeredUserIntent);
+                }
             }
         });
 
@@ -70,6 +94,9 @@ public class ReviewHistory extends AppCompatActivity {
                 finish();
             }
         });
+
+        Bitmap skin = BitmapFactory.decodeFile(imagePath);
+        skin_img.setImageBitmap(skin);
 
         days.setText("Days: " + String.valueOf(daysSymptom));
         itch.setText("Itching: " + String.valueOf(itching) + "/10");
@@ -101,7 +128,17 @@ public class ReviewHistory extends AppCompatActivity {
         Log.i("Detect: %s", Long.toString(lastProcessingTimeMs));
         for (Classifier.Recognition r : results) {
             Log.i("Results: ", r.getTitle());
+            diagnosed.add(r.getTitle().toLowerCase());
         }
         classifier.close();
+    }
+
+    //Disable back button
+    @Override
+    public void onBackPressed() {
+    }
+
+    private void displayMessage(Context context, String mess) {
+        Toast.makeText(context, mess, Toast.LENGTH_LONG).show();
     }
 }

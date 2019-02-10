@@ -5,4 +5,5 @@
     <color name="colorAccent">#F25D59</color>
     <color name="whiteText">#FFFF</color>
     <color name="grayBackground">#F1F1F1</color>
+    <color name="uvFrame">#1570c9</color>
 </resources>

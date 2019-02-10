@@ -36,6 +36,7 @@
         <activity android:name=".Main_2" />
         <activity android:name=".Result"
             android:parentActivityName=".Result"/>
+        <activity android:name=".GuestResult"/>
         <activity
             android:name=".Camera"
             android:hardwareAccelerated="false"

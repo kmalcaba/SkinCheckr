@@ -11,23 +11,20 @@
         android:layout_width="327dp"
         android:layout_height="55dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/loginred"
+        android:fontFamily="@font/san_francisco"
         android:onClick="onClick"
         android:text="SIGN UP"
         android:textColor="@android:color/background_light"
         android:textStyle="bold"
-        android:fontFamily="@font/san_francisco"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.917" />
+        app:layout_constraintVertical_bias="0.89" />
 
     <EditText
         android:id="@+id/pass"
@@ -284,11 +281,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.349" />
+
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="80dp"
+        android:layout_height="85dp"
         android:layout_gravity="center|bottom"
-        android:layout_marginBottom="20dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:layout_editor_absoluteX="165dp"
+        tools:layout_editor_absoluteY="651dp" />
 </android.support.constraint.ConstraintLayout>

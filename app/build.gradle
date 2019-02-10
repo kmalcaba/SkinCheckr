@@ -11,11 +11,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-<<<<<<< HEAD
-=======
         minSdkVersion 21
         targetSdkVersion 28
->>>>>>> c15edf18e76d40b7c051fb49f53cabc5ce7056e7
         multiDexEnabled true
     }
     buildTypes {

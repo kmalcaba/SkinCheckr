@@ -2,6 +2,7 @@ package com.example.trishiaanne.skincheckr;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -10,9 +11,11 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -37,8 +40,10 @@ public class Camera extends AppCompatActivity {
     Bitmap importedImage = null;
 
     private String mCurrentPhotoPath;
-    static final int REQUEST_TAKE_PHOTO = 0;
-    static final int REQUEST_IMPORT_PHOTO = 1;
+    private static final int REQUEST_TAKE_PHOTO = 0;
+    private static final int REQUEST_IMPORT_PHOTO = 1;
+    private static final int STORAGE_REQUEST = 1;
+    private static final int TYPE_OF_USER = 0; //guest_user
 
 
     @Override
@@ -95,22 +100,48 @@ public class Camera extends AppCompatActivity {
         }
     private void importImage() {
         //Allow storage access
-        if(ContextCompat.checkSelfPermission(Camera.this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(Camera.this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (ContextCompat.checkSelfPermission(Camera.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            Intent fromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(fromGallery, REQUEST_IMPORT_PHOTO);
+        } else {
+            requestStorage();
+        }
+    }
 
-            } else {
-                ActivityCompat.requestPermissions(Camera.this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        1);
+    private void requestStorage() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Storage access required")
+                    .setMessage("Allow SkinCheckr to access your storage")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ActivityCompat.requestPermissions(Camera.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_REQUEST);
+                        }
+                    })
+                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .create().show();
+        } else {
+            ActivityCompat.requestPermissions(Camera.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_REQUEST);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == STORAGE_REQUEST) {
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent fromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(fromGallery, REQUEST_IMPORT_PHOTO);
             }
         } else {
-            //Permission granted
+            displayMessage(getApplicationContext(), "Permission DENIED");
         }
-        Intent fromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(fromGallery, REQUEST_IMPORT_PHOTO);
     }
 
     private File createImageFile() throws IOException {
@@ -145,6 +176,7 @@ public class Camera extends AppCompatActivity {
                     //Pass the captured image to Image Processing and GLCM UNIT
                     Intent passCapturedImage = new Intent(Camera.this, ImageProcessing.class);
                     passCapturedImage.putExtra("capture_value", photoFile.getAbsolutePath());
+                    passCapturedImage.putExtra("user_type", TYPE_OF_USER);
                     startActivity(passCapturedImage);
                 }
                 break;
@@ -162,6 +194,7 @@ public class Camera extends AppCompatActivity {
                     //Pass the imported image to Image Processing and GLCM UNIT
                     Intent passImportedImage = new Intent(Camera.this, ImageProcessing.class);
                     passImportedImage.putExtra("import_value", importedFile);
+                    passImportedImage.putExtra("user_type", TYPE_OF_USER);
                     startActivity(passImportedImage);
                 }
                 break;

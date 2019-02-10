@@ -2,6 +2,7 @@ package com.example.trishiaanne.skincheckr;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -21,6 +22,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -49,6 +51,8 @@ public class UserCam extends AppCompatActivity {
     private String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 0;
     static final int REQUEST_IMPORT_PHOTO = 1;
+    private static final int STORAGE_REQUEST = 1;
+    private static final int TYPE_OF_USER = 1; //registered_user
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,22 +150,13 @@ public class UserCam extends AppCompatActivity {
 
     private void importImage() {
         //Allow storage access
-        if(ContextCompat.checkSelfPermission(UserCam.this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(UserCam.this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-            } else {
-                ActivityCompat.requestPermissions(UserCam.this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        1);
-            }
+        if (ContextCompat.checkSelfPermission(UserCam.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            Intent fromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(fromGallery, REQUEST_IMPORT_PHOTO);
         } else {
-            //Permission granted
+            requestStorage();
         }
-        Intent fromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(fromGallery, REQUEST_IMPORT_PHOTO);
     }
 
     private File createImageFile() throws IOException {
@@ -176,6 +171,41 @@ public class UserCam extends AppCompatActivity {
         );
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
+    }
+
+    private void requestStorage() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Storage access required")
+                    .setMessage("Allow SkinCheckr to access your storage")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ActivityCompat.requestPermissions(UserCam.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_REQUEST);
+                        }
+                    })
+                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .create().show();
+        } else {
+            ActivityCompat.requestPermissions(UserCam.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_REQUEST);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == STORAGE_REQUEST) {
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent fromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(fromGallery, REQUEST_IMPORT_PHOTO);
+            }
+        } else {
+            displayMessage(getApplicationContext(), "Permission DENIED");
+        }
     }
 
     //Display messages, for debugging
@@ -196,6 +226,7 @@ public class UserCam extends AppCompatActivity {
                     //Pass the captured image to Image Processing and GLCM UNIT
                     Intent passCapturedImage = new Intent(UserCam.this, ImageProcessing.class);
                     passCapturedImage.putExtra("capture_value", photoFile.getAbsolutePath());
+                    passCapturedImage.putExtra("user_type", TYPE_OF_USER);
                     startActivity(passCapturedImage);
                 }
                 break;
@@ -213,6 +244,7 @@ public class UserCam extends AppCompatActivity {
                     //Pass the imported image to Image Processing and GLCM UNIT
                     Intent passImportedImage = new Intent(UserCam.this, ImageProcessing.class);
                     passImportedImage.putExtra("import_value", importedFile);
+                    passImportedImage.putExtra("user_type", TYPE_OF_USER);
                     startActivity(passImportedImage);
                 }
                 break;
