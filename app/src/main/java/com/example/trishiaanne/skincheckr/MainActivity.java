@@ -10,6 +10,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.trishiaanne.skincheckr.diseaseProfile.atopic_profile;
+
 public class MainActivity extends AppCompatActivity {
     Button guestButton, loginButton;
 

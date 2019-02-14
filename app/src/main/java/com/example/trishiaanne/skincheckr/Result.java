@@ -9,6 +9,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +31,7 @@ public class Result extends AppCompatActivity {
     private ImageView skin_img;
     private String imagePath;
     private TextView labelDiag;
+    private ActionBarDrawerToggle mToggle;
 
     private ArrayList<String> dImgName = new ArrayList<>();
     private ArrayList<Bitmap> dImg = new ArrayList<>();
@@ -52,9 +54,12 @@ public class Result extends AppCompatActivity {
 
         displayToolbar();
 
-        for (String x : diagnosed) {
-            initImageBitmaps(x);
-        }
+//        for (String x : diagnosed) {
+//          initImageBitmaps(x);
+//        }
+        initImageBitmaps("tinea corporis");
+        initImageBitmaps("tinea pedis");
+        initImageBitmaps("skin");
         int diagnosedCounter = diagnosed.size();
         if (diagnosedCounter == 1) {
             labelDiag.setText("TOP DIAGNOSIS:");
@@ -122,7 +127,7 @@ public class Result extends AppCompatActivity {
             case "tinea corporis":
                 Bitmap corpo = BitmapFactory.decodeResource(getResources(), R.drawable.corp_sample);
                 dImg.add(corpo);
-                dImgName.add("Tinea corporis (Ringworm)");
+                dImgName.add("Tinea corporis");
                 dImgSummary.add("Ringworm is a common fungal skin infection otherwise known as tinea");
                 label.add("Click image for more information about Tinea corporis.");
                 initRecyclerView();
@@ -130,7 +135,7 @@ public class Result extends AppCompatActivity {
             case "tinea pedis":
                 Bitmap pedis = BitmapFactory.decodeResource(getResources(), R.drawable.pedis_sample);
                 dImg.add(pedis);
-                dImgName.add("Tinea corporis");
+                dImgName.add("Tinea pedis");
                 dImgSummary.add("Athlete's foot — also called tinea pedis — is a contagious fungal infection that affects the skin on the feet.");
                 label.add("Click image for more information about Tinea pedis.");
                 initRecyclerView();
@@ -146,7 +151,7 @@ public class Result extends AppCompatActivity {
             case "skin":
                 Bitmap skin = BitmapFactory.decodeResource(getResources(), R.drawable.skin_sample);
                 dImg.add(skin);
-                dImgName.add("Skin");
+                dImgName.add("Healthy Skin");
                 dImgSummary.add("The skin is the largest organ of the body, with a total area of about 20 square feet.");
                 label.add("Click image for more information about Skin.");
                 initRecyclerView();
@@ -172,11 +177,13 @@ public class Result extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("RESULTS");
         toolbar.setTitleTextColor(0xFFFFFFFF);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -223,10 +230,8 @@ public class Result extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected (MenuItem item){
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
+        if (mToggle.onOptionsItemSelected(item)) {
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

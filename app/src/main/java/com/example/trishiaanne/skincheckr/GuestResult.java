@@ -56,8 +56,11 @@ public class GuestResult extends AppCompatActivity {
         skin_img.setImageBitmap(skin);
 
         for (String x : diagnosed) {
-            initImageBitmaps(x);
+            //initImageBitmaps(x);
         }
+        initImageBitmaps("tinea corporis");
+        initImageBitmaps("tinea pedis");
+        initImageBitmaps("skin");
         int diagnosedCounter = diagnosed.size();
         if (diagnosedCounter == 1) {
             labelDiag.setText("TOP DIAGNOSIS:");
@@ -125,16 +128,16 @@ public class GuestResult extends AppCompatActivity {
             case "tinea corporis":
                 Bitmap corpo = BitmapFactory.decodeResource(getResources(), R.drawable.corp_sample);
                 dImg.add(corpo);
-                dImgName.add("Tinea corporis (Ringworm)");
-                dImgSummary.add("Ringworm is a common fungal skin infection otherwise known as tinea");
+                dImgName.add("Tinea corporis");
+                dImgSummary.add("Also known as Ringworm is a common fungal skin disease");
                 label.add("Click image for more information about Tinea corporis.");
                 initRecyclerView();
                 break;
             case "tinea pedis":
                 Bitmap pedis = BitmapFactory.decodeResource(getResources(), R.drawable.pedis_sample);
                 dImg.add(pedis);
-                dImgName.add("Tinea corporis");
-                dImgSummary.add("Athlete's foot — also called tinea pedis — is a contagious fungal infection that affects the skin on the feet.");
+                dImgName.add("Tinea pedis");
+                dImgSummary.add("Also known as Athlete's foot is a contagious fungal infection that affects the skin on the feet.");
                 label.add("Click image for more information about Tinea pedis.");
                 initRecyclerView();
                 break;
@@ -142,15 +145,15 @@ public class GuestResult extends AppCompatActivity {
                 Bitmap benign = BitmapFactory.decodeResource(getResources(), R.drawable.benign_sample);
                 dImg.add(benign);
                 dImgName.add("Benign mole");
-                dImgSummary.add("Benign pigmented moles made of melanocytes are defined as those lesions which do not produce any harmful effects.");
+                dImgSummary.add("Don't worry this is just a benign mole, not a Melanoma.");
                 label.add("Click image for more information about Benign mole.");
                 initRecyclerView();
                 break;
             case "skin":
                 Bitmap skin = BitmapFactory.decodeResource(getResources(), R.drawable.skin_sample);
                 dImg.add(skin);
-                dImgName.add("Skin");
-                dImgSummary.add("The skin is the largest organ of the body, with a total area of about 20 square feet.");
+                dImgName.add("Healthy Skin");
+                dImgSummary.add("Congratulations! You have a healthy skin.");
                 label.add("Click image for more information about Skin.");
                 initRecyclerView();
                 break;

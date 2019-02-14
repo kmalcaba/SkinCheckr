@@ -1,6 +1,7 @@
 package com.example.trishiaanne.skincheckr;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
@@ -14,9 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import com.example.trishiaanne.skincheckr.diseaseProfile.*;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
+    private String viewProfile;
 
     //Global variables to be used to store the data
     private ArrayList<String> dImgName = new ArrayList<>();
@@ -59,8 +62,45 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.diagnosed_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Context context = view.getContext();
                 Log.d(TAG, "onClick: clicked an image" + dImgName.get(i));
-                Toast.makeText(dContext, dImgName.get(i), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(dContext, dImgName.get(i), Toast.LENGTH_SHORT).show();
+                viewProfile = dImgName.get(i).toLowerCase();
+                switch (viewProfile) {
+                    case "atopic dermatitis":
+                        context.startActivity(new Intent(context, atopic_profile.class));
+                        break;
+                    case "contact dermatitis":
+                        context.startActivity(new Intent(context, contact_profile.class));
+                        break;
+                    case "dyshidrotic eczema":
+                        context.startActivity(new Intent(context, dys_profile.class));
+                        break;
+                    case "intertrigo":
+                        context.startActivity(new Intent(context, intertrigo_profile.class));
+                        break;
+                    case "melanoma":
+                        context.startActivity(new Intent(context, melanoma_profile.class));
+                        break;
+                    case "pityriasis versicolor":
+                        context.startActivity(new Intent(context, pity_profile.class));
+                        break;
+                    case "psoriasis":
+                        context.startActivity(new Intent(context, psor_profile.class));
+                        break;
+                    case "tinea corporis":
+                        context.startActivity(new Intent(context, corporis_profile.class));
+                        break;
+                    case "tinea pedis":
+                        context.startActivity(new Intent(context, pedis_profile.class));
+                        break;
+                    case "benign mole":
+                        context.startActivity(new Intent(context, benign_profile.class));
+                        break;
+                    case "healthy skin":
+                        context.startActivity(new Intent(context, skin_profile.class));
+                        break;
+                }
             }
         });
     }

@@ -24,35 +24,21 @@
         android:fontFamily="@font/san_francisco"
         android:gravity="center"
         android:padding="5dp"
-        android:text="Atopic Dermatitis"
+        android:text="Contact Dermatitis"
         android:textColor="@color/colorPrimary"
         android:textSize="30sp"
         android:textStyle="bold" />
 
-    <ScrollView
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/disease_summary"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/image_slider">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/causes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/image_slider"
-                android:layout_gravity="left"
-                android:layout_marginTop="19dp"
-                android:fontFamily="@font/san_francisco"
-                android:padding="5dp"
-                android:text="Causes:"
-                android:textSize="15sp" />
-
-        </LinearLayout>
-
-    </ScrollView>
-
+        android:layout_below="@+id/image_slider"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="19dp"
+        android:fontFamily="@font/san_francisco"
+        android:padding="5dp"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        android:textSize="15sp"
+        android:textStyle="bold" />
 </RelativeLayout>

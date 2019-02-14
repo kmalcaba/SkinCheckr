@@ -37,6 +37,17 @@
         <activity android:name=".Result"
             android:parentActivityName=".Result"/>
         <activity android:name=".GuestResult"/>
+        <activity android:name=".diseaseProfile.atopic_profile"/>
+        <activity android:name=".diseaseProfile.contact_profile"/>
+        <activity android:name=".diseaseProfile.dys_profile"/>
+        <activity android:name=".diseaseProfile.intertrigo_profile"/>
+        <activity android:name=".diseaseProfile.melanoma_profile"/>
+        <activity android:name=".diseaseProfile.pity_profile"/>
+        <activity android:name=".diseaseProfile.psor_profile"/>
+        <activity android:name=".diseaseProfile.corporis_profile"/>
+        <activity android:name=".diseaseProfile.pedis_profile"/>
+        <activity android:name=".diseaseProfile.benign_profile"/>
+        <activity android:name=".diseaseProfile.skin_profile"/>
         <activity
             android:name=".Camera"
             android:hardwareAccelerated="false"
