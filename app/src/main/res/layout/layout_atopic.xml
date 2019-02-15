@@ -33,25 +33,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/image_slider">
-
-        <LinearLayout
+        
+        <org.sufficientlysecure.htmltextview.HtmlTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/causes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/image_slider"
-                android:layout_gravity="left"
-                android:layout_marginTop="19dp"
-                android:fontFamily="@font/san_francisco"
-                android:padding="5dp"
-                android:text="Causes:"
-                android:textSize="15sp" />
-
-        </LinearLayout>
+            android:id="@+id/causes"
+            android:textSize="17sp"/>
 
     </ScrollView>
 
