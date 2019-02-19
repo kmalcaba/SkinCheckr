@@ -30,7 +30,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class Result extends AppCompatActivity {
     private static final String TAG = "";
@@ -87,7 +86,7 @@ public class Result extends AppCompatActivity {
         filepath = Uri.parse(path);
 
         StorageReference ref = storageReference.child(FirebaseAuth.getInstance()
-                .getCurrentUser().getUid() + "/" + UUID.randomUUID().toString());
+                .getCurrentUser().getUid());
 
         ref.putFile(filepath)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -99,6 +98,7 @@ public class Result extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
+                        Toast.makeText(Result.this, exception.toString(), Toast.LENGTH_SHORT).show();
                         Toast.makeText(Result.this, "Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
