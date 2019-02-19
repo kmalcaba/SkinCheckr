@@ -3,6 +3,7 @@ package com.example.trishiaanne.skincheckr;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -21,9 +22,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Result extends AppCompatActivity {
     private static final String TAG = "";
@@ -39,10 +46,17 @@ public class Result extends AppCompatActivity {
     private ArrayList<String> diagnosed = new ArrayList<>();
     private ArrayList<String> label = new ArrayList<>();
 
+    private Uri filepath;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         skin_img = findViewById(R.id.display_diagnosed);
         imagePath = getIntent().getStringExtra("image_path");
@@ -52,6 +66,7 @@ public class Result extends AppCompatActivity {
 
         skin_img.setImageBitmap(skin);
 
+        uploadImage(imagePath);
         displayToolbar();
 
 //        for (String x : diagnosed) {
@@ -63,7 +78,30 @@ public class Result extends AppCompatActivity {
         int diagnosedCounter = diagnosed.size();
         if (diagnosedCounter == 1) {
             labelDiag.setText("TOP DIAGNOSIS:");
-        }else { labelDiag.setText("TOP " + diagnosedCounter + " DIAGNOSIS:");}
+        } else {
+            labelDiag.setText("TOP " + diagnosedCounter + " DIAGNOSIS:");
+        }
+    }
+
+    private void uploadImage(String path) {
+        filepath = Uri.parse(path);
+
+        StorageReference ref = storageReference.child(FirebaseAuth.getInstance()
+                .getCurrentUser().getUid() + "/" + UUID.randomUUID().toString());
+
+        ref.putFile(filepath)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(Result.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Toast.makeText(Result.this, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void initImageBitmaps(String x) {
@@ -229,7 +267,7 @@ public class Result extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected (MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
