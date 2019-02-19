@@ -15,7 +15,14 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 
 import com.example.trishiaanne.skincheckr.imgProcessing.ImageProcessing;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -35,10 +42,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 
 public class UserCam extends AppCompatActivity {
@@ -57,10 +66,18 @@ public class UserCam extends AppCompatActivity {
     private static final int STORAGE_REQUEST = 1;
     private static final int TYPE_OF_USER = 1; //registered_user
 
+    Uri file;
+
+    FirebaseStorage storage;
+    StorageReference storageReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usercam);
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         userImageView = findViewById(R.id.userImageView);
         userTakePhoto= findViewById(R.id.userTakePhoto);
@@ -227,6 +244,24 @@ public class UserCam extends AppCompatActivity {
                     String picDirectory = photoFile.getAbsolutePath();
                     Bitmap capturedImage = BitmapFactory.decodeFile(picDirectory);
                     userImageView.setImageBitmap(capturedImage);
+                    file = Uri.parse(picDirectory);
+
+                    StorageReference ref = storageReference.child(FirebaseAuth.getInstance()
+                            .getCurrentUser().getUid() + "/" + UUID.randomUUID().toString());
+
+                    ref.putFile(file)
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    Toast.makeText(UserCam.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    Toast.makeText(UserCam.this, "Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
 
                     //Pass the captured image to Image Processing and GLCM UNIT
                     Intent passCapturedImage = new Intent(UserCam.this, ImageProcessing.class);
