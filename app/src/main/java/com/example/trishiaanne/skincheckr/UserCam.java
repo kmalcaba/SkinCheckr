@@ -15,7 +15,14 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 
 import com.example.trishiaanne.skincheckr.imgProcessing.ImageProcessing;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -35,10 +42,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 
 public class UserCam extends AppCompatActivity {
@@ -56,6 +65,8 @@ public class UserCam extends AppCompatActivity {
     static final int REQUEST_IMPORT_PHOTO = 1;
     private static final int STORAGE_REQUEST = 1;
     private static final int TYPE_OF_USER = 1; //registered_user
+
+    Uri filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,6 +231,7 @@ public class UserCam extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        filePath = imageReturnedIntent.getData();
         switch (requestCode) {
             case 0:
                 if (resultCode == RESULT_OK) {
