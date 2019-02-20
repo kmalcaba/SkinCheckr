@@ -28,12 +28,11 @@ public class Profile extends AppCompatActivity {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // firebase path: skinchekr/Users/uid/fname
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Users");
-        DatabaseReference uidRef = rootRef.child(uid);
-        DatabaseReference fileref = uidRef.child("fname");
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Users")
+                .child(uid).child("fname");
 
         // getting info in /Users/uid/fname
-        fileref.addValueEventListener(new ValueEventListener() {
+        rootRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 displayName.setText("Hi " + dataSnapshot.getValue(String.class) + "!");

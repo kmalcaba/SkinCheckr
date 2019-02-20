@@ -66,6 +66,8 @@ public class UserCam extends AppCompatActivity {
     private static final int STORAGE_REQUEST = 1;
     private static final int TYPE_OF_USER = 1; //registered_user
 
+    Uri filePath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -229,6 +231,7 @@ public class UserCam extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        filePath = imageReturnedIntent.getData();
         switch (requestCode) {
             case 0:
                 if (resultCode == RESULT_OK) {
