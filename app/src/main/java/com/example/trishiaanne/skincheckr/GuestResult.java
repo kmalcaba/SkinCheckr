@@ -1,11 +1,13 @@
 package com.example.trishiaanne.skincheckr;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -17,7 +19,15 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class GuestResult extends AppCompatActivity {
@@ -26,12 +36,14 @@ public class GuestResult extends AppCompatActivity {
     private ImageView skin_img;
     private String imagePath;
     private TextView labelDiag;
+    private Bitmap skin;
 
     private ArrayList<String> dImgName = new ArrayList<>();
     private ArrayList<Bitmap> dImg = new ArrayList<>();
     private ArrayList<String> dImgSummary = new ArrayList<>();
     private ArrayList<String> diagnosed = new ArrayList<>();
     private ArrayList<String> label = new ArrayList<>();
+    private ArrayList<String> percentage = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,24 +62,24 @@ public class GuestResult extends AppCompatActivity {
 
         skin_img = findViewById(R.id.display_diagnosed);
         imagePath = getIntent().getStringExtra("image_path");
-        Bitmap skin = BitmapFactory.decodeFile(imagePath);
+        skin = BitmapFactory.decodeFile(imagePath);
         diagnosed = getIntent().getStringArrayListExtra("result");
+        percentage = getIntent().getStringArrayListExtra("percentage");
 
         skin_img.setImageBitmap(skin);
 
         for (String x : diagnosed) {
-            //initImageBitmaps(x);
+            String y = percentage.get(diagnosed.indexOf(x));
+            initImageBitmaps(x,y);
         }
-        initImageBitmaps("tinea corporis");
-        initImageBitmaps("tinea pedis");
-        initImageBitmaps("skin");
+
         int diagnosedCounter = diagnosed.size();
         if (diagnosedCounter == 1) {
             labelDiag.setText("TOP DIAGNOSIS:");
         }else { labelDiag.setText("TOP " + diagnosedCounter + " DIAGNOSIS:");}
     }
 
-    private void initImageBitmaps(String x) {
+    private void initImageBitmaps(String x, String y) {
         switch (x) {
             case "atopic dermatitis":
                 Bitmap atopic = BitmapFactory.decodeResource(getResources(), R.drawable.atopic_sample);
@@ -75,6 +87,7 @@ public class GuestResult extends AppCompatActivity {
                 dImgName.add("Atopic Dermatitis");
                 dImgSummary.add("Atopic dermatitis (eczema) is a condition that makes your skin red and itchy. It's common in children but can occur at any age.");
                 label.add("Click image for more information about Atopic dermatitis.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "contact dermatitis":
@@ -83,6 +96,7 @@ public class GuestResult extends AppCompatActivity {
                 dImgName.add("Contact Dermatitis");
                 dImgSummary.add("Contact dermatitis is a red, itchy rash caused by direct contact with a substance or an allergic reaction to it.");
                 label.add("Click image for more information about Contact dermatitis.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "dyshidrotic eczema":
@@ -91,6 +105,7 @@ public class GuestResult extends AppCompatActivity {
                 dImgName.add("Dyshidrotic eczema");
                 dImgSummary.add("Dyshidrotic eczema, or dyshidrosis, is a skin condition in which blisters develop on the soles of your feet and/or the palms of your hands.");
                 label.add("Click image for more information about Dyshidrotic eczema.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "intertrigo":
@@ -99,6 +114,7 @@ public class GuestResult extends AppCompatActivity {
                 dImgName.add("Intertrigo");
                 dImgSummary.add("Intertrigo (intertriginous dermatitis) is an inflammatory condition of skin folds, induced or aggravated by heat, moisture, maceration, friction, and lack of air circulation.");
                 label.add("Click image for more information about Intertrigo.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "melanoma":
@@ -107,6 +123,7 @@ public class GuestResult extends AppCompatActivity {
                 dImgName.add("Melanoma");
                 dImgSummary.add("Melanoma, also known as malignant melanoma, is a type of cancer that develops from the pigment-containing cells known as melanocytes.");
                 label.add("Click image for more information about Melanoma.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "pityriasis versicolor":
@@ -115,6 +132,7 @@ public class GuestResult extends AppCompatActivity {
                 dImgName.add("Pityriasis versicolor");
                 dImgSummary.add("Pityriasis versicolor, sometimes called tinea versicolor, is a common fungal infection that causes small patches of skin to become scaly and discoloured.");
                 label.add("Click image for more information about Pityriasis versicolor.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "psoriasis":
@@ -123,6 +141,7 @@ public class GuestResult extends AppCompatActivity {
                 dImgName.add("Psoriasis");
                 dImgSummary.add("Psoriasis is an immune-mediated disease that causes raised, red, scaly patches to appear on the skin.");
                 label.add("Click image for more information about Psoriasis.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "tinea corporis":
@@ -131,6 +150,7 @@ public class GuestResult extends AppCompatActivity {
                 dImgName.add("Tinea corporis");
                 dImgSummary.add("Also known as Ringworm is a common fungal skin disease");
                 label.add("Click image for more information about Tinea corporis.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "tinea pedis":
@@ -139,6 +159,7 @@ public class GuestResult extends AppCompatActivity {
                 dImgName.add("Tinea pedis");
                 dImgSummary.add("Also known as Athlete's foot is a contagious fungal infection that affects the skin on the feet.");
                 label.add("Click image for more information about Tinea pedis.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "benign mole":
@@ -147,6 +168,7 @@ public class GuestResult extends AppCompatActivity {
                 dImgName.add("Benign mole");
                 dImgSummary.add("Don't worry this is just a benign mole, not a Melanoma.");
                 label.add("Click image for more information about Benign mole.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "skin":
@@ -155,6 +177,7 @@ public class GuestResult extends AppCompatActivity {
                 dImgName.add("Healthy Skin");
                 dImgSummary.add("Congratulations! You have a healthy skin.");
                 label.add("Click image for more information about Skin.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
         }
@@ -166,7 +189,7 @@ public class GuestResult extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(layoutManager);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, dImgName, dImg, dImgSummary, label);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, dImgName, percentage, dImg, dImgSummary, label);
         recyclerView.setAdapter(adapter);
 
     }
@@ -188,6 +211,7 @@ public class GuestResult extends AppCompatActivity {
                         .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                uploadImage(skin);
                                 Intent out = new Intent(GuestResult.this, MainActivity.class);
                                 startActivity(out);
                             }
@@ -198,8 +222,37 @@ public class GuestResult extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //disable back button
-    @Override
-    public void onBackPressed() {
+    public void uploadImage(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] data = byteArrayOutputStream.toByteArray();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReferenceFromUrl("gs://skincheckr.appspot.com");
+        StorageReference imagesReference = storageReference.child(imagePath);
+
+        UploadTask uploadTask = imagesReference.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                displayMessage(getApplicationContext(), "DID NOT UPLOAD!");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                displayMessage(getApplicationContext(), "Upload Success: " + downloadUrl);
+            }
+        });
     }
+
+    private void displayMessage(Context context, String mess) {
+        Toast.makeText(context, mess, Toast.LENGTH_LONG).show();
+    }
+
+//    //disable back button
+//    @Override
+//    public void onBackPressed() {
+//    }
+
 }

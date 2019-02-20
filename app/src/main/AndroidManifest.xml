@@ -48,6 +48,7 @@
         <activity android:name=".diseaseProfile.pedis_profile"/>
         <activity android:name=".diseaseProfile.benign_profile"/>
         <activity android:name=".diseaseProfile.skin_profile"/>
+        <activity android:name=".NotifUV"></activity>
         <activity
             android:name=".Camera"
             android:hardwareAccelerated="false"

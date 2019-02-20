@@ -38,6 +38,7 @@ public class Result extends AppCompatActivity {
     private ArrayList<String> dImgSummary = new ArrayList<>();
     private ArrayList<String> diagnosed = new ArrayList<>();
     private ArrayList<String> label = new ArrayList<>();
+    private ArrayList<String> percentage = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,24 +50,24 @@ public class Result extends AppCompatActivity {
         Bitmap skin = BitmapFactory.decodeFile(imagePath);
         diagnosed = getIntent().getStringArrayListExtra("result");
         labelDiag = findViewById(R.id.diagnosis_label);
+        percentage = getIntent().getStringArrayListExtra("percentage");
 
         skin_img.setImageBitmap(skin);
 
         displayToolbar();
 
-//        for (String x : diagnosed) {
-//          initImageBitmaps(x);
-//        }
-        initImageBitmaps("tinea corporis");
-        initImageBitmaps("tinea pedis");
-        initImageBitmaps("skin");
+        for (String x : diagnosed) {
+            String y = percentage.get(diagnosed.indexOf(x));
+            initImageBitmaps(x,y);
+        }
+
         int diagnosedCounter = diagnosed.size();
         if (diagnosedCounter == 1) {
             labelDiag.setText("TOP DIAGNOSIS:");
         }else { labelDiag.setText("TOP " + diagnosedCounter + " DIAGNOSIS:");}
     }
 
-    private void initImageBitmaps(String x) {
+    private void initImageBitmaps(String x, String y) {
         switch (x) {
             case "atopic dermatitis":
                 Bitmap atopic = BitmapFactory.decodeResource(getResources(), R.drawable.atopic_sample);
@@ -74,6 +75,7 @@ public class Result extends AppCompatActivity {
                 dImgName.add("Atopic Dermatitis");
                 dImgSummary.add("Atopic dermatitis (eczema) is a condition that makes your skin red and itchy. It's common in children but can occur at any age.");
                 label.add("Click image for more information about Atopic dermatitis.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "contact dermatitis":
@@ -82,6 +84,7 @@ public class Result extends AppCompatActivity {
                 dImgName.add("Contact Dermatitis");
                 dImgSummary.add("Contact dermatitis is a red, itchy rash caused by direct contact with a substance or an allergic reaction to it.");
                 label.add("Click image for more information about Contact dermatitis.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "dyshidrotic eczema":
@@ -90,6 +93,7 @@ public class Result extends AppCompatActivity {
                 dImgName.add("Dyshidrotic eczema");
                 dImgSummary.add("Dyshidrotic eczema, or dyshidrosis, is a skin condition in which blisters develop on the soles of your feet and/or the palms of your hands.");
                 label.add("Click image for more information about Dyshidrotic eczema.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "intertrigo":
@@ -98,6 +102,7 @@ public class Result extends AppCompatActivity {
                 dImgName.add("Intertrigo");
                 dImgSummary.add("Intertrigo (intertriginous dermatitis) is an inflammatory condition of skin folds, induced or aggravated by heat, moisture, maceration, friction, and lack of air circulation.");
                 label.add("Click image for more information about Intertrigo.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "melanoma":
@@ -106,6 +111,7 @@ public class Result extends AppCompatActivity {
                 dImgName.add("Melanoma");
                 dImgSummary.add("Melanoma, also known as malignant melanoma, is a type of cancer that develops from the pigment-containing cells known as melanocytes.");
                 label.add("Click image for more information about Melanoma.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "pityriasis versicolor":
@@ -114,6 +120,7 @@ public class Result extends AppCompatActivity {
                 dImgName.add("Pityriasis versicolor");
                 dImgSummary.add("Pityriasis versicolor, sometimes called tinea versicolor, is a common fungal infection that causes small patches of skin to become scaly and discoloured.");
                 label.add("Click image for more information about Pityriasis versicolor.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "psoriasis":
@@ -122,6 +129,7 @@ public class Result extends AppCompatActivity {
                 dImgName.add("Psoriasis");
                 dImgSummary.add("Psoriasis is an immune-mediated disease that causes raised, red, scaly patches to appear on the skin.");
                 label.add("Click image for more information about Psoriasis.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "tinea corporis":
@@ -130,6 +138,7 @@ public class Result extends AppCompatActivity {
                 dImgName.add("Tinea corporis");
                 dImgSummary.add("Ringworm is a common fungal skin infection otherwise known as tinea");
                 label.add("Click image for more information about Tinea corporis.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "tinea pedis":
@@ -138,6 +147,7 @@ public class Result extends AppCompatActivity {
                 dImgName.add("Tinea pedis");
                 dImgSummary.add("Athlete's foot — also called tinea pedis — is a contagious fungal infection that affects the skin on the feet.");
                 label.add("Click image for more information about Tinea pedis.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "benign mole":
@@ -146,6 +156,7 @@ public class Result extends AppCompatActivity {
                 dImgName.add("Benign mole");
                 dImgSummary.add("Benign pigmented moles made of melanocytes are defined as those lesions which do not produce any harmful effects.");
                 label.add("Click image for more information about Benign mole.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             case "skin":
@@ -154,6 +165,7 @@ public class Result extends AppCompatActivity {
                 dImgName.add("Healthy Skin");
                 dImgSummary.add("The skin is the largest organ of the body, with a total area of about 20 square feet.");
                 label.add("Click image for more information about Skin.");
+                percentage.add(y);
                 initRecyclerView();
                 break;
             default:
@@ -167,7 +179,7 @@ public class Result extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(layoutManager);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, dImgName, dImg, dImgSummary, label);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, dImgName, percentage, dImg, dImgSummary, label);
         recyclerView.setAdapter(adapter);
 
     }
@@ -236,8 +248,8 @@ public class Result extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //disable back button
-    @Override
-    public void onBackPressed() {
-    }
+//    //disable back button
+//    @Override
+//    public void onBackPressed() {
+//    }
 }

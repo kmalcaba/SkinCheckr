@@ -26,14 +26,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<Bitmap> dImg = new ArrayList<>();
     private ArrayList<String> dImgSummary = new ArrayList<>();
     private ArrayList<String> label = new ArrayList<>();
+    private ArrayList<String> percentage = new ArrayList<>();
     private Context dContext;
 
-    public RecyclerViewAdapter( Context dContext, ArrayList<String> dImgName, ArrayList<Bitmap> dImg, ArrayList<String> dImgSummary, ArrayList<String> label) {
+    public RecyclerViewAdapter( Context dContext, ArrayList<String> dImgName, ArrayList<String> percentage, ArrayList<Bitmap> dImg, ArrayList<String> dImgSummary, ArrayList<String> label) {
         this.dContext = dContext;
         this.dImgName = dImgName;
         this.dImg = dImg;
         this.dImgSummary = dImgSummary;
         this.label = label;
+        this.percentage = percentage;
     }
 
     @Override
@@ -58,6 +60,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         //set the more information
         viewHolder.label.setText(label.get(i));
+
+        //set the percentage
+        viewHolder.perc.setText(String.format("%.2f%%", Double.valueOf(percentage.get(i))*100));
+        Log.d(TAG, "Percentage: " + percentage.get(i));
 
         viewHolder.diagnosed_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +119,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView diagnosed_image;
-        TextView disease_name, disease_summary, label;
+        TextView disease_name, disease_summary, label, perc;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -121,6 +127,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             disease_name = itemView.findViewById(R.id.disease_name);
             disease_summary = itemView.findViewById(R.id.disease_summary);
             label = itemView.findViewById(R.id.more_info);
+            perc = itemView.findViewById(R.id.percentage);
         }
     }
 }

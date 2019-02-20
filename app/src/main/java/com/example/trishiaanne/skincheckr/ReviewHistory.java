@@ -36,6 +36,7 @@ public class ReviewHistory extends AppCompatActivity {
     private float[] inputs;
 
     private ArrayList<String> diagnosed = new ArrayList<>();
+    private ArrayList<String> percentage = new ArrayList<>();
 
     private Classifier classifier;
 
@@ -77,12 +78,14 @@ public class ReviewHistory extends AppCompatActivity {
                     Intent guestIntent = new Intent (ReviewHistory.this, GuestResult.class);
                     guestIntent.putExtra("image_path", imagePath);
                     guestIntent.putStringArrayListExtra("result", diagnosed);
+                    guestIntent.putExtra("percentage", percentage);
                     startActivity(guestIntent);
                 } else { //if registered user
                     displayMessage(getApplicationContext(), "User type is REGISTERED USER = " + TYPE_OF_USER);
                     Intent registeredUserIntent = new Intent(ReviewHistory.this, Result.class);
                     registeredUserIntent.putExtra("image_path", imagePath);
                     registeredUserIntent.putStringArrayListExtra("result", diagnosed);
+                    registeredUserIntent.putExtra("percentage", percentage);
                     startActivity(registeredUserIntent);
                 }
             }
@@ -127,8 +130,9 @@ public class ReviewHistory extends AppCompatActivity {
         final long lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
         Log.i("Detect: %s", Long.toString(lastProcessingTimeMs));
         for (Classifier.Recognition r : results) {
-            Log.i("Results: ", r.getTitle());
+            Log.i("Results: ", r.getTitle() + " " + (r.getConfidence()*100));
             diagnosed.add(r.getTitle().toLowerCase());
+            percentage.add((r.getConfidence()).toString());
         }
         classifier.close();
     }

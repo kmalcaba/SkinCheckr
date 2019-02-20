@@ -217,9 +217,9 @@ public class History extends AppCompatActivity {
         });
 
     }
-
-    //disable back button
-    @Override
-    public void onBackPressed() {
-    }
+//
+//    //disable back button
+//    @Override
+//    public void onBackPressed() {
+//    }
 }

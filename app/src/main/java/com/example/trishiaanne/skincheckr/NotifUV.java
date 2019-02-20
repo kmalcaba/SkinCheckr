@@ -51,21 +51,19 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class Uv extends AppCompatActivity implements LocationListener {
+public class NotifUV extends AppCompatActivity implements LocationListener {
     private TextView uvIndex, uvDate, uvLoc, noUV;
     private ImageView uvLabel;
     private LocationManager locationManager;
     double latitude;
     double longitutde;
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mToggle;
     private SwipeRefreshLayout swipeRefreshLayout;
     private int LOCATION_PERMISSION_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_uv);
+        setContentView(R.layout.activity_checkuv);
 
         //Get the location and allow location
         getGPS();
@@ -81,7 +79,6 @@ public class Uv extends AppCompatActivity implements LocationListener {
                 uvLabel = findViewById(R.id.uv_description);
                 noUV = findViewById(R.id.noUV);
 
-                displayToolbar();
                 getGPS();
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -97,7 +94,6 @@ public class Uv extends AppCompatActivity implements LocationListener {
         uvLoc = findViewById(R.id.uvLoc);
         uvLabel = findViewById(R.id.uv_description);
         noUV = findViewById(R.id.noUV);
-        displayToolbar();
     }
 
     private void findUvIndex() {
@@ -184,7 +180,7 @@ public class Uv extends AppCompatActivity implements LocationListener {
 
     private void getGPS() {
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        if (ContextCompat.checkSelfPermission(Uv.this,
+        if (ContextCompat.checkSelfPermission(NotifUV.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             onLocationChanged(location);
@@ -202,7 +198,7 @@ public class Uv extends AppCompatActivity implements LocationListener {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            ActivityCompat.requestPermissions(Uv.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
+                            ActivityCompat.requestPermissions(NotifUV.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
                         }
                     })
                     .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -262,67 +258,5 @@ public class Uv extends AppCompatActivity implements LocationListener {
     @Override
     public void onProviderDisabled(String s) {
 
-    }
-
-    private void displayToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(null);
-
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
-        mDrawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        int id = menuItem.getItemId();
-                        switch (id) {
-                            case R.id.profile:
-                                startActivity(new Intent(Uv.this, Profile.class));
-                                break;
-                            case R.id.uv:
-                                startActivity(new Intent(Uv.this, Uv.class));
-                                break;
-                            case R.id.derma:
-                                Toast.makeText(Uv.this, "Find Nearby Dermatologist", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(Uv.this, Derma.class));
-                                break;
-//                            case R.id.editProfile:
-//                                Toast.makeText(Result.this, "Profile", Toast.LENGTH_SHORT).show();
-//                                Intent i = new Intent(Result.this, EditProfile.class);
-//                                startActivity(i);
-//                                break;
-//                            case R.id.records:
-//                                Toast.makeText(Result.this, "Records", Toast.LENGTH_SHORT).show();
-//                                break;
-                            case R.id.signout:
-                                Toast.makeText(Uv.this, "Sign Out", Toast.LENGTH_SHORT).show();
-                                if (id == R.id.signout) {
-                                    FirebaseAuth.getInstance().signOut();
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
-                                }
-                            default:
-                                return true;
-                        }
-                        return true;
-                    }
-                }
-        );
-    }
-    @Override
-    public boolean onOptionsItemSelected (MenuItem item){
-        if (mToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

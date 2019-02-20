@@ -29,16 +29,16 @@
         android:textSize="30sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/disease_summary"
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/image_slider"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="19dp"
-        android:fontFamily="@font/san_francisco"
-        android:padding="5dp"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:layout_below="@+id/image_slider">
+
+        <org.sufficientlysecure.htmltextview.HtmlTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/causes"
+            android:textSize="17sp"/>
+
+    </ScrollView>
 </RelativeLayout>

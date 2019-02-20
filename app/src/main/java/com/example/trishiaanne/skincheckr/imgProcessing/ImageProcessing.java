@@ -64,7 +64,7 @@ public class ImageProcessing extends AppCompatActivity{
                 long startTime = SystemClock.uptimeMillis();
                 //change dimensions
                 Bitmap original = BitmapFactory.decodeFile(chosenImagePath);
-                Bitmap resized = Bitmap.createScaledBitmap(original, 770, 504, false);
+                Bitmap resized = Bitmap.createScaledBitmap(original, 640, 480, false);
 
                 //Compress image
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -77,10 +77,10 @@ public class ImageProcessing extends AppCompatActivity{
                 Bitmap img = decoded.copy(decoded.getConfig(), decoded.isMutable());
 
                 //Median Filtering
-//                Bitmap med = MedianFilter.filter(img);
+                Bitmap med = MedianFilter.filter(img);
 
 //                //Otsu's Method of Thresholding
-                Otsu o = new Otsu(img, img);
+                Otsu o = new Otsu(med, img);
                 int threshold = o.getThreshold();
                 Log.d("Threshold: ", Integer.toString(threshold));
                 Bitmap thresh = o.applyThreshold();
