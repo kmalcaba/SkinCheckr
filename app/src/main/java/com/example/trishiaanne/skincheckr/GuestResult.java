@@ -21,14 +21,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.UUID;
 
 public class GuestResult extends AppCompatActivity {
     private static final String TAG = "";
@@ -37,6 +46,12 @@ public class GuestResult extends AppCompatActivity {
     private String imagePath;
     private TextView labelDiag;
     private Bitmap skin;
+
+    private Uri imgURI;
+    private File f;
+
+    private StorageReference storage;
+    private DatabaseReference database;
 
     private ArrayList<String> dImgName = new ArrayList<>();
     private ArrayList<Bitmap> dImg = new ArrayList<>();
@@ -211,7 +226,7 @@ public class GuestResult extends AppCompatActivity {
                         .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                uploadImage(skin);
+                                uploadImage();
                                 Intent out = new Intent(GuestResult.this, MainActivity.class);
                                 startActivity(out);
                             }
@@ -222,28 +237,45 @@ public class GuestResult extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void uploadImage(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] data = byteArrayOutputStream.toByteArray();
+    public void uploadImage() {
+        storage = FirebaseStorage.getInstance().getReference("result_images");
+        database = FirebaseDatabase.getInstance().getReference("result_images");
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReferenceFromUrl("gs://skincheckr.appspot.com");
-        StorageReference imagesReference = storageReference.child(imagePath);
+        f = new File(imagePath);
+        Log.d(TAG, "Original Image Path: " + imagePath);
 
-        UploadTask uploadTask = imagesReference.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                displayMessage(getApplicationContext(), "DID NOT UPLOAD!");
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                displayMessage(getApplicationContext(), "Upload Success: " + downloadUrl);
-            }
-        });
+        imgURI = Uri.fromFile(f);
+        Log.d(TAG, "URI Image Path: " + imgURI.getPath());
+
+        if (imgURI != null) {
+            final StorageReference imagesReference = storage.child(String.valueOf(System.currentTimeMillis()));
+            imagesReference.putFile(imgURI).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if(!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return imagesReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if(task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        Log.d(TAG, "DOWNLOAD URI: " + downloadUri.toString());
+
+                        Calendar dateToday = Calendar.getInstance();
+                        String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(dateToday.getTime());
+
+                        UploadResult uploadResult = new UploadResult(dImgName.get(0), downloadUri.toString(), currentDate);
+                        String uploadID = database.push().getKey();
+                        database.child(uploadID).setValue(uploadResult);
+                    } else {
+                        displayMessage(getApplicationContext(), "FAILED TO UPLOAD!");
+                    }
+                }
+            });
+        }
     }
 
     private void displayMessage(Context context, String mess) {
