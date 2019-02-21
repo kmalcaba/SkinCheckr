@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.trishiaanne.skincheckr">
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -10,7 +17,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature android:name="android.hardware.location.gps" />
@@ -24,7 +30,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DermaInfo"></activity>
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
+        <activity android:name=".DermaInfo" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,21 +55,22 @@
             </intent-filter>
         </activity>
         <activity android:name=".Main_2" />
-        <activity android:name=".Result"
-            android:parentActivityName=".Result"/>
-        <activity android:name=".GuestResult"/>
-        <activity android:name=".diseaseProfile.atopic_profile"/>
-        <activity android:name=".diseaseProfile.contact_profile"/>
-        <activity android:name=".diseaseProfile.dys_profile"/>
-        <activity android:name=".diseaseProfile.intertrigo_profile"/>
-        <activity android:name=".diseaseProfile.melanoma_profile"/>
-        <activity android:name=".diseaseProfile.pity_profile"/>
-        <activity android:name=".diseaseProfile.psor_profile"/>
-        <activity android:name=".diseaseProfile.corporis_profile"/>
-        <activity android:name=".diseaseProfile.pedis_profile"/>
-        <activity android:name=".diseaseProfile.benign_profile"/>
-        <activity android:name=".diseaseProfile.skin_profile"/>
-        <activity android:name=".NotifUV"></activity>
+        <activity
+            android:name=".Result"
+            android:parentActivityName=".Result" />
+        <activity android:name=".GuestResult" />
+        <activity android:name=".diseaseProfile.atopic_profile" />
+        <activity android:name=".diseaseProfile.contact_profile" />
+        <activity android:name=".diseaseProfile.dys_profile" />
+        <activity android:name=".diseaseProfile.intertrigo_profile" />
+        <activity android:name=".diseaseProfile.melanoma_profile" />
+        <activity android:name=".diseaseProfile.pity_profile" />
+        <activity android:name=".diseaseProfile.psor_profile" />
+        <activity android:name=".diseaseProfile.corporis_profile" />
+        <activity android:name=".diseaseProfile.pedis_profile" />
+        <activity android:name=".diseaseProfile.benign_profile" />
+        <activity android:name=".diseaseProfile.skin_profile" />
+        <activity android:name=".NotifUV" />
         <activity
             android:name=".Camera"
             android:hardwareAccelerated="false"
@@ -65,16 +88,14 @@
             android:name=".SignUp"
             android:parentActivityName=".SignUp" />
         <activity android:name=".Profile" />
+        <activity android:name=".Profile2">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <activity android:name=".Profile2" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-
-        <activity android:name=".ImagesActivity"></activity>
+        <activity android:name=".ImagesActivity" />
         <activity android:name=".Uv" />
         <activity android:name=".Derma" />
         <activity

@@ -1,11 +1,15 @@
 package com.example.trishiaanne.skincheckr.dermaSearch;
 
+import android.app.Activity;
+import android.content.res.AssetManager;
+
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,20 +24,31 @@ public class Finder {
     private final String ORIGIN = "&origins=";
     private final String DESTINATION = "&destionations=";
     private final String API_KEY = "&key=AIzaSyAswjvzMmUmqp9EShBRdPoJPcXw18xdR4Q";
-    private String CSV_PATH = "./practo_info/";
+    private String CSV_PATH ="";
     private List<Dermatologist> dermaList;
 
-    private final int city;
+    private int city;
 
-    public Finder(int city) {
+    public Finder(String locality, Activity activity) {
+        this.locality = locality;
+        this.activity = activity;
+        this.setDermaList(readCsv());
+    }
+
+    private String locality;
+    private Activity activity;
+
+    public Finder(int city, Activity activity) {
         this.city = city;
+        this.activity = activity;
         chooseCity();
         this.setDermaList(readCsv());
     }
 
+
     private List<Dermatologist> readCsv() {
         try (
-                BufferedReader reader = new BufferedReader(new FileReader(CSV_PATH))) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(activity.getAssets().open(CSV_PATH)))) {
             CSVReader csv = new CSVReaderBuilder(reader).withSkipLines(1).build();
 
             List<String[]> records = csv.readAll();
@@ -139,46 +154,6 @@ public class Finder {
         return null;
     }
 
-    public void printCsv() {
-        int i = 1;
-        for (Dermatologist d : getDermaList()) {
-            System.out.println("========================");
-            System.out.println("Derma #" + i);
-            System.out.println("========================");
-            System.out.println(d.getName());
-            System.out.println(d.getLocation());
-            System.out.println(d.getYears());
-            System.out.println(d.getFee());
-            System.out.println(d.getInfo());
-            System.out.println("=========CLINICS========");
-            List<Clinic> clinics = d.getClinics();
-            if (clinics != null) {
-                for (Clinic c : clinics) {
-                    System.out.println(c.getName());
-                    System.out.println(c.getLocation());
-                    System.out.println(c.getAddress());
-                    if (c.getSchedDays() != null) {
-                        for (String day : c.getSchedDays()) {
-                            String time = c.getSchedTime(c.getSchedDays().indexOf(day));
-                            System.out.println(day);
-                            System.out.println(time);
-                        }
-                    }
-                    System.out.println("========================");
-                }
-            }
-            System.out.println("========SERVICES========");
-            List<String> services = d.getServices();
-            if (services != null) {
-                for (String s : services) {
-                    System.out.println(s);
-                }
-            }
-            System.out.println("========================");
-            i++;
-        }
-    }
-
     public void findByFee(int choice) {
         switch(choice) {
             case 0:
@@ -191,14 +166,16 @@ public class Finder {
                 return;
         }
 
-        printCsv();
+//        printCsv();
     }
 
     public void findByYear() {
         Collections.sort(getDermaList(), new SortByYear());
 
-        printCsv();
+//        printCsv();
     }
+
+    //TODO: Distance Matrix sorting implementation
 
     public List<Dermatologist> getDermaList() {
         return dermaList;
@@ -338,6 +315,14 @@ public class Finder {
                 CSV_PATH += "practo_valenzuela.csv";
                 break;
             default:
+                break;
+        }
+    }
+
+    private void chooseLocality() {
+        switch(locality) {
+            case "Manila":
+                CSV_PATH += "practo_mnl.csv";
                 break;
         }
     }

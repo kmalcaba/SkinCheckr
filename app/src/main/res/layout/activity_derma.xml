@@ -7,55 +7,63 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/derma_swipe"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
-            <TextView
-                android:id="@+id/derma_label"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:gravity="center_horizontal"
-                android:padding="15dp"
-                android:text="Find Dermatologists Nearby:"
-                android:textColor="@color/colorPrimary"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/sort_label"
-                android:layout_below="@id/derma_label"
-                android:textSize="20sp"
-                android:text="Sort by"
-                android:layout_toStartOf="@id/spinner_sort"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="20dp"
-                />
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/spinner_sort"
-                android:layout_below="@id/derma_label"
+                android:layout_height="match_parent">
 
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:layout_alignParentRight="true"
-                >
+                <TextView
+                    android:id="@+id/derma_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:padding="15dp"
+                    android:text="Find Dermatologists Nearby:"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-            </Spinner>
+                <TextView
+                    android:id="@+id/sort_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/derma_label"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_toStartOf="@id/spinner_sort"
+                    android:text="Sort by"
+                    android:textSize="20sp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/derma_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/spinner_sort">
+                <Spinner
+                    android:id="@+id/spinner_sort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/derma_label"
 
-            </android.support.v7.widget.RecyclerView>
-        </RelativeLayout>
+                    android:layout_alignParentRight="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp">
+
+                </Spinner>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/derma_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/spinner_sort">
+
+                </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </FrameLayout>
 

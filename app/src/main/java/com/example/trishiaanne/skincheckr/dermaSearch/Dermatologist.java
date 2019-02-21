@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Dermatologist implements Parcelable {
 
-    protected Dermatologist(Parcel in) {
+    public Dermatologist(Parcel in) {
         clinics = new ArrayList<>();
         in.readList(clinics, Clinic.class.getClassLoader());
         name = in.readString();
