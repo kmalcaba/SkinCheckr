@@ -4,15 +4,13 @@ public class UploadResult {
     private String disease;
     private String imageURL;
     private String date;
+    private String userId;
 
-    public UploadResult() {
-
-    }
-
-    public UploadResult(String d, String url, String date) {
+    public UploadResult(String d, String url, String date, String userId) {
         this.disease = d;
         this.imageURL = url;
         this.date = date;
+        this.userId = userId;
     }
 
     public String getDisease() {
@@ -37,5 +35,13 @@ public class UploadResult {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

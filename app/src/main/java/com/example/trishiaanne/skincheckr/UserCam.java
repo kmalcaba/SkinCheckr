@@ -231,7 +231,7 @@ public class UserCam extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        filePath = imageReturnedIntent.getData();
+        //filePath = imageReturnedIntent.getData();
         switch (requestCode) {
             case 0:
                 if (resultCode == RESULT_OK) {
