@@ -63,6 +63,8 @@ public class Result extends AppCompatActivity {
 
     private Uri imgURI;
 
+    public String uid = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +96,7 @@ public class Result extends AppCompatActivity {
     }
 
     private void uploadImage() {
-        storage = FirebaseStorage.getInstance().getReference("result_images");
+        storage = FirebaseStorage.getInstance().getReference(uid);
         database = FirebaseDatabase.getInstance().getReference("result_images");
 
         File f = new File(imagePath);
@@ -123,7 +125,7 @@ public class Result extends AppCompatActivity {
                         Calendar dateToday = Calendar.getInstance();
                         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(dateToday.getTime());
 
-                        UploadResult uploadResult = new UploadResult(dImgName.get(0), downloadUri.toString(), currentDate);
+                        UploadResult uploadResult = new UploadResult(dImgName.get(0), downloadUri.toString(), currentDate, uid);
                         String uploadID = database.push().getKey();
                         database.child(uploadID).setValue(uploadResult);
                     } else {

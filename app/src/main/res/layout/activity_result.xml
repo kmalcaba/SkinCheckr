@@ -25,7 +25,7 @@
                 android:layout_marginTop="56dp"
                 android:scaleType="centerCrop" />
             <TextView
-                android:id="@+id/derma_label"
+                android:id="@+id/diagnosis_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/san_francisco"

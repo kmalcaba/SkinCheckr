@@ -85,13 +85,15 @@ public class GuestResult extends AppCompatActivity {
 
         for (String x : diagnosed) {
             String y = percentage.get(diagnosed.indexOf(x));
-            initImageBitmaps(x,y);
+            initImageBitmaps(x, y);
         }
 
         int diagnosedCounter = diagnosed.size();
         if (diagnosedCounter == 1) {
             labelDiag.setText("TOP DIAGNOSIS:");
-        }else { labelDiag.setText("TOP " + diagnosedCounter + " DIAGNOSIS:");}
+        } else {
+            labelDiag.setText("TOP " + diagnosedCounter + " DIAGNOSIS:");
+        }
     }
 
     private void initImageBitmaps(String x, String y) {
@@ -210,7 +212,7 @@ public class GuestResult extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected (MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 new AlertDialog.Builder(this)
@@ -238,7 +240,7 @@ public class GuestResult extends AppCompatActivity {
     }
 
     public void uploadImage() {
-        storage = FirebaseStorage.getInstance().getReference("result_images");
+        storage = FirebaseStorage.getInstance().getReference("guest_result_images");
         database = FirebaseDatabase.getInstance().getReference("result_images");
 
         f = new File(imagePath);
@@ -252,7 +254,7 @@ public class GuestResult extends AppCompatActivity {
             imagesReference.putFile(imgURI).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                    if(!task.isSuccessful()) {
+                    if (!task.isSuccessful()) {
                         throw task.getException();
                     }
                     return imagesReference.getDownloadUrl();
@@ -260,14 +262,17 @@ public class GuestResult extends AppCompatActivity {
             }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
-                    if(task.isSuccessful()) {
+                    if (task.isSuccessful()) {
                         Uri downloadUri = task.getResult();
                         Log.d(TAG, "DOWNLOAD URI: " + downloadUri.toString());
 
                         Calendar dateToday = Calendar.getInstance();
-                        String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(dateToday.getTime());
+                        String currentDate = DateFormat.
+                                getDateInstance(DateFormat.FULL).format(dateToday.getTime());
 
-                        UploadResult uploadResult = new UploadResult(dImgName.get(0), downloadUri.toString(), currentDate);
+                        UploadResult uploadResult = new UploadResult(dImgName.get(0),
+                                downloadUri.toString(),
+                                currentDate, "GUEST_" + UUID.randomUUID().toString());
                         String uploadID = database.push().getKey();
                         database.child(uploadID).setValue(uploadResult);
                     } else {
