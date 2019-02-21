@@ -13,45 +13,40 @@ import android.widget.TextView;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ImageViewHolder> {
+public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder> {
     private Context mContext;
-    private ArrayList<String> timelineDate;
-    private ArrayList<String> timelineDisease;
-    private ArrayList<Bitmap> timelineImage;
-
-    public RecordAdapter(Context context, ArrayList<String> date, ArrayList<String> disease, ArrayList<Bitmap> image) {
+    private ArrayList<UploadResult> mUpload;
+    public RecordAdapter(Context context, ArrayList<UploadResult> uploads) {
         this.mContext = context;
-        this.timelineDate = date;
-        this.timelineDisease = disease;
-        this.timelineImage = image;
+        this.mUpload = uploads;
     }
 
     @Override
-    public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.timeline_item, viewGroup, false);
-        return new ImageViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ImageViewHolder imageViewHolder, int i) {
-
+    public void onBindViewHolder(@NonNull ViewHolder viewGroup, int i) {
+        UploadResult uploadResult = mUpload.get(i);
+        viewGroup.tDate.setText(uploadResult.getDate());
+        viewGroup.tDisease.setText(uploadResult.getDisease());
     }
 
     @Override
     public int getItemCount() {
-        return timelineDate.size();
+        return mUpload.size();
     }
 
-    public class ImageViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tDate, tDisease;
-        ImageView tImage;
 
-        public ImageViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tDate = itemView.findViewById(R.id.timelineDate);
             tDisease = itemView.findViewById(R.id.timelineDisease);
-            tImage = itemView.findViewById(R.id.timelineImage);
         }
     }
 }

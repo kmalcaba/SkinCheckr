@@ -60,6 +60,7 @@ public class Result extends AppCompatActivity {
 
     private StorageReference storage;
     private DatabaseReference database;
+    private String uploadID;
 
     private Uri imgURI;
 
@@ -97,7 +98,7 @@ public class Result extends AppCompatActivity {
 
     private void uploadImage() {
         storage = FirebaseStorage.getInstance().getReference(uid);
-        database = FirebaseDatabase.getInstance().getReference("result_images");
+        database = FirebaseDatabase.getInstance().getReference("user_result");
 
         File f = new File(imagePath);
         Log.d(TAG, "Original Image Path: " + imagePath);
@@ -124,49 +125,9 @@ public class Result extends AppCompatActivity {
 
                         Calendar dateToday = Calendar.getInstance();
                         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(dateToday.getTime());
-                        int diseaseID=0;
-                        switch (dImgName.get(0).toLowerCase()) {
-                            case "atopic dermatitis":
-                                diseaseID = 0;
-                                break;
-                            case "contact dermatitis":
-                                diseaseID = 1;
-                                break;
-                            case "dyshidrotic eczema":
-                                diseaseID = 2;
-                                break;
-                            case "intertrigo":
-                                diseaseID = 3;
-                                break;
-                            case "melanoma":
-                                diseaseID = 4;
-                                break;
-                            case "pityriasis versicolor":
-                                diseaseID = 5;
-                                break;
-                            case "psoriasis":
-                                diseaseID = 6;
-                                break;
-                            case "tinea corporis":
-                                diseaseID = 7;
-                                break;
-                            case "tinea pedis":
-                                diseaseID = 8;
-                                break;
-                            case "benign mole":
-                                diseaseID = 9;
-                                break;
-                            case "skin":
-                                diseaseID = 10;
-                                break;
 
-<<<<<<< HEAD
-                        }
-                        UploadResult uploadResult = new UploadResult(diseaseID, downloadUri.toString(), currentDate);
-=======
                         UploadResult uploadResult = new UploadResult(dImgName.get(0), downloadUri.toString(), currentDate, uid);
->>>>>>> ce44be6a07288c736e2d1711f4f62ba8875a6c7f
-                        String uploadID = database.push().getKey();
+                        uploadID = database.push().getKey();
                         database.child(uploadID).setValue(uploadResult);
                     } else {
                         displayMessage(getApplicationContext(), "FAILED TO UPLOAD!");
