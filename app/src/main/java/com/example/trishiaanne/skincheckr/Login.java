@@ -55,7 +55,6 @@ public class Login extends AppCompatActivity {
         enterPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnSignup = (TextView) findViewById(R.id.signUp);
-        btnForgot = (TextView) findViewById(R.id.forgot);
         btnLogin = (Button) findViewById(R.id.logBtn);
         auth = FirebaseAuth.getInstance();
 

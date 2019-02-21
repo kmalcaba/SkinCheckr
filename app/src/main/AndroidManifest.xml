@@ -65,6 +65,16 @@
             android:name=".SignUp"
             android:parentActivityName=".SignUp" />
         <activity android:name=".Profile" />
+
+        <activity android:name=".Profile2" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+
+        <activity android:name=".ImagesActivity"></activity>
         <activity android:name=".Uv" />
         <activity android:name=".Derma" />
         <activity

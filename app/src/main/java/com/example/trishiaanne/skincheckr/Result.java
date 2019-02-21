@@ -64,7 +64,7 @@ public class Result extends AppCompatActivity {
 
     private Uri imgURI;
 
-    public String uid = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+    public String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
