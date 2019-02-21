@@ -41,13 +41,25 @@ public class Profile extends AppCompatActivity {
 
         // firebase path: skinchekr/Users/uid/fname
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Users")
-                .child(uid).child("fname");
+                .child(uid);
+        DatabaseReference fname = rootRef.child("fname");
+        final DatabaseReference lname = rootRef.child("lname");
 
         // getting info in /Users/uid/fname
-        rootRef.addValueEventListener(new ValueEventListener() {
+        fname.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                displayName.setText("Hi " + dataSnapshot.getValue(String.class) + "!");
+            public void onDataChange(final DataSnapshot dataSnapshot1) {
+                lname.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
+                        displayName.setText("Hi " + dataSnapshot1.getValue(String.class)
+                                + " " + dataSnapshot2.getValue(String.class) + "!");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
             }
 
             @Override

@@ -113,7 +113,7 @@ public class UserCam extends AppCompatActivity {
                         int id = menuItem.getItemId();
                         switch (id) {
                             case R.id.profile:
-                                startActivity(new Intent(UserCam.this, Profile.class));
+                                startActivity(new Intent(UserCam.this, Profile2.class));
                                 break;
                             case R.id.uv:
                                 startActivity(new Intent(UserCam.this, Uv.class));
