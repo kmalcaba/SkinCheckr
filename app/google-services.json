@@ -8,6 +8,50 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:634049413125:android:f4051d8506763209",
+        "android_client_info": {
+          "package_name": "com.example.a201530032.sample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "634049413125-60e87i1d964pqhqu45v3qg9ehsrbkrhu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.a201530032.sample",
+            "certificate_hash": "99b0992c88e75ba35d1160c08a1fa59183f51563"
+          }
+        },
+        {
+          "client_id": "634049413125-ljfdunn6fppcvj1oslblatvsjlontp1n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-MN7vqy4wz85M7pwb1Ie2E3FGXUTKASc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "634049413125-ljfdunn6fppcvj1oslblatvsjlontp1n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:634049413125:android:688856922c46e02c",
         "android_client_info": {
           "package_name": "com.example.trishiaanne.skincheckr"
@@ -44,6 +88,22 @@
           "android_info": {
             "package_name": "com.example.trishiaanne.skincheckr",
             "certificate_hash": "6b62664814e62dce5407955fbd56e13fbea660ba"
+          }
+        },
+        {
+          "client_id": "634049413125-gnpjhkp5isin7o92pl1ushjon3edknb9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.trishiaanne.skincheckr",
+            "certificate_hash": "99b0992c88e75ba35d1160c08a1fa59183f51563"
+          }
+        },
+        {
+          "client_id": "634049413125-3iatg66iju5jq1j9t9ksohib2i6eo3ft.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.trishiaanne.skincheckr",
+            "certificate_hash": "6c922027ddc03e4da926d1f99e47e8afd522c92c"
           }
         },
         {
