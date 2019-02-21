@@ -8,24 +8,23 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-feature android:name="android.hardware.location.gps" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="SkinCheckr"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true"
-        >
-
+        android:theme="@style/AppTheme">
+        <activity android:name=".DermaInfo"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,20 +55,21 @@
         <activity
             android:name=".UserCam"
             android:hardwareAccelerated="false"
-            android:parentActivityName=".UserCam"/>
+            android:parentActivityName=".UserCam" />
         <activity
             android:name=".Login"
             android:parentActivityName=".Login" />
-        <activity android:name=".History"/>
-        <activity android:name=".ReviewHistory"/>
+        <activity android:name=".History" />
+        <activity android:name=".ReviewHistory" />
         <activity
             android:name=".SignUp"
             android:parentActivityName=".SignUp" />
-        <activity android:name=".Profile"/>
-        <activity android:name=".Uv"/>
-        <activity android:name=".Derma"/>
-        <activity android:name="com.example.trishiaanne.skincheckr.imgProcessing.ImageProcessing"
-            android:parentActivityName="com.example.trishiaanne.skincheckr.imgProcessing.ImageProcessing"/>
+        <activity android:name=".Profile" />
+        <activity android:name=".Uv" />
+        <activity android:name=".Derma" />
+        <activity
+            android:name=".imgProcessing.ImageProcessing"
+            android:parentActivityName=".imgProcessing.ImageProcessing" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -78,7 +78,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path"></meta-data>
+                android:resource="@xml/file_path" />
         </provider>
     </application>
 

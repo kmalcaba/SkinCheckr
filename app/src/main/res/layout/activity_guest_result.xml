@@ -24,7 +24,7 @@
                 android:layout_marginTop="56dp"
                 android:scaleType="centerCrop" />
             <TextView
-                android:id="@+id/diagnosis_label"
+                android:id="@+id/derma_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/san_francisco"
@@ -38,7 +38,7 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/diagnosis_label"
+                android:layout_below="@+id/derma_label"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"

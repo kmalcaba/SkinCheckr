@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:id="@+id/derma_layout">
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="5dp"
+        app:cardMaxElevation="2dp"
+        app:cardElevation="1dp"
+        app:cardBackgroundColor="@color/grayBackground"
+        android:layout_centerInParent="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dermatologist Name"
+                android:id="@+id/derma_name"
+                android:fontFamily="@font/san_francisco"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"
+                android:padding="5dp"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fee_icon"
+                android:id="@+id/year_icon"
+                android:src="@drawable/ic_outline_school_24px"
+                android:padding="5dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="14 years experience"
+                android:id="@+id/derma_year"
+                android:textSize="15sp"
+                android:layout_below="@+id/derma_fee"
+                android:layout_toEndOf="@id/year_icon"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:layout_marginTop="5dp"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/loc_icon"
+                android:src="@drawable/ic_outline_place_24px"
+                android:layout_below="@id/derma_name"
+                android:padding="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/derma_loc"
+                android:layout_below="@id/derma_name"
+                android:layout_toEndOf="@id/loc_icon"
+                android:text="Paco, Manila"
+                android:padding="5dp"
+                android:textSize="15sp" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fee_icon"
+                android:src="@drawable/ic_outline_local_atm_24px"
+                android:layout_below="@id/loc_icon"
+                android:padding="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/derma_fee"
+                android:layout_below="@id/derma_loc"
+                android:layout_toRightOf="@id/fee_icon"
+                android:text="P400"
+                android:padding="5dp"
+                android:textSize="15sp"
+                android:layout_marginTop="5dp"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View Profile"
+                android:layout_below="@id/fee_icon"
+                android:layout_marginTop="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:id="@+id/derma_btn"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>
