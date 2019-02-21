@@ -241,7 +241,7 @@ public class GuestResult extends AppCompatActivity {
 
     public void uploadImage() {
         storage = FirebaseStorage.getInstance().getReference("guest_result_images");
-        database = FirebaseDatabase.getInstance().getReference("result_images");
+        database = FirebaseDatabase.getInstance().getReference("guest_result_images");
 
         f = new File(imagePath);
         Log.d(TAG, "Original Image Path: " + imagePath);
