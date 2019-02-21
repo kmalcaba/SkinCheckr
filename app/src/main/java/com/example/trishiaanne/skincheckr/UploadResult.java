@@ -1,7 +1,7 @@
 package com.example.trishiaanne.skincheckr;
 
 public class UploadResult {
-    private String disease;
+    private int disease;
     private String imageURL;
     private String date;
 
@@ -9,17 +9,17 @@ public class UploadResult {
 
     }
 
-    public UploadResult(String d, String url, String date) {
+    public UploadResult(int d, String url, String date) {
         this.disease = d;
         this.imageURL = url;
         this.date = date;
     }
 
-    public String getDisease() {
+    public int getDisease() {
         return disease;
     }
 
-    public void setDisease(String disease) {
+    public void setDisease(int disease) {
         this.disease = disease;
     }
 
