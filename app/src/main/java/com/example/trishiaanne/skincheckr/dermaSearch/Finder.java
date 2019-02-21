@@ -367,6 +367,10 @@ public class Finder {
             case "valenzuela":
                 CSV_PATH += "practo_valenzuela.csv";
                 break;
+            default:
+                CSV_PATH += "practo_mnl.csv";
+                break;
+
         }
     }
 }

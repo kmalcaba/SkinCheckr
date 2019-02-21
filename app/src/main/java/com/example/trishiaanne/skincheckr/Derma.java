@@ -180,7 +180,11 @@ public class Derma extends AppCompatActivity implements LocationListener {
                 try {
                     List<Address> matches = geocoder.getFromLocation(latitude, longitude, 1);
                     locality = matches.get(0).getLocality();
-                    Toast.makeText(context, "You're in " + matches.get(0).getLocality(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(Derma.this, "You're in " + matches.get(0).getLocality(), Toast.LENGTH_LONG).show();
+                    if (!matches.get(0).getAdminArea().equals("Metro Manila")) {
+                        Toast.makeText(Derma.this, "You're not in Metro Manila", Toast.LENGTH_LONG).show();
+                        locality = "Manila";
+                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
