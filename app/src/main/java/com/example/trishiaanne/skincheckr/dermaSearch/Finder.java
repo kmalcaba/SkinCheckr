@@ -320,9 +320,52 @@ public class Finder {
     }
 
     private void chooseLocality() {
-        switch(locality) {
-            case "Manila":
+        String s = locality.toLowerCase();
+        switch(s) {
+            case "manila":
                 CSV_PATH += "practo_mnl.csv";
+                break;
+            case "quezon city":
+                CSV_PATH += "practo_qc.csv";
+                break;
+            case "caloocan":
+                CSV_PATH += "practo_caloocan.csv";
+                break;
+            case "las pinas":
+                CSV_PATH += "practo_laspinas.csv";
+                break;
+            case "makati":
+                CSV_PATH += "practo_makati.csv";
+                break;
+            case "malabon":
+                CSV_PATH += "practo_malabon.csv";
+                break;
+            case "mandaluyong":
+                CSV_PATH += "practo_mandaluyong.csv";
+                break;
+            case "muntinlupa":
+                CSV_PATH += "practo_muntinlupa.csv";
+                break;
+            case "parañaque":
+                CSV_PATH += "practo_paranaque.csv";
+                break;
+            case "pasay":
+                CSV_PATH += "practo_pasay.csv";
+                break;
+            case "pasig":
+                CSV_PATH += "practo_pasig.csv";
+                break;
+            case "pateros":
+                CSV_PATH += "practo_pateros.csv";
+                break;
+            case "san juan":
+                CSV_PATH += "practo_sanjuan.csv";
+                break;
+            case "taguig":
+                CSV_PATH += "practo_taguig.csv";
+                break;
+            case "valenzuela":
+                CSV_PATH += "practo_valenzuela.csv";
                 break;
         }
     }
