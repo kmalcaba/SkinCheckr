@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Clinic implements Parcelable {
 
-    protected Clinic(Parcel in) {
+    public Clinic(Parcel in) {
         address = in.readString();
         location = in.readString();
         name = in.readString();

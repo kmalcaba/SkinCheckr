@@ -97,11 +97,11 @@ public class NotifUV extends AppCompatActivity implements LocationListener {
     }
 
     private void findUvIndex() {
-        //displayMessage(getApplicationContext(), "Lat and Long: " + latitude + " " + longitutde);
+        //displayMessage(getApplicationContext(), "Lat and Long: " + latitude + " " + longitude);
         String url = "http://api.openweathermap.org/data/2.5/uvi?appid=9acd5cafe1888d79a02ca97c69497737" +
                 "&lat=" + latitude + "&lon=" + longitutde;
 
-        //displayMessage(getApplicationContext(), "User Lat and Long: " + longitutde + "\n" + latitude);
+        //displayMessage(getApplicationContext(), "User Lat and Long: " + longitude + "\n" + latitude);
 
         JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, url,null, new Response.Listener<JSONObject>() {
             @Override

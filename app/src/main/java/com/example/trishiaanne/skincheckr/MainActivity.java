@@ -34,7 +34,12 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
                 Intent userIntent = new Intent(MainActivity.this, Login.class);
+=======
+                Intent userIntent = new Intent(MainActivity.this, Derma.class);
+//                Intent userIntent = new Intent(MainActivity.this, Login.class);
+>>>>>>> 5fb1177490c9450f733d86b84939bcf4d62a4695
                 startActivity(userIntent);
 
                 getNotification(v);

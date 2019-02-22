@@ -1,11 +1,15 @@
 package com.example.trishiaanne.skincheckr.dermaSearch;
 
+import android.app.Activity;
+import android.content.res.AssetManager;
+
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,20 +24,31 @@ public class Finder {
     private final String ORIGIN = "&origins=";
     private final String DESTINATION = "&destionations=";
     private final String API_KEY = "&key=AIzaSyAswjvzMmUmqp9EShBRdPoJPcXw18xdR4Q";
-    private String CSV_PATH = "./practo_info/";
+    private String CSV_PATH ="";
     private List<Dermatologist> dermaList;
 
-    private final int city;
+    private int city;
 
-    public Finder(int city) {
+    public Finder(String locality, Activity activity) {
+        this.locality = locality;
+        this.activity = activity;
+        this.setDermaList(readCsv());
+    }
+
+    private String locality;
+    private Activity activity;
+
+    public Finder(int city, Activity activity) {
         this.city = city;
+        this.activity = activity;
         chooseCity();
         this.setDermaList(readCsv());
     }
 
+
     private List<Dermatologist> readCsv() {
         try (
-                BufferedReader reader = new BufferedReader(new FileReader(CSV_PATH))) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(activity.getAssets().open(CSV_PATH)))) {
             CSVReader csv = new CSVReaderBuilder(reader).withSkipLines(1).build();
 
             List<String[]> records = csv.readAll();
@@ -139,46 +154,6 @@ public class Finder {
         return null;
     }
 
-    public void printCsv() {
-        int i = 1;
-        for (Dermatologist d : getDermaList()) {
-            System.out.println("========================");
-            System.out.println("Derma #" + i);
-            System.out.println("========================");
-            System.out.println(d.getName());
-            System.out.println(d.getLocation());
-            System.out.println(d.getYears());
-            System.out.println(d.getFee());
-            System.out.println(d.getInfo());
-            System.out.println("=========CLINICS========");
-            List<Clinic> clinics = d.getClinics();
-            if (clinics != null) {
-                for (Clinic c : clinics) {
-                    System.out.println(c.getName());
-                    System.out.println(c.getLocation());
-                    System.out.println(c.getAddress());
-                    if (c.getSchedDays() != null) {
-                        for (String day : c.getSchedDays()) {
-                            String time = c.getSchedTime(c.getSchedDays().indexOf(day));
-                            System.out.println(day);
-                            System.out.println(time);
-                        }
-                    }
-                    System.out.println("========================");
-                }
-            }
-            System.out.println("========SERVICES========");
-            List<String> services = d.getServices();
-            if (services != null) {
-                for (String s : services) {
-                    System.out.println(s);
-                }
-            }
-            System.out.println("========================");
-            i++;
-        }
-    }
-
     public void findByFee(int choice) {
         switch(choice) {
             case 0:
@@ -191,14 +166,16 @@ public class Finder {
                 return;
         }
 
-        printCsv();
+//        printCsv();
     }
 
     public void findByYear() {
         Collections.sort(getDermaList(), new SortByYear());
 
-        printCsv();
+//        printCsv();
     }
+
+    //TODO: Distance Matrix sorting implementation
 
     public List<Dermatologist> getDermaList() {
         return dermaList;
@@ -339,6 +316,61 @@ public class Finder {
                 break;
             default:
                 break;
+        }
+    }
+
+    private void chooseLocality() {
+        String s = locality.toLowerCase();
+        switch(s) {
+            case "manila":
+                CSV_PATH += "practo_mnl.csv";
+                break;
+            case "quezon city":
+                CSV_PATH += "practo_qc.csv";
+                break;
+            case "caloocan":
+                CSV_PATH += "practo_caloocan.csv";
+                break;
+            case "las pinas":
+                CSV_PATH += "practo_laspinas.csv";
+                break;
+            case "makati":
+                CSV_PATH += "practo_makati.csv";
+                break;
+            case "malabon":
+                CSV_PATH += "practo_malabon.csv";
+                break;
+            case "mandaluyong":
+                CSV_PATH += "practo_mandaluyong.csv";
+                break;
+            case "muntinlupa":
+                CSV_PATH += "practo_muntinlupa.csv";
+                break;
+            case "parañaque":
+                CSV_PATH += "practo_paranaque.csv";
+                break;
+            case "pasay":
+                CSV_PATH += "practo_pasay.csv";
+                break;
+            case "pasig":
+                CSV_PATH += "practo_pasig.csv";
+                break;
+            case "pateros":
+                CSV_PATH += "practo_pateros.csv";
+                break;
+            case "san juan":
+                CSV_PATH += "practo_sanjuan.csv";
+                break;
+            case "taguig":
+                CSV_PATH += "practo_taguig.csv";
+                break;
+            case "valenzuela":
+                CSV_PATH += "practo_valenzuela.csv";
+                break;
+            default:
+                CSV_PATH += "practo_mnl.csv";
+                break;
+
         }
     }
 }

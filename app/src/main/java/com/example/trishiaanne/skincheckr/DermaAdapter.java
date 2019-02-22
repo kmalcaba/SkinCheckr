@@ -2,7 +2,6 @@ package com.example.trishiaanne.skincheckr;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 
 import com.example.trishiaanne.skincheckr.dermaSearch.Dermatologist;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DermaAdapter extends RecyclerView.Adapter<DermaAdapter.ViewHolder> {
@@ -26,7 +24,7 @@ public class DermaAdapter extends RecyclerView.Adapter<DermaAdapter.ViewHolder> 
         this.context = context;
     }
 
-    private List<Dermatologist> dermaList = new ArrayList<>();
+    private List<Dermatologist> dermaList;
     private Context context;
 
     @NonNull
@@ -43,15 +41,20 @@ public class DermaAdapter extends RecyclerView.Adapter<DermaAdapter.ViewHolder> 
 
         viewHolder.dermaName.setText(dermaList.get(i).getName());
         viewHolder.dermaLocation.setText(dermaList.get(i).getLocation());
-        viewHolder.dermaFee.setText(dermaList.get(i).getFee());
-        viewHolder.dermaYear.setText(dermaList.get(i).getYears() + " years of experience");
+        if (!dermaList.get(i).getFee().equals("null"))
+            viewHolder.dermaFee.setVisibility(View.GONE);
+        else
+            viewHolder.dermaFee.setText(dermaList.get(i).getFee());
+        if (dermaList.get(i).getYears() == 0)
+            viewHolder.dermaYear.setVisibility(View.GONE);
+        else
+            viewHolder.dermaYear.setText(dermaList.get(i).getYears() + " years of experience");
 
         viewHolder.btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), DermaInfo.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("derma", dermaList.get(i));
+                intent.putExtra("derma", dermaList.get(i));
                 context.startActivity(intent);
             }
         });
@@ -60,7 +63,7 @@ public class DermaAdapter extends RecyclerView.Adapter<DermaAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return 0;
+        return dermaList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -18,9 +17,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -29,7 +26,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,7 +52,7 @@ public class Uv extends AppCompatActivity implements LocationListener {
     private ImageView uvLabel;
     private LocationManager locationManager;
     double latitude;
-    double longitutde;
+    double longitude;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -101,11 +97,11 @@ public class Uv extends AppCompatActivity implements LocationListener {
     }
 
     private void findUvIndex() {
-        //displayMessage(getApplicationContext(), "Lat and Long: " + latitude + " " + longitutde);
+        //displayMessage(getApplicationContext(), "Lat and Long: " + latitude + " " + longitude);
         String url = "http://api.openweathermap.org/data/2.5/uvi?appid=9acd5cafe1888d79a02ca97c69497737" +
-                "&lat=" + latitude + "&lon=" + longitutde;
+                "&lat=" + latitude + "&lon=" + longitude;
 
-        //displayMessage(getApplicationContext(), "User Lat and Long: " + longitutde + "\n" + latitude);
+        //displayMessage(getApplicationContext(), "User Lat and Long: " + longitude + "\n" + latitude);
 
         JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, url,null, new Response.Listener<JSONObject>() {
             @Override
@@ -144,7 +140,7 @@ public class Uv extends AppCompatActivity implements LocationListener {
 
                     //Get the City and Country Name
                     Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                    List<Address> addresses = geocoder.getFromLocation(latitude, longitutde, 1);
+                    List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
                     String cityName = addresses.get(0).getLocality();
                     String countryName = addresses.get(0).getCountryName();
 
@@ -245,7 +241,7 @@ public class Uv extends AppCompatActivity implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        longitutde = location.getLongitude();
+        longitude = location.getLongitude();
         latitude = location.getLatitude();
     }
 
