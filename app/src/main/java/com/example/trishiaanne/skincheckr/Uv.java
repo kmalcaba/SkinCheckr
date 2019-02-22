@@ -287,7 +287,7 @@ public class Uv extends AppCompatActivity implements LocationListener {
                                 startActivity(new Intent(Uv.this, Uv.class));
                                 break;
                             case R.id.derma:
-                                Toast.makeText(Uv.this, "Find Nearby Dermatologist", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(Uv.this, "Find Nearby Dermatologist", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(Uv.this, Derma.class));
                                 break;
 //                            case R.id.editProfile:

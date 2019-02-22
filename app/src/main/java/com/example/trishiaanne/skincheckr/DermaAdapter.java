@@ -41,7 +41,7 @@ public class DermaAdapter extends RecyclerView.Adapter<DermaAdapter.ViewHolder> 
 
         viewHolder.dermaName.setText(dermaList.get(i).getName());
         viewHolder.dermaLocation.setText(dermaList.get(i).getLocation());
-        if (!dermaList.get(i).getFee().equals("null"))
+        if (dermaList.get(i).getFee().equals("null"))
             viewHolder.dermaFee.setVisibility(View.GONE);
         else
             viewHolder.dermaFee.setText(dermaList.get(i).getFee());
