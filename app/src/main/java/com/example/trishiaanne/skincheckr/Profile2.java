@@ -41,10 +41,6 @@ public class Profile2 extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     public String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-<<<<<<< HEAD
-=======
-
->>>>>>> 5fb1177490c9450f733d86b84939bcf4d62a4695
     private Button mButtonChooseImage;
     private Button mButtonUpload;
     private TextView mTextViewShowUploads;
@@ -78,10 +74,6 @@ public class Profile2 extends AppCompatActivity {
         mButtonChooseImage = findViewById(R.id.button_choose_image);
         mButtonUpload = findViewById(R.id.button_upload);
         mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
-<<<<<<< HEAD
-=======
-//        mEditTextFileName = findViewById(R.id.edit_text_file_name);
->>>>>>> 5fb1177490c9450f733d86b84939bcf4d62a4695
         mImageView = findViewById(R.id.image_view);
         mProgressBar = findViewById(R.id.progress_bar);
 
@@ -131,119 +123,10 @@ public class Profile2 extends AppCompatActivity {
             Picasso.get().load(mImageUri).into(mImageView);
         }
     }
-<<<<<<< HEAD
 
     private void uploadFile() {
-            storage = FirebaseStorage.getInstance().getReference(uid);
-            database = FirebaseDatabase.getInstance().getReference("user_result");
-
-            if (mImageUri != null) {
-                final StorageReference imagesReference = storage.child(String.valueOf(System.currentTimeMillis()));
-                imagesReference.putFile(mImageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful()) {
-                            throw task.getException();
-                        }
-                        return imagesReference.getDownloadUrl();
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.isSuccessful()) {
-                            Uri downloadUri = task.getResult();
-                            Log.d(TAG, "DOWNLOAD URI: " + downloadUri.toString());
-
-                            Calendar dateToday = Calendar.getInstance();
-                            String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(dateToday.getTime());
-                            UploadResult uploadResult = new UploadResult("INTERTRIGO", downloadUri.toString(), currentDate, uid);
-                            String uploadID = database.push().getKey();
-                            database.child(uploadID).setValue(uploadResult);
-                        } else {
-=======
-
-//    private void uploadFile() {
-//        storage = FirebaseStorage.getInstance().getReference("uploads");
-//        database = FirebaseDatabase.getInstance().getReference("uploads");
-//
-//        if (mImageUri != null) {
-//            final StorageReference imagesReference = storage.child(String.valueOf(System.currentTimeMillis()));
-//            imagesReference.putFile(mImageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-//
-//
-//                //orig  Picasso.with(this).load(mImageUri).into(mImageView);
-//            Picasso.get().
-//
-//                load(mImageUri).
-//
-//                into(mImageView);
-//
-//                //File file=new File(mImageUri.getPath());
-//                // Picasso.get().load(file).into(mImageView);
-//                // Picasso.with(getActivity()).load(file).into(imageView);
-//            }
-//        }
-
-    private String getFileExtension(Uri uri) {
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cR.getType(uri));
-    }
-
-    private void openImagesActivity() {
-        Intent intent = new Intent(Profile2.this, ImagesActivity.class);
-        startActivity(intent);
-        // startActivity(new Intent(Profile2.this, ImagesActivity.class));
-    }
-
-    private void uploadFile() {
-        //FirebaseStorage storage = FirebaseStorage.getInstance();
-        //final StorageReference storageRef = storage.getReference();
-
-
-/*        if (mImageUri != null) {
-            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
-                    + "." + getFileExtension(mImageUri));
-
-            mUploadTask = fileReference.putFile(mImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mProgressBar.setProgress(0);
-                                }
-                            }, 500);
-
-                            Toast.makeText(Profile2.this, "Upload successful", Toast.LENGTH_LONG).show();
-                            Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),
-                                    taskSnapshot.getStorage().getDownloadUrl().toString());
-                            // taskSnapshot.getStorage().getDownloadUrl().toString());
-                            String uploadId = mDatabaseRef.push().getKey();
-                            mDatabaseRef.child(uploadId).setValue(upload);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(Profile2.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            mProgressBar.setProgress((int) progress);
-                        }
-                    });
-        } else {
-            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
-        }*/
-
-        storage = FirebaseStorage.getInstance().getReference("uploads");
-        database = FirebaseDatabase.getInstance().getReference("uploads");
+        storage = FirebaseStorage.getInstance().getReference(uid);
+        database = FirebaseDatabase.getInstance().getReference("user_result");
 
         if (mImageUri != null) {
             final StorageReference imagesReference = storage.child(String.valueOf(System.currentTimeMillis()));
@@ -266,11 +149,9 @@ public class Profile2 extends AppCompatActivity {
                         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(dateToday.getTime());
 
                         UploadResult uploadResult = new UploadResult("INTERTRIGO", downloadUri.toString(), currentDate, uid);
-//                            UploadResult uploadResult = new UploadResult("INTERTRIGO", downloadUri.toString(), currentDate);
                         String uploadID = database.push().getKey();
                         database.child(uploadID).setValue(uploadResult);
                     } else {
->>>>>>> 5fb1177490c9450f733d86b84939bcf4d62a4695
 
                     }
                 }
@@ -278,14 +159,9 @@ public class Profile2 extends AppCompatActivity {
         }
     }
 
-<<<<<<< HEAD
     private void openImagesActivity () {
         Intent intent = new Intent(Profile2.this, ImagesActivity.class);
         startActivity(intent);
         // startActivity(new Intent(Profile2.this, ImagesActivity.class));
     }
 }
-=======
-
-}
->>>>>>> 5fb1177490c9450f733d86b84939bcf4d62a4695

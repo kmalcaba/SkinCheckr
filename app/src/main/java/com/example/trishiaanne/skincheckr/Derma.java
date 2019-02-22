@@ -44,14 +44,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.trishiaanne.skincheckr.dermaSearch.Dermatologist;
 import com.example.trishiaanne.skincheckr.dermaSearch.Finder;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.maps.model.DistanceMatrixRow;
 
 import org.json.JSONArray;
 import org.json.JSONException;

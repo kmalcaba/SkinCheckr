@@ -88,20 +88,8 @@
             android:name=".SignUp"
             android:parentActivityName=".SignUp" />
         <activity android:name=".Profile" />
-        <activity android:name=".Profile2">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-<<<<<<< HEAD
-        <activity android:name=".Profile2" />
-
-        <activity android:name=".ImagesActivity"></activity>
-=======
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".Profile2"/>
         <activity android:name=".ImagesActivity" />
->>>>>>> 5fb1177490c9450f733d86b84939bcf4d62a4695
         <activity android:name=".Uv" />
         <activity android:name=".Derma" />
         <activity
