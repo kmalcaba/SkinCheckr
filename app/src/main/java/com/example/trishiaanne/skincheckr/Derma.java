@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -34,6 +35,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -42,13 +44,23 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.trishiaanne.skincheckr.dermaSearch.Dermatologist;
 import com.example.trishiaanne.skincheckr.dermaSearch.Finder;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.maps.model.DistanceMatrixRow;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Derma extends AppCompatActivity implements LocationListener {
@@ -60,8 +72,8 @@ public class Derma extends AppCompatActivity implements LocationListener {
     DermaAdapter adapter;
 
     DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mToggle;
     LocationManager locationManager;
+    Location location;
     double longitude = 0.0;
     double latitude = 0.0;
     private int LOCATION_PERMISSION_CODE = 1;
@@ -69,14 +81,19 @@ public class Derma extends AppCompatActivity implements LocationListener {
     Context context;
 
     String locality = "";
+    int city = 5;
 
     private void init() {
+
         getGPS();
         context = getApplicationContext();
-        f = new Finder(locality, this);
+        findCity();
+        Log.d("Locality", locality + "Here");
+        f = new Finder(city, this);
+//        f = new Finder(locality, this);
         initDermaList();
         alphabetical.addAll(dermaList);
-        displayToolbar();
+//        displayToolbar();
     }
 
     private void initSpinner() {
@@ -88,25 +105,23 @@ public class Derma extends AppCompatActivity implements LocationListener {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
-                    case 0: //sort by distance
-                        //TODO: Sort by distance
-                        dermaList.clear();
-                        dermaList.addAll(alphabetical);
-                        adapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(adapter);
-                        break;
-                    case 1: //sort by price low to high
+//                    case 0: //sort by distance
+//                        findByDistance();
+//                        adapter.notifyDataSetChanged();
+//                        recyclerView.setAdapter(adapter);
+//                        break;
+                    case 0: //sort by price low to high
                         f.findByFee(0);
                         adapter.notifyDataSetChanged();
                         recyclerView.setAdapter(adapter);
                         break;
-                    case 2: //sort by price high to low
+                    case 1: //sort by price high to low
                         f.findByFee(1);
                         Log.d("", "Sorted by price from high to low");
                         adapter.notifyDataSetChanged();
                         recyclerView.setAdapter(adapter);
                         break;
-                    case 3: //sort by years of experience
+                    case 2: //sort by years of experience
                         f.findByYear();
                         adapter.notifyDataSetChanged();
                         recyclerView.setAdapter(adapter);
@@ -158,11 +173,17 @@ public class Derma extends AppCompatActivity implements LocationListener {
         });
 
 
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(this);
     }
 
     private void initDermaList() {
         dermaList = f.getDermaList();
+//        findByDistance();
 
         Log.d("Derma.java", "Dermalist retrieved");
         initRecyclerView();
@@ -173,17 +194,19 @@ public class Derma extends AppCompatActivity implements LocationListener {
         String url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + ","
                 + longitude + "&key" + R.string.google_maps_key;
 
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET,url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Geocoder geocoder = new Geocoder(Derma.this);
                 try {
                     List<Address> matches = geocoder.getFromLocation(latitude, longitude, 1);
                     locality = matches.get(0).getLocality();
+                    chooseLocality(matches.get(0).getLocality());
                     Toast.makeText(Derma.this, "You're in " + matches.get(0).getLocality(), Toast.LENGTH_LONG).show();
                     if (!matches.get(0).getAdminArea().equals("Metro Manila")) {
                         Toast.makeText(Derma.this, "You're not in Metro Manila", Toast.LENGTH_LONG).show();
                         locality = "Manila";
+                        chooseLocality(locality);
                     }
 
                 } catch (IOException e) {
@@ -202,16 +225,77 @@ public class Derma extends AppCompatActivity implements LocationListener {
 
     }
 
+    private double getDistanceMatrix(String destination) {
+        String url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + latitude + ","
+                + longitude + "&destinations=" + destination + "&key=AIzaSyAswjvzMmUmqp9EShBRdPoJPcXw18xdR4Q";
+
+        final double[] dist = {0};
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray rows = response.getJSONArray("rows");
+                    JSONObject row = rows.getJSONObject(0);
+                    JSONArray elements = row.getJSONArray("elements");
+                    JSONObject element = elements.getJSONObject(0);
+                    JSONObject distance = element.getJSONObject("distance");
+                    dist[0] = distance.getDouble("value");
+//                    dist[0] = Double.parseDouble(distance.getString("value"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        objectRequest.setRetryPolicy(new DefaultRetryPolicy(0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(objectRequest);
+
+        return dist[0];
+    }
+
+
+
+    private void findByDistance() {
+        Collections.sort(dermaList, new SortByDistance());
+    }
+
+    class SortByDistance implements Comparator<Dermatologist> {
+
+        @Override
+        public int compare(Dermatologist d1, Dermatologist d2) {
+            String loc1 = d1.getLocation().replace(", ", "+");
+            loc1 = loc1.replace(" ", "");
+            String loc2 = d2.getLocation().replace(", ", "+");
+            loc2 = loc2.replace(" ", "");
+
+            double dist1 = getDistanceMatrix(loc1);
+            double dist2 = getDistanceMatrix(loc2);
+
+            if(dist1 > dist2) {
+                return 1;
+            } else if (dist1 < dist2) {
+                return -1;
+            } else
+                return 0;
+        }
+    }
+
     private void getGPS() {
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (ContextCompat.checkSelfPermission(Derma.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if(location == null) {
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
-                onLocationChanged(location);
-                findCity();
-            }
+            onLocationChanged(location);
+            findCity();
         } else {
             requestLocation();
         }
@@ -225,7 +309,7 @@ public class Derma extends AppCompatActivity implements LocationListener {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            ActivityCompat.requestPermissions(Derma.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
+                            ActivityCompat.requestPermissions(Derma.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
                         }
                     })
                     .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -236,7 +320,7 @@ public class Derma extends AppCompatActivity implements LocationListener {
                     })
                     .create().show();
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
         }
     }
 
@@ -274,10 +358,10 @@ public class Derma extends AppCompatActivity implements LocationListener {
     private void displayToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(null);
+        getSupportActionBar().setTitle("");
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+        ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
         ActionBar actionBar = getSupportActionBar();
@@ -298,7 +382,7 @@ public class Derma extends AppCompatActivity implements LocationListener {
                                 startActivity(new Intent(Derma.this, Uv.class));
                                 break;
                             case R.id.derma:
-                                Toast.makeText(Derma.this, "Find Nearby Dermatologist", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(Derma.this, "Find Nearby Dermatologist", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(Derma.this, Derma.class));
                                 break;
 //                            case R.id.editProfile:
@@ -328,7 +412,6 @@ public class Derma extends AppCompatActivity implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        locationManager.removeUpdates(this);
         longitude = location.getLongitude();
         latitude = location.getLatitude();
     }
@@ -347,5 +430,61 @@ public class Derma extends AppCompatActivity implements LocationListener {
     public void onProviderDisabled(String s) {
 
     }
+
+    private void chooseLocality(String locality) {
+        String s = locality.toLowerCase();
+        switch(s) {
+            case "manila":
+                city = 5;
+                break;
+            case "quezon city":
+                city = 11;
+                break;
+            case "caloocan":
+                city = 0;
+                break;
+            case "las pinas":
+                city = 1;
+                break;
+            case "makati":
+                city = 2;
+                break;
+            case "malabon":
+                city = 3;
+                break;
+            case "mandaluyong":
+                city = 4;
+                break;
+            case "muntinlupa":
+                city = 6;
+                break;
+            case "parañaque":
+                city = 7;
+                break;
+            case "pasay":
+                city = 8;
+                break;
+            case "pasig":
+                city = 9;
+                break;
+            case "pateros":
+                city = 10;
+                break;
+            case "san juan":
+                city = 12;
+                break;
+            case "taguig":
+                city = 13;
+                break;
+            case "valenzuela":
+                city = 14;
+                break;
+            default:
+                city = 0;
+                break;
+
+        }
+    }
+
 }
 

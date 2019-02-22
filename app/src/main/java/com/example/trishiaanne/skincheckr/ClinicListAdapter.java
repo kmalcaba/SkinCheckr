@@ -1,6 +1,7 @@
 package com.example.trishiaanne.skincheckr;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -53,12 +54,6 @@ public class ClinicListAdapter extends RecyclerView.Adapter<ClinicListAdapter.Vi
         else
             viewHolder.clinicFee.setText(c.getFee());
         viewHolder.clinicAddress.setText(c.getAddress());
-        viewHolder.getDirections.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(), c.getDirections(), Toast.LENGTH_LONG).show();
-            }
-        });
 
         String[] schedDays = new String[c.getSchedDays().size()];
         String[] schedTime = new String[c.getSchedTimes().size()];
@@ -89,6 +84,17 @@ public class ClinicListAdapter extends RecyclerView.Adapter<ClinicListAdapter.Vi
                 ViewGroup.LayoutParams layoutParams = viewHolder.schedList.getLayoutParams();
                 layoutParams.height = height;
                 viewHolder.schedList.setLayoutParams(layoutParams);
+            }
+        });
+
+        //TODO: Get Directions
+        viewHolder.getDirections.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), c.getDirections(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(view.getContext(), MapsActivity.class);
+                intent.putExtra("dir", c.getDirections());
+                context.startActivity(intent);
             }
         });
     }
