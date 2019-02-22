@@ -24,7 +24,7 @@
         android:id="@+id/timelineText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="USER TIMELINE"
+        android:text="SAVED RECORDS"
         android:fontFamily="@font/san_francisco"
         android:layout_below="@id/firstName"
         android:gravity="center"

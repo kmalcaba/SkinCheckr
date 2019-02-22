@@ -77,10 +77,10 @@ public class ImageProcessing extends AppCompatActivity{
                 Bitmap img = decoded.copy(decoded.getConfig(), decoded.isMutable());
 
                 //Median Filtering
-                Bitmap med = MedianFilter.filter(img);
+                //Bitmap med = MedianFilter.filter(img);
 
 //                //Otsu's Method of Thresholding
-                Otsu o = new Otsu(med, img);
+                Otsu o = new Otsu(img, img);
                 int threshold = o.getThreshold();
                 Log.d("Threshold: ", Integer.toString(threshold));
                 Bitmap thresh = o.applyThreshold();

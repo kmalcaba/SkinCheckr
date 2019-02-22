@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +30,7 @@ public class Profile extends AppCompatActivity {
     private DatabaseReference checkUser;
     private DatabaseReference databaseReference;
     private ArrayList<UploadResult> uploadResults;
+    private Button viewTimeline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +75,7 @@ public class Profile extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         uploadResults = new ArrayList<>();
-        checkUser = FirebaseDatabase.getInstance().getReference("result_images");
+        checkUser = FirebaseDatabase.getInstance().getReference("user_result");
 
         //compare the current user to the result_images userID variable
         checkUser.addValueEventListener(new ValueEventListener() {
@@ -90,13 +92,6 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-
-        recyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Profile.this, Profile2.class));
             }
         });
     }
