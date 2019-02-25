@@ -34,12 +34,21 @@
                 android:gravity="center_horizontal"
                 android:layout_below="@+id/display_diagnosed"
                 android:text="TOP 3 DIAGNOSIS:"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/diagnosis_label"
+                android:id="@+id/disclaimer"
+                android:textSize="12sp"
+                android:gravity="center_horizontal"
+                android:padding="5dp"
+                android:text="For a professional diagnosis, please consult a dermatologist."/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/diagnosis_label"
+                android:layout_below="@+id/disclaimer"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"

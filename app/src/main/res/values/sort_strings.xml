@@ -2,6 +2,7 @@
 <resources>
     <string-array name="sort_array">
         <!--<item>Distance</item>-->
+        <item>Name - A to Z</item>
         <item>Price - Low to High</item>
         <item>Price - High to Low</item>
         <item>Years of Experience</item>
