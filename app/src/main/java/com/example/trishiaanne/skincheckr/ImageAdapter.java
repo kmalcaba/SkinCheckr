@@ -37,6 +37,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         UploadResult uploadCurrent = mUploads.get(position);
         Picasso.get().load(uploadCurrent.getImageURL()).into(holder.imageView);
+        holder.textViewName.setText(uploadCurrent.getDisease());
     }
 
     @Override

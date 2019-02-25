@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +32,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
     private ValueEventListener mDBListener;
 
     private List<UploadResult> mUploads;
+    public String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         mAdapter.setOnItemClickListener(ImagesActivity.this);
 
         mStorage = FirebaseStorage.getInstance();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("user_result");
 
         mDBListener = mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
