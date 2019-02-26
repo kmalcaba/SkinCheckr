@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -62,9 +64,25 @@ public class ImageProcessing extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 long startTime = SystemClock.uptimeMillis();
-                //change dimensions
                 Bitmap original = BitmapFactory.decodeFile(chosenImagePath);
-                Bitmap resized = Bitmap.createScaledBitmap(original, 640, 480, false);
+
+                //change dimensions
+                final int maxWidth = 640;
+                int outWidth;
+                int outHeight;
+                int inWidth = original.getWidth();
+                int inHeight = original.getHeight();
+
+                if( inWidth > inHeight) {
+                    outWidth = maxWidth;
+                    outHeight = (inHeight * maxWidth) / inWidth;
+                } else {
+                    outHeight = maxWidth;
+                    outWidth = (inWidth * maxWidth) / inHeight;
+                }
+
+                Bitmap resized = Bitmap.createScaledBitmap(original, outWidth, outHeight, false);
+                MediaStore.Images.Media.insertImage(getContentResolver(), resized, "RESIZED_IMG", "SAMPLE");
 
                 //Compress image
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -87,6 +105,7 @@ public class ImageProcessing extends AppCompatActivity{
                 Bitmap dilate = o.dilateImage(thresh);
                 Bitmap mask = o.applyMask(dilate);
 
+                MediaStore.Images.Media.insertImage(getContentResolver(), mask, "THRESHOLDED_IMG", "SAMPLE");
                 //Feature Extraction
                 FeatureExtraction fe = new FeatureExtraction(mask);
                 fe.extract();
@@ -102,6 +121,14 @@ public class ImageProcessing extends AppCompatActivity{
                 arrayInputs[4] = (float) fe.getHomogeneity();
                 arrayInputs[5] = (float) fe.getMean();
                 arrayInputs[6] = (float) fe.getVariance();
+
+                Log.d("Contrast: ", String.valueOf(fe.getContrast()));
+                Log.d("Correlation: ", String.valueOf(fe.getCorrelation()));
+                Log.d("Energy: ", String.valueOf(fe.getEnergy()));
+                Log.d("Entropy: ", String.valueOf(fe.getEntropy()));
+                Log.d("Homogeneity: ", String.valueOf(fe.getHomogeneity()));
+                Log.d("Mean: ", String.valueOf(fe.getMean()));
+                Log.d("Variance: ", String.valueOf(fe.getVariance()));
 
                 displayMessage(getApplicationContext(), "Image processing complete");
                 Intent intent = new Intent(ImageProcessing.this, History.class);
