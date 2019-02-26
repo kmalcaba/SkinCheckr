@@ -160,7 +160,7 @@ public class Result extends AppCompatActivity {
             case "dyshidrotic eczema":
                 Bitmap dys = BitmapFactory.decodeResource(getResources(), R.drawable.dys_sample);
                 dImg.add(dys);
-                dImgName.add("Dyshidrotic eczema");
+                dImgName.add("Dyshidrotic Eczema");
                 dImgSummary.add("Dyshidrotic eczema, or dyshidrosis, is a skin condition in which blisters develop on the soles of your feet and/or the palms of your hands.");
                 label.add("Click image for more information about Dyshidrotic eczema.");
                 percentage.add(y);
@@ -205,7 +205,7 @@ public class Result extends AppCompatActivity {
             case "tinea corporis":
                 Bitmap corpo = BitmapFactory.decodeResource(getResources(), R.drawable.corp_sample);
                 dImg.add(corpo);
-                dImgName.add("Tinea corporis");
+                dImgName.add("Ringworm (Tinea Corporis)");
                 dImgSummary.add("Ringworm is a common fungal skin infection otherwise known as tinea");
                 label.add("Click image for more information about Tinea corporis.");
                 percentage.add(y);
@@ -214,7 +214,7 @@ public class Result extends AppCompatActivity {
             case "tinea pedis":
                 Bitmap pedis = BitmapFactory.decodeResource(getResources(), R.drawable.pedis_sample);
                 dImg.add(pedis);
-                dImgName.add("Tinea pedis");
+                dImgName.add("Athlete's Foot (Tinea Pedis)");
                 dImgSummary.add("Athlete's foot — also called tinea pedis — is a contagious fungal infection that affects the skin on the feet.");
                 label.add("Click image for more information about Tinea pedis.");
                 percentage.add(y);
@@ -223,7 +223,7 @@ public class Result extends AppCompatActivity {
             case "benign mole":
                 Bitmap benign = BitmapFactory.decodeResource(getResources(), R.drawable.benign_sample);
                 dImg.add(benign);
-                dImgName.add("Benign mole");
+                dImgName.add("Benign Mole");
                 dImgSummary.add("Benign pigmented moles made of melanocytes are defined as those lesions which do not produce any harmful effects.");
                 label.add("Click image for more information about Benign mole.");
                 percentage.add(y);

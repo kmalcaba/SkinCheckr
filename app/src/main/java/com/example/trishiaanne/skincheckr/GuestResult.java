@@ -216,21 +216,19 @@ public class GuestResult extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 new AlertDialog.Builder(this)
-                        .setTitle("Save record? ")
-                        .setMessage("Do you want to save this record? If you want to save, you will be redirected to our sign up page.")
+                        .setTitle("Return to homescreen? ")
                         .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent toSign = new Intent(GuestResult.this, SignUp.class);
-                                startActivity(toSign);
-                            }
-                        })
-                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 uploadImage();
                                 Intent out = new Intent(GuestResult.this, MainActivity.class);
                                 startActivity(out);
+                            }
+                        })
+                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
                             }
                         })
                         .create().show();

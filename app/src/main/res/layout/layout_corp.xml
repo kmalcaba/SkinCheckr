@@ -24,7 +24,7 @@
         android:fontFamily="@font/san_francisco"
         android:gravity="center"
         android:padding="5dp"
-        android:text="Tinea Corporis"
+        android:text="Ringworm (Tinea Corporis)"
         android:textColor="@color/colorPrimary"
         android:textSize="30sp"
         android:textStyle="bold" />

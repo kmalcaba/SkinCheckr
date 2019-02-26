@@ -98,23 +98,24 @@ public class Derma extends AppCompatActivity implements LocationListener {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
-//                    case 0: //sort by distance
-//                        findByDistance();
-//                        adapter.notifyDataSetChanged();
-//                        recyclerView.setAdapter(adapter);
-//                        break;
-                    case 0: //sort by price low to high
+                    case 0: //sort alphabetically
+                        dermaList.clear();
+                        dermaList.addAll(alphabetical);
+                        adapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(adapter);
+                        break;
+                    case 1: //sort by price low to high
                         f.findByFee(0);
                         adapter.notifyDataSetChanged();
                         recyclerView.setAdapter(adapter);
                         break;
-                    case 1: //sort by price high to low
+                    case 2: //sort by price high to low
                         f.findByFee(1);
                         Log.d("", "Sorted by price from high to low");
                         adapter.notifyDataSetChanged();
                         recyclerView.setAdapter(adapter);
                         break;
-                    case 2: //sort by years of experience
+                    case 3: //sort by years of experience
                         f.findByYear();
                         adapter.notifyDataSetChanged();
                         recyclerView.setAdapter(adapter);
