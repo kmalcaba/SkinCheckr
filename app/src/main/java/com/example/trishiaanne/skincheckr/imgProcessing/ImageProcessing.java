@@ -117,7 +117,8 @@ public class ImageProcessing extends AppCompatActivity{
                 fe.extract();
 
                 long endTime = SystemClock.uptimeMillis();
-                Log.d("SkinCheckr:", "Timecost to run image processing: " + Long.toString((endTime - startTime)/1000));
+                long duration = (endTime - startTime)/1000;
+                Log.d("SkinCheckr:", "Timecost to run image processing: " + Long.toString(duration));
 
                 float [] arrayInputs = new float[19];
                 arrayInputs[0] = (float) fe.getASM();
@@ -146,7 +147,7 @@ public class ImageProcessing extends AppCompatActivity{
                 Log.d("InfoMeasure1:", String.valueOf(fe.getInfoMeasure1()));
                 Log.d("InfoMeasure2:", String.valueOf(fe.getInfoMeasure2()));
 
-                displayMessage(getApplicationContext(), "Image processing complete");
+                displayMessage(getApplicationContext(), "Image processing completed in " + duration + " seconds");
                 Intent intent = new Intent(ImageProcessing.this, History.class);
                 intent.putExtra("features", arrayInputs);
                 intent.putExtra("image_path", chosenImagePath);
