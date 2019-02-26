@@ -19,14 +19,14 @@ import java.util.PriorityQueue;
 
 public class ImageClassifier implements Classifier {
 
-    private static final String MODEL_PATH = "optimized_f.pb";
+    private static final String MODEL_PATH = "optimized.pb";
     private static final String LABEL_PATH = "labels.txt";
     private static final int RESULTS_TO_SHOW = 3;
-    private static final String INPUT_NAME = "dense_63_input_6";
-    private static final String OUTPUT_NAME = "dense_65_6/Softmax";
+    private static final String INPUT_NAME = "input_input_6";
+    private static final String OUTPUT_NAME = "output_6/Softmax";
     private static final String [] OUTPUTS = {OUTPUT_NAME};
 
-    private static final int INPUT_SIZE = 14;
+    private static final int INPUT_SIZE = 19;
     private static final float THRESHOLD = 0.1f;
 
     private TensorFlowInferenceInterface inferenceInterface;

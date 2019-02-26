@@ -73,32 +73,38 @@ public class ImageProcessing extends AppCompatActivity{
                 int inWidth = original.getWidth();
                 int inHeight = original.getHeight();
 
-                if( inWidth > inHeight) {
-                    outWidth = maxWidth;
-                    outHeight = (inHeight * maxWidth) / inWidth;
+                Bitmap img;
+
+                if(original.getWidth() > 640) {
+                    if (inWidth > inHeight) {
+                        outWidth = maxWidth;
+                        outHeight = (inHeight * maxWidth) / inWidth;
+                    } else {
+                        outHeight = maxWidth;
+                        outWidth = (inWidth * maxWidth) / inHeight;
+                    }
+
+                    Bitmap resized = Bitmap.createScaledBitmap(original, outWidth, outHeight, false);
+                    MediaStore.Images.Media.insertImage(getContentResolver(), resized, "RESIZED_IMG", "SAMPLE");
+
+                    //Compress image
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    resized.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+
+                    Log.e("Original   dimensions", original.getWidth() + " " + original.getHeight());
+                    Log.e("Compressed dimensions", decoded.getWidth() + " " + decoded.getHeight());
+
+                    img = decoded.copy(decoded.getConfig(), decoded.isMutable());
                 } else {
-                    outHeight = maxWidth;
-                    outWidth = (inWidth * maxWidth) / inHeight;
+                    img = original.copy(original.getConfig(), original.isMutable());
                 }
 
-                Bitmap resized = Bitmap.createScaledBitmap(original, outWidth, outHeight, false);
-                MediaStore.Images.Media.insertImage(getContentResolver(), resized, "RESIZED_IMG", "SAMPLE");
-
-                //Compress image
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                resized.compress(Bitmap.CompressFormat.JPEG,100, out);
-                Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
-
-                Log.e("Original   dimensions", original.getWidth()+" "+original.getHeight());
-                Log.e("Compressed dimensions", decoded.getWidth()+" "+decoded.getHeight());
-
-                Bitmap img = decoded.copy(decoded.getConfig(), decoded.isMutable());
-
                 //Median Filtering
-                //Bitmap med = MedianFilter.filter(img);
+                Bitmap med = MedianFilter.filter(img);
 
 //                //Otsu's Method of Thresholding
-                Otsu o = new Otsu(img, img);
+                Otsu o = new Otsu(med, img);
                 int threshold = o.getThreshold();
                 Log.d("Threshold: ", Integer.toString(threshold));
                 Bitmap thresh = o.applyThreshold();
@@ -113,22 +119,32 @@ public class ImageProcessing extends AppCompatActivity{
                 long endTime = SystemClock.uptimeMillis();
                 Log.d("SkinCheckr:", "Timecost to run image processing: " + Long.toString((endTime - startTime)/1000));
 
-                float [] arrayInputs = new float[14];
-                arrayInputs[0] = (float) fe.getContrast();
-                arrayInputs[1] = (float) fe.getCorrelation();
-                arrayInputs[2] = (float) fe.getEnergy();
-                arrayInputs[3] = (float) fe.getEntropy();
-                arrayInputs[4] = (float) fe.getHomogeneity();
-                arrayInputs[5] = (float) fe.getMean();
-                arrayInputs[6] = (float) fe.getVariance();
+                float [] arrayInputs = new float[19];
+                arrayInputs[0] = (float) fe.getASM();
+                arrayInputs[1] = (float) fe.getContrast();
+                arrayInputs[2] = (float) fe.getCorrelation();
+                arrayInputs[3] = (float) fe.getHomogeneity();
+                arrayInputs[4] = (float) fe.getSumAvg();
+                arrayInputs[5] = (float) fe.getSumVariance();
+                arrayInputs[6] = (float) fe.getSumEntropy();
+                arrayInputs[7] = (float) fe.getEntropy();
+                arrayInputs[8] = (float) fe.getDiffVariance();
+                arrayInputs[9] = (float) fe.getDiffEntropy();
+                arrayInputs[10] = (float) fe.getInfoMeasure1();
+                arrayInputs[11] = (float) fe.getInfoMeasure2();
 
+                Log.d("ASM:", String.valueOf(fe.getASM()));
                 Log.d("Contrast: ", String.valueOf(fe.getContrast()));
                 Log.d("Correlation: ", String.valueOf(fe.getCorrelation()));
-                Log.d("Energy: ", String.valueOf(fe.getEnergy()));
-                Log.d("Entropy: ", String.valueOf(fe.getEntropy()));
-                Log.d("Homogeneity: ", String.valueOf(fe.getHomogeneity()));
-                Log.d("Mean: ", String.valueOf(fe.getMean()));
-                Log.d("Variance: ", String.valueOf(fe.getVariance()));
+                Log.d("Homogeneity:", String.valueOf(fe.getHomogeneity()));
+                Log.d("SumAvg:", String.valueOf(fe.getSumAvg()));
+                Log.d("SumVariance:", String.valueOf(fe.getSumVariance()));
+                Log.d("SumEntropy:", String.valueOf(fe.getSumEntropy()));
+                Log.d("Entropy:", String.valueOf(fe.getEntropy()));
+                Log.d("DiffVariance:", String.valueOf(fe.getDiffVariance()));
+                Log.d("DiffEntropy:", String.valueOf(fe.getDiffEntropy()));
+                Log.d("InfoMeasure1:", String.valueOf(fe.getInfoMeasure1()));
+                Log.d("InfoMeasure2:", String.valueOf(fe.getInfoMeasure2()));
 
                 displayMessage(getApplicationContext(), "Image processing complete");
                 Intent intent = new Intent(ImageProcessing.this, History.class);

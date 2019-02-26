@@ -113,13 +113,13 @@ public class ReviewHistory extends AppCompatActivity {
             bleed.setText("Bleeding: " + "No");
         }
 
-        inputs[7] = (float) daysSymptom;
-        inputs[8] = (float) itching;
-        inputs[9] = (float) scaling;
-        inputs[10] = (float) burning;
-        inputs[11] = (float) sweating;
-        inputs[12] = (float) crusting;
-        inputs[13] = (float) bleeding;
+        inputs[12] = (float) daysSymptom;
+        inputs[13] = (float) itching;
+        inputs[14] = (float) scaling;
+        inputs[15] = (float) burning;
+        inputs[16] = (float) sweating;
+        inputs[17] = (float) crusting;
+        inputs[18] = (float) bleeding;
 
         classifier = ImageClassifier.create(this, getAssets());
     }
