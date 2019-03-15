@@ -82,7 +82,8 @@ public interface Classifier {
         }
     }
 
-    List<Recognition> recognizeImage(float [] inputs);
+    List<Recognition> recognizeImage(Bitmap bitmap);
+    List<Recognition> recognizeSkin(float [] inputs);
 
     void enableStatLogging(final boolean debug);
 

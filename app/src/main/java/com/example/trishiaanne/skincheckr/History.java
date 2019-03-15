@@ -45,7 +45,9 @@ public class History extends AppCompatActivity {
     private String imagePath;
     private static int TYPE_OF_USER;
 
-    private float[] inputs;
+    int [] inputs;
+
+    byte [] byteArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +56,10 @@ public class History extends AppCompatActivity {
 
         final int max = 10;
 
-        inputs = getIntent().getFloatArrayExtra("features");
+        inputs = getIntent().getIntArrayExtra("avg_color");
         imagePath = getIntent().getStringExtra("image_path");
         TYPE_OF_USER = getIntent().getExtras().getInt("user_type");
+        byteArray = getIntent().getByteArrayExtra("image");
 
         editText = findViewById(R.id.editDays);
 
@@ -90,6 +93,7 @@ public class History extends AppCompatActivity {
                         bleeding = 0;
                     }
                     Intent myIntent = new Intent(History.this, ReviewHistory.class);
+                    myIntent.putExtra("avg_color", inputs);
                     myIntent.putExtra("days", days);
                     myIntent.putExtra("itch", itch + 1);
                     myIntent.putExtra("scale", scaling + 1);
@@ -97,9 +101,9 @@ public class History extends AppCompatActivity {
                     myIntent.putExtra("sweat", sweat + 1);
                     myIntent.putExtra("crust", crust + 1);
                     myIntent.putExtra("bleed", bleeding);
-                    myIntent.putExtra("features", inputs);
                     myIntent.putExtra("image_path", imagePath);
                     myIntent.putExtra("user_type", TYPE_OF_USER);
+                    myIntent.putExtra("image", byteArray);
                     startActivity(myIntent);
                 }
             }

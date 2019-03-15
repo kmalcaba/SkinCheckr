@@ -1,9 +1,13 @@
 package com.example.trishiaanne.skincheckr.imgProcessing;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
 import android.media.Image;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -17,27 +21,45 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.trishiaanne.skincheckr.Camera;
+import com.example.trishiaanne.skincheckr.Classifier;
+import com.example.trishiaanne.skincheckr.GuestResult;
 import com.example.trishiaanne.skincheckr.History;
+import com.example.trishiaanne.skincheckr.ImageClassifier;
+import com.example.trishiaanne.skincheckr.MainActivity;
 import com.example.trishiaanne.skincheckr.R;
+import com.example.trishiaanne.skincheckr.Result;
+import com.example.trishiaanne.skincheckr.ReviewHistory;
+import com.example.trishiaanne.skincheckr.SkinClassifier;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- *
  * @author Kirsten A. Malcaba
  */
-public class ImageProcessing extends AppCompatActivity{
+public class ImageProcessing extends AppCompatActivity {
     private String capturePath;
     private String importPath;
     private Bitmap chosenImage;
     private String chosenImagePath;
     private static int TYPE_OF_USER;
 
+    private Matrix frameToCropTransform;
+    private Matrix cropToFrameTransform;
+
     private ImageView imageView;
     private Button confirmPhoto;
+
+    private ArrayList<String> diagnosed = new ArrayList<>();
+    private ArrayList<String> percentage = new ArrayList<>();
+
+    Classifier imageClassifier;
+
+    float[] inputs;
 
     private void displayMessage(Context context, String mess) {
         Toast.makeText(context, mess, Toast.LENGTH_LONG).show();
@@ -63,8 +85,11 @@ public class ImageProcessing extends AppCompatActivity{
         confirmPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long startTime = SystemClock.uptimeMillis();
                 Bitmap original = BitmapFactory.decodeFile(chosenImagePath);
+                imageClassifier = ImageClassifier.create(ImageProcessing.this, getAssets());
+
+
+                long startTime = SystemClock.uptimeMillis();
 
                 //change dimensions
                 final int maxWidth = 640;
@@ -75,7 +100,7 @@ public class ImageProcessing extends AppCompatActivity{
 
                 Bitmap img;
 
-                if(original.getWidth() > 640) {
+                if (original.getWidth() > maxWidth) {
                     if (inWidth > inHeight) {
                         outWidth = maxWidth;
                         outHeight = (inHeight * maxWidth) / inWidth;
@@ -100,77 +125,136 @@ public class ImageProcessing extends AppCompatActivity{
                     img = original.copy(original.getConfig(), original.isMutable());
                 }
 
-                //Median Filtering
-                Bitmap med = MedianFilter.filter(img);
+//                Bitmap file = Bitmap.createScaledBitmap(original, 224, 224, false);
+
+                ByteArrayOutputStream origStream = new ByteArrayOutputStream();
+                img.compress(Bitmap.CompressFormat.PNG, 99, origStream);
+
+                int [] rgbBytes = new int[img.getWidth() * img.getHeight()];
+                img.getPixels(rgbBytes, 0, img.getWidth(), 0, 0, img.getWidth(), img.getHeight());
+
+                Bitmap croppedImg = Bitmap.createBitmap(224, 224, Bitmap.Config.ARGB_8888);
+                Bitmap rgbFrameBitmap = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Bitmap.Config.ARGB_8888);
+
+                frameToCropTransform = getTransformationMatrix(img.getWidth(), img.getHeight(), 224, 224, true);
+                cropToFrameTransform = new Matrix();
+                frameToCropTransform.invert(cropToFrameTransform);
+
+                rgbFrameBitmap.setPixels(rgbBytes, 0, img.getWidth(), 0, 0, img.getWidth(), img.getHeight());
+                final Canvas canvas = new Canvas(croppedImg);
+                canvas.drawBitmap(rgbFrameBitmap, frameToCropTransform, null);
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                croppedImg.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
 
 //                //Otsu's Method of Thresholding
-                Otsu o = new Otsu(med, img);
-                int threshold = o.getThreshold();
-                Log.d("Threshold: ", Integer.toString(threshold));
-                Bitmap thresh = o.applyThreshold();
-                Bitmap dilate = o.dilateImage(thresh);
-                Bitmap mask = o.applyMask(dilate);
+                    Otsu o = new Otsu(img, img);
+//                int threshold = o.getThreshold();
+//                Log.d("Threshold: ", Integer.toString(threshold));
+                    Bitmap thresh = o.applyThreshold();
+                    Bitmap dilate = o.dilateImage(thresh);
+                    Bitmap mask = o.applyMask(dilate);
 
-                MediaStore.Images.Media.insertImage(getContentResolver(), mask, "THRESHOLDED_IMG", "SAMPLE");
-                //Feature Extraction
-                FeatureExtraction fe = new FeatureExtraction(mask);
-                fe.extract();
+//                MediaStore.Images.Media.insertImage(getContentResolver(), mask, "THRESHOLDED_IMG", "SAMPLE");
 
-                long endTime = SystemClock.uptimeMillis();
-                long duration = (endTime - startTime)/1000;
-                Log.d("SkinCheckr:", "Timecost to run image processing: " + Long.toString(duration));
+                    Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
-                float [] arrayInputs = new float[19];
-                arrayInputs[0] = (float) fe.getASM();
-                arrayInputs[1] = (float) fe.getContrast();
-                arrayInputs[2] = (float) fe.getCorrelation();
-                arrayInputs[3] = (float) fe.getHomogeneity();
-                arrayInputs[4] = (float) fe.getSumAvg();
-                arrayInputs[5] = (float) fe.getSumVariance();
-                arrayInputs[6] = (float) fe.getSumEntropy();
-                arrayInputs[7] = (float) fe.getEntropy();
-                arrayInputs[8] = (float) fe.getDiffVariance();
-                arrayInputs[9] = (float) fe.getDiffEntropy();
-                arrayInputs[10] = (float) fe.getInfoMeasure1();
-                arrayInputs[11] = (float) fe.getInfoMeasure2();
+                    long endTime = SystemClock.uptimeMillis();
+                    long duration = (endTime - startTime) / 1000;
+                    Log.d("SkinCheckr:", "Timecost to run image processing: " + Long.toString(duration));
 
-                Log.d("ASM:", String.valueOf(fe.getASM()));
-                Log.d("Contrast: ", String.valueOf(fe.getContrast()));
-                Log.d("Correlation: ", String.valueOf(fe.getCorrelation()));
-                Log.d("Homogeneity:", String.valueOf(fe.getHomogeneity()));
-                Log.d("SumAvg:", String.valueOf(fe.getSumAvg()));
-                Log.d("SumVariance:", String.valueOf(fe.getSumVariance()));
-                Log.d("SumEntropy:", String.valueOf(fe.getSumEntropy()));
-                Log.d("Entropy:", String.valueOf(fe.getEntropy()));
-                Log.d("DiffVariance:", String.valueOf(fe.getDiffVariance()));
-                Log.d("DiffEntropy:", String.valueOf(fe.getDiffEntropy()));
-                Log.d("InfoMeasure1:", String.valueOf(fe.getInfoMeasure1()));
-                Log.d("InfoMeasure2:", String.valueOf(fe.getInfoMeasure2()));
+//                    displayMessage(getApplicationContext(), "Image processing completed in " + duration + " seconds");
 
-                displayMessage(getApplicationContext(), "Image processing completed in " + duration + " seconds");
-                Intent intent = new Intent(ImageProcessing.this, History.class);
-                intent.putExtra("features", arrayInputs);
-                intent.putExtra("image_path", chosenImagePath);
-                intent.putExtra("user_type", TYPE_OF_USER);
-                startActivity(intent);
+                    processImage(croppedImg);
+
+                if(diagnosed.get(0).equals("non skin")){
+                    displayMessage(getApplicationContext(), "Not a skin image! Try again");
+                    startActivity(new Intent(ImageProcessing.this, Camera.class));
+                } else {
+                    if (TYPE_OF_USER == 0) { //if guest
+                        displayMessage(getApplicationContext(), "User type is GUEST = " + TYPE_OF_USER);
+                        Intent guestIntent = new Intent(ImageProcessing.this, GuestResult.class);
+                        guestIntent.putExtra("image_path", chosenImagePath);
+                        guestIntent.putStringArrayListExtra("result", diagnosed);
+                        guestIntent.putExtra("percentage", percentage);
+                        startActivity(guestIntent);
+                    } else { //if registered user
+                        displayMessage(getApplicationContext(), "User type is REGISTERED USER = " + TYPE_OF_USER);
+                        Intent registeredUserIntent = new Intent(ImageProcessing.this, Result.class);
+                        registeredUserIntent.putExtra("image_path", chosenImagePath);
+                        registeredUserIntent.putStringArrayListExtra("result", diagnosed);
+                        registeredUserIntent.putExtra("percentage", percentage);
+                        startActivity(registeredUserIntent);
+                    }
+                }
+
+//                    Intent intent = new Intent(ImageProcessing.this, History.class);
+////                    intent.putExtra("avg_color", avgColor);
+//                    intent.putExtra("image_path", chosenImagePath);
+//                    intent.putExtra("user_type", TYPE_OF_USER);
+//                    intent.putExtra("image", byteArray);
+//                    startActivity(intent);
             }
         });
+    }
+
+    public void processImage(Bitmap img) {
+        final List<Classifier.Recognition> results = imageClassifier.recognizeImage(img);
+        for (Classifier.Recognition r : results) {
+            Log.i("Results: ", r.getTitle() + " " + (r.getConfidence() * 100));
+            diagnosed.add(r.getTitle().toLowerCase());
+            percentage.add((r.getConfidence()).toString());
+        }
+    }
+
+    public static Matrix getTransformationMatrix(
+            final int srcWidth,
+            final int srcHeight,
+            final int dstWidth,
+            final int dstHeight,
+            final boolean maintainAspectRatio) {
+        final Matrix matrix = new Matrix();
+
+        // Account for the already applied rotation, if any, and then determine how
+        // much scaling is needed for each axis.
+
+        final int inWidth = srcWidth;
+        final int inHeight = srcHeight;
+
+        // Apply scaling if necessary.
+        if (inWidth != dstWidth || inHeight != dstHeight) {
+            final float scaleFactorX = dstWidth / (float) inWidth;
+            final float scaleFactorY = dstHeight / (float) inHeight;
+
+            if (maintainAspectRatio) {
+                // Scale by minimum factor so that dst is filled completely while
+                // maintaining the aspect ratio. Some image may fall off the edge.
+                final float scaleFactor = Math.max(scaleFactorX, scaleFactorY);
+                matrix.postScale(scaleFactor, scaleFactor);
+            } else {
+                // Scale exactly to fill dst from src.
+                matrix.postScale(scaleFactorX, scaleFactorY);
+            }
+        }
+
+        return matrix;
     }
 
     private void getImage() {
         Intent i = getIntent();
         //check if passed key is capture or import image
-        if(i.getExtras().containsKey("capture_value")) {//captured image
+        if (i.getExtras().containsKey("capture_value")) {//captured image
             capturePath = getIntent().getStringExtra("capture_value");
             //displayMessage(getBaseContext(),"CAPTURE PATH: " + capturePath); //for debugging
-            Log.i("PATH: ",capturePath);
+            Log.i("PATH: ", capturePath);
             chosenImage = BitmapFactory.decodeFile(capturePath);
             imageView.setImageBitmap(chosenImage);
             chosenImagePath = capturePath;
         } else {//imported image
             importPath = i.getStringExtra("import_value");
             //displayMessage(getBaseContext(),"IMPORT PATH: " + importPath); //for debugging
-            Log.i("PATH: ",importPath);
+            Log.i("PATH: ", importPath);
 
             chosenImage = BitmapFactory.decodeFile(importPath);
             imageView.setImageBitmap(chosenImage);

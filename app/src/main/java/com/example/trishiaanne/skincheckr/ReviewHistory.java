@@ -33,12 +33,15 @@ public class ReviewHistory extends AppCompatActivity {
     private String imagePath;
     private static int TYPE_OF_USER;
 
-    private float[] inputs;
-
     private ArrayList<String> diagnosed = new ArrayList<>();
     private ArrayList<String> percentage = new ArrayList<>();
 
-    private Classifier classifier;
+    private Classifier imgClassifier;
+
+    int [] inputs;
+
+    Bitmap skin;
+    Bitmap skin1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,28 +68,33 @@ public class ReviewHistory extends AppCompatActivity {
         int sweating = intent.getIntExtra("sweat", 1);
         int crusting = intent.getIntExtra("crust", 1);
         int bleeding = intent.getIntExtra("bleed", 0);
-        inputs = intent.getFloatArrayExtra("features");
+        inputs = intent.getIntArrayExtra("avg_color");
         imagePath = intent.getStringExtra("image_path");
         TYPE_OF_USER = intent.getExtras().getInt("user_type");
+        byte [] byteArray = getIntent().getByteArrayExtra("image");
 
         result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 processImage();
-                if (TYPE_OF_USER == 0) { //if guest
-                    displayMessage(getApplicationContext(), "User type is GUEST = " + TYPE_OF_USER);
-                    Intent guestIntent = new Intent (ReviewHistory.this, GuestResult.class);
-                    guestIntent.putExtra("image_path", imagePath);
-                    guestIntent.putStringArrayListExtra("result", diagnosed);
-                    guestIntent.putExtra("percentage", percentage);
-                    startActivity(guestIntent);
-                } else { //if registered user
-                    displayMessage(getApplicationContext(), "User type is REGISTERED USER = " + TYPE_OF_USER);
-                    Intent registeredUserIntent = new Intent(ReviewHistory.this, Result.class);
-                    registeredUserIntent.putExtra("image_path", imagePath);
-                    registeredUserIntent.putStringArrayListExtra("result", diagnosed);
-                    registeredUserIntent.putExtra("percentage", percentage);
-                    startActivity(registeredUserIntent);
+                if(diagnosed.get(0).equals("non skin")){
+                    displayMessage(getApplicationContext(), "Not a skin image! Try again");
+                } else {
+                    if (TYPE_OF_USER == 0) { //if guest
+                        displayMessage(getApplicationContext(), "User type is GUEST = " + TYPE_OF_USER);
+                        Intent guestIntent = new Intent(ReviewHistory.this, GuestResult.class);
+                        guestIntent.putExtra("image_path", imagePath);
+                        guestIntent.putStringArrayListExtra("result", diagnosed);
+                        guestIntent.putExtra("percentage", percentage);
+                        startActivity(guestIntent);
+                    } else { //if registered user
+                        displayMessage(getApplicationContext(), "User type is REGISTERED USER = " + TYPE_OF_USER);
+                        Intent registeredUserIntent = new Intent(ReviewHistory.this, Result.class);
+                        registeredUserIntent.putExtra("image_path", imagePath);
+                        registeredUserIntent.putStringArrayListExtra("result", diagnosed);
+                        registeredUserIntent.putExtra("percentage", percentage);
+                        startActivity(registeredUserIntent);
+                    }
                 }
             }
         });
@@ -98,7 +106,8 @@ public class ReviewHistory extends AppCompatActivity {
             }
         });
 
-        Bitmap skin = BitmapFactory.decodeFile(imagePath);
+        skin = BitmapFactory.decodeFile(imagePath);
+        skin1 = BitmapFactory.decodeByteArray(byteArray, 0 , byteArray.length);
         skin_img.setImageBitmap(skin);
 
         days.setText("Days: " + String.valueOf(daysSymptom));
@@ -113,20 +122,12 @@ public class ReviewHistory extends AppCompatActivity {
             bleed.setText("Bleeding: " + "No");
         }
 
-        inputs[12] = (float) daysSymptom;
-        inputs[13] = (float) itching;
-        inputs[14] = (float) scaling;
-        inputs[15] = (float) burning;
-        inputs[16] = (float) sweating;
-        inputs[17] = (float) crusting;
-        inputs[18] = (float) bleeding;
-
-        classifier = ImageClassifier.create(this, getAssets());
+        imgClassifier = ImageClassifier.create(this, getAssets());
     }
 
     public void processImage() {
         final long startTime = SystemClock.uptimeMillis();
-        final List<Classifier.Recognition> results = classifier.recognizeImage(inputs);
+        final List<Classifier.Recognition> results = imgClassifier.recognizeImage(skin1);
         final long lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
         Log.i("Detect: %s", Long.toString(lastProcessingTimeMs));
         for (Classifier.Recognition r : results) {
@@ -134,7 +135,7 @@ public class ReviewHistory extends AppCompatActivity {
             diagnosed.add(r.getTitle().toLowerCase());
             percentage.add((r.getConfidence()).toString());
         }
-        classifier.close();
+        imgClassifier.close();
     }
 
     //Disable back button
