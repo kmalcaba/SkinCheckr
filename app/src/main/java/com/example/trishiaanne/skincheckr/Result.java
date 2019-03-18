@@ -76,27 +76,23 @@ public class Result extends AppCompatActivity {
         Bitmap skin = BitmapFactory.decodeFile(imagePath);
         diagnosed = getIntent().getStringArrayListExtra("result");
         labelDiag = findViewById(R.id.diagnosis_label);
-        percentage = getIntent().getStringArrayListExtra("percentage");
+//        percentage = getIntent().getStringArrayListExtra("percentage");
 
         skin_img.setImageBitmap(skin);
 
         uploadImage();
         displayToolbar();
 
-        if(diagnosed.get(0).equals("not skin")) {
+        for (String x : diagnosed) {
+//            String y = percentage.get(diagnosed.indexOf(x));
+            initImageBitmaps(x);
+        }
 
+        int diagnosedCounter = diagnosed.size();
+        if (diagnosedCounter == 1) {
+            labelDiag.setText("TOP DIAGNOSIS:");
         } else {
-            for (String x : diagnosed) {
-                String y = percentage.get(diagnosed.indexOf(x));
-                initImageBitmaps(x, y);
-            }
-
-            int diagnosedCounter = diagnosed.size();
-            if (diagnosedCounter == 1) {
-                labelDiag.setText("TOP DIAGNOSIS:");
-            } else {
-                labelDiag.setText("TOP " + diagnosedCounter + " DIAGNOSIS:");
-            }
+            labelDiag.setText("TOP " + diagnosedCounter + " DIAGNOSIS:");
         }
     }
 
@@ -115,7 +111,7 @@ public class Result extends AppCompatActivity {
             imagesReference.putFile(imgURI).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                    if(!task.isSuccessful()) {
+                    if (!task.isSuccessful()) {
                         throw task.getException();
                     }
                     return imagesReference.getDownloadUrl();
@@ -123,7 +119,7 @@ public class Result extends AppCompatActivity {
             }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
-                    if(task.isSuccessful()) {
+                    if (task.isSuccessful()) {
                         Uri downloadUri = task.getResult();
                         Log.d(TAG, "DOWNLOAD URI: " + downloadUri.toString());
 
@@ -141,7 +137,7 @@ public class Result extends AppCompatActivity {
         }
     }
 
-    private void initImageBitmaps(String x, String y) {
+    private void initImageBitmaps(String x) {
         switch (x) {
             case "atopic dermatitis":
                 Bitmap atopic = BitmapFactory.decodeResource(getResources(), R.drawable.atopic_sample);
