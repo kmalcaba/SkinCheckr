@@ -162,7 +162,6 @@ public class Uv extends AppCompatActivity implements LocationListener {
                     } else {
 
 //                        getNotification(getApplicationContext());
-
                         Bitmap extreme = BitmapFactory.decodeResource(getResources(), R.drawable.uv_extreme);
                         noUV.setText(null);
                         uvLabel.setImageBitmap(extreme);
