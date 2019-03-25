@@ -72,6 +72,21 @@ public class ImageProcessing extends AppCompatActivity {
         Toast.makeText(context, mess, Toast.LENGTH_LONG).show();
     }
 
+    protected void onDestroy() {
+        super.onDestroy();
+        imageClassifier = null;
+        if(chosenImage != null) {
+            chosenImage.recycle();
+            chosenImage = null;
+        }
+        chosenImagePath = null;
+
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_image);
@@ -203,6 +218,8 @@ public class ImageProcessing extends AppCompatActivity {
 
             processImage(croppedImg);
 
+            original.recycle();
+            original = null;
             return null;
         }
 
@@ -210,12 +227,14 @@ public class ImageProcessing extends AppCompatActivity {
         protected void onPostExecute(String unused) {
             super.onPostExecute(unused);
             progressDialog.dismiss();
-
+            progressDialog = null;
             isAccurate = Float.parseFloat(percentage.get(0)) >= 0.70;
 
             if (diagnosed.get(0).equals("non skin")) {
                 displayMessage(getApplicationContext(), "Not a skin image! Try again");
+
                 startActivity(new Intent(ImageProcessing.this, Camera.class));
+                finish();
             } else if (isAccurate) {
                 if (TYPE_OF_USER == 0) { //if guest
                     displayMessage(getApplicationContext(), "User type is GUEST = " + TYPE_OF_USER);
@@ -223,14 +242,18 @@ public class ImageProcessing extends AppCompatActivity {
                     guestIntent.putExtra("image_path", chosenImagePath);
                     guestIntent.putStringArrayListExtra("result", diagnosed);
                     guestIntent.putExtra("percentage", percentage);
+
                     startActivity(guestIntent);
+                    finish();
                 } else { //if registered user
                     displayMessage(getApplicationContext(), "User type is REGISTERED USER = " + TYPE_OF_USER);
                     Intent registeredUserIntent = new Intent(ImageProcessing.this, Result.class);
                     registeredUserIntent.putExtra("image_path", chosenImagePath);
                     registeredUserIntent.putStringArrayListExtra("result", diagnosed);
                     registeredUserIntent.putExtra("percentage", percentage);
+
                     startActivity(registeredUserIntent);
+                    finish();
                 }
             } else if (!isAccurate) {
                 Intent intent = new Intent(ImageProcessing.this, History.class);
@@ -238,7 +261,9 @@ public class ImageProcessing extends AppCompatActivity {
                 intent.putExtra("user_type", TYPE_OF_USER);
                 intent.putStringArrayListExtra("result", diagnosed);
                 intent.putExtra("percentage", percentage);
+
                 startActivity(intent);
+                finish();
             }
 
         }

@@ -44,28 +44,32 @@ public class GuestResult extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ImageView skin_img;
     private String imagePath;
-    private TextView labelDiag;
-    private Bitmap skin;
 
-    private Uri imgURI;
-    private File f;
-
-    private StorageReference storage;
     private DatabaseReference database;
 
     private ArrayList<String> dImgName = new ArrayList<>();
     private ArrayList<Bitmap> dImg = new ArrayList<>();
     private ArrayList<String> dImgSummary = new ArrayList<>();
-    private ArrayList<String> diagnosed = new ArrayList<>();
     private ArrayList<String> label = new ArrayList<>();
     private ArrayList<String> percentage = new ArrayList<>();
+
+    protected void onDestroy(){
+        super.onDestroy();
+        skin_img = null;
+        imagePath = null;
+        database = null;
+        dImgName = null;
+        dImg = null;
+        dImgSummary = null;
+        label = null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_result);
 
-        labelDiag = findViewById(R.id.diagnosis_label);
+        TextView labelDiag = findViewById(R.id.diagnosis_label);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,9 +81,9 @@ public class GuestResult extends AppCompatActivity {
 
         skin_img = findViewById(R.id.display_diagnosed);
         imagePath = getIntent().getStringExtra("image_path");
-        skin = BitmapFactory.decodeFile(imagePath);
-        diagnosed = getIntent().getStringArrayListExtra("result");
-        percentage = getIntent().getStringArrayListExtra("percentage");
+        Bitmap skin = BitmapFactory.decodeFile(imagePath);
+        ArrayList<String> diagnosed = getIntent().getStringArrayListExtra("result");
+//        percentage = getIntent().getStringArrayListExtra("percentage");
 
         skin_img.setImageBitmap(skin);
 
@@ -223,6 +227,7 @@ public class GuestResult extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 uploadImage();
                                 Intent out = new Intent(GuestResult.this, MainActivity.class);
+
                                 startActivity(out);
                             }
                         })
@@ -239,13 +244,13 @@ public class GuestResult extends AppCompatActivity {
     }
 
     public void uploadImage() {
-        storage = FirebaseStorage.getInstance().getReference("guest_result");
+        StorageReference storage = FirebaseStorage.getInstance().getReference("guest_result");
         database = FirebaseDatabase.getInstance().getReference("guest_result");
 
-        f = new File(imagePath);
+        File f = new File(imagePath);
         Log.d(TAG, "Original Image Path: " + imagePath);
 
-        imgURI = Uri.fromFile(f);
+        Uri imgURI = Uri.fromFile(f);
         Log.d(TAG, "URI Image Path: " + imgURI.getPath());
 
         if (imgURI != null) {

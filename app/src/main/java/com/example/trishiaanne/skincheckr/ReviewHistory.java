@@ -40,6 +40,7 @@ public class ReviewHistory extends AppCompatActivity {
     int[] inputs;
 
     int itching, scaling, burning, sweating, crusting, bleeding;
+    float max;
 
     Bitmap skin;
     Bitmap skin1;
@@ -76,22 +77,28 @@ public class ReviewHistory extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int idx = narrowDownResults();
-                newDx.add(diagnosed.get(idx));
-                diagnosed.clear();
-                diagnosed.addAll(newDx);
+                if(max > 3) {
+                    newDx.add(diagnosed.get(idx));
+                    diagnosed.clear();
+                    diagnosed.addAll(newDx);
+                }
 
                 if (TYPE_OF_USER == 0) { //if guest
                     displayMessage(getApplicationContext(), "User type is GUEST = " + TYPE_OF_USER);
                     Intent guestIntent = new Intent(ReviewHistory.this, GuestResult.class);
                     guestIntent.putExtra("image_path", imagePath);
                     guestIntent.putStringArrayListExtra("result", diagnosed);
+
                     startActivity(guestIntent);
+                    finish();
                 } else { //if registered user
                     displayMessage(getApplicationContext(), "User type is REGISTERED USER = " + TYPE_OF_USER);
                     Intent registeredUserIntent = new Intent(ReviewHistory.this, Result.class);
                     registeredUserIntent.putExtra("image_path", imagePath);
                     registeredUserIntent.putStringArrayListExtra("result", diagnosed);
+
                     startActivity(registeredUserIntent);
+                    finish();
                 }
             }
         });
@@ -121,7 +128,7 @@ public class ReviewHistory extends AppCompatActivity {
     }
 
     int narrowDownResults() {
-        int[] i = new int[3];
+        float[] i = new float[3];
         int j = 0;
 
         for (String dx : diagnosed) {
@@ -130,79 +137,171 @@ public class ReviewHistory extends AppCompatActivity {
                     if (itching >= 7)
                         i[j]++;
                     else if (itching == 6)
-
+                        i[j] += 0.5;
+                    else if (itching == 5)
+                        i[j] += 0.25;
                     if (scaling >= 5)
                         i[j]++;
+                    else if (scaling == 4)
+                        i[j] += 0.5;
+                    else if (scaling == 3)
+                        i[j] += 0.25;
                     if (burning == 1)
                         i[j]++;
                     if (sweating == 1)
                         i[j]++;
                     if (crusting >= 5 && crusting <= 8)
                         i[j]++;
+                    else if (crusting == 4 || crusting == 9)
+                        i[j] += 0.5;
+                    else if (crusting == 3 || crusting == 10)
+                        i[j] += 0.25;
                     if (bleeding == 0)
                         i[j]++;
                     break;
                 case "contact dermatitis":
                     if (itching >= 7)
                         i[j]++;
+                    else if (itching == 6)
+                        i[j] += 0.5;
+                    else if (itching == 5)
+                        i[j] += 0.25;
                     if (scaling >= 5)
                         i[j]++;
+                    else if (scaling == 4)
+                        i[j] += 0.5;
+                    else if (scaling == 3)
+                        i[j] += 0.25;
                     if (burning >= 5 && burning <= 8)
                         i[j]++;
+                    else if (burning == 4 || burning == 9)
+                        i[j] += 0.5;
+                    else if (burning == 3 || burning == 10)
+                        i[j] += 0.25;
                     if (sweating == 1)
                         i[j]++;
                     if (crusting >= 5 && crusting <= 8)
                         i[j]++;
+                    else if (crusting == 4 || crusting == 9)
+                        i[j] += 0.5;
+                    else if (crusting == 3 || crusting == 10)
+                        i[j] += 0.25;
                     if (bleeding == 0)
                         i[j]++;
                     break;
                 case "dyshidrotic eczema":
                     if (itching >= 7)
                         i[j]++;
+                    else if (itching == 6)
+                        i[j] += 0.5;
+                    else if (itching == 5)
+                        i[j] += 0.25;
                     if (scaling >= 5)
                         i[j]++;
+                    else if (scaling == 4)
+                        i[j] += 0.5;
+                    else if (scaling == 3)
+                        i[j] += 0.25;
                     if (burning >= 5 && burning <= 8)
                         i[j]++;
+                    else if (burning == 4 || burning == 9)
+                        i[j] += 0.5;
+                    else if (burning == 3 || burning == 10)
+                        i[j] += 0.25;
                     if (sweating >= 7)
                         i[j]++;
+                    else if (sweating == 6)
+                        i[j] += 0.5;
+                    else if (sweating == 5)
+                        i[j] += 0.25;
                     if (crusting <= 5)
                         i[j]++;
+                    else if (crusting == 6)
+                        i[j] += 0.5;
+                    else if (crusting == 7)
+                        i[j] += 0.25;
                     if (bleeding == 0)
                         i[j]++;
                     break;
                 case "intertrigo":
                     if (itching >= 5)
                         i[j]++;
+                    else if (itching == 4)
+                        i[j] += 0.5;
+                    else if (itching == 3)
+                        i[j] += 0.25;
                     if (scaling >= 2 && scaling <= 5)
                         i[j]++;
+                    else if (scaling == 1 || scaling == 6)
+                        i[j] += 0.5;
+                    else if (scaling == 7)
+                        i[j] += 0.25;
                     if (burning >= 7)
                         i[j]++;
+                    else if (burning == 6)
+                        i[j] += 0.5;
+                    else if (burning == 5)
+                        i[j] += 0.25;
                     if (sweating >= 7)
                         i[j]++;
+                    else if (sweating == 6)
+                        i[j] += 0.5;
+                    else if (sweating == 5)
+                        i[j] += 0.25;
                     if (crusting >= 5 && crusting <= 8)
                         i[j]++;
+                    else if (crusting == 4 || crusting == 9)
+                        i[j] += 0.5;
+                    else if (crusting == 3 || crusting == 10)
+                        i[j] += 0.25;
                     if (bleeding == 0)
                         i[j]++;
                     break;
                 case "melanoma":
                     if (itching >= 5)
                         i[j]++;
+                    else if (itching == 4)
+                        i[j] += 0.5;
+                    else if (itching == 3)
+                        i[j] += 0.25;
                     if (scaling >= 2 && scaling <= 5)
                         i[j]++;
+                    else if (scaling == 1 || scaling == 6)
+                        i[j] += 0.5;
+                    else if (scaling == 7)
+                        i[j] += 0.25;
                     if (burning >= 2 && burning <= 5)
                         i[j]++;
+                    else if (burning == 1 || burning == 6)
+                        i[j] += 0.5;
+                    else if (burning == 7)
+                        i[j] += 0.25;
                     if (sweating >= 2)
                         i[j]++;
+                    else if (sweating == 1)
+                        i[j] += 0.5;
                     if (crusting >= 2 && crusting <= 5)
                         i[j]++;
+                    else if (crusting == 1 || crusting == 6)
+                        i[j] += 0.5;
+                    else if (crusting == 7)
+                        i[j] += 0.25;
                     if (bleeding == 1)
                         i[j]++;
                     break;
                 case "pityriasis versicolor":
                     if (itching >= 2 && itching <= 5)
                         i[j]++;
+                    else if (itching == 1 || itching == 6)
+                        i[j] += 0.5;
+                    else if (itching == 7)
+                        i[j] += 0.25;
                     if (scaling >= 2 && scaling <= 5)
                         i[j]++;
+                    else if (scaling == 1 || scaling == 6)
+                        i[j] += 0.5;
+                    else if (scaling == 7)
+                        i[j] += 0.25;
                     if (burning == 1)
                         i[j]++;
                     if (sweating == 1)
@@ -215,42 +314,98 @@ public class ReviewHistory extends AppCompatActivity {
                 case "psoriasis":
                     if (itching >= 5)
                         i[j]++;
+                    else if (itching == 4)
+                        i[j] += 0.5;
+                    else if (itching == 3)
+                        i[j] += 0.25;
                     if (scaling >= 5)
                         i[j]++;
+                    else if (scaling == 4)
+                        i[j] += 0.5;
+                    else if (scaling == 3)
+                        i[j] += 0.25;
                     if (burning >= 5 && burning <= 8)
                         i[j]++;
+                    else if (burning == 4 || burning == 9)
+                        i[j] += 0.5;
+                    else if (burning == 3 || burning == 10)
+                        i[j] += 0.25;
                     if (sweating >= 2 && sweating <= 5)
                         i[j]++;
+                    else if (sweating == 1 || sweating == 6)
+                        i[j] += 0.5;
+                    else if (sweating == 7)
+                        i[j] += 0.25;
                     if (crusting >= 5)
                         i[j]++;
+                    else if (crusting == 4)
+                        i[j] += 0.5;
+                    else if (crusting == 3)
+                        i[j] += 0.25;
                     if (bleeding == 1)
                         i[j]++;
                     break;
                 case "tinea corporis":
                     if (itching >= 5 && itching <= 8)
                         i[j]++;
+                    else if (itching == 4 || itching == 9)
+                        i[j] += 0.5;
+                    else if (itching == 3 || itching == 10)
+                        i[j] += 0.25;
                     if (scaling >= 5)
                         i[j]++;
+                    else if (scaling == 4)
+                        i[j] += 0.5;
+                    else if (scaling == 3)
+                        i[j] += 0.25;
                     if (burning >= 2 && burning <= 5)
                         i[j]++;
+                    else if (burning == 1 || burning == 6)
+                        i[j] += 0.5;
+                    else if (burning == 7)
+                        i[j] += 0.25;
                     if (sweating == 1)
                         i[j]++;
                     if (crusting >= 5)
                         i[j]++;
+                    else if (crusting == 4)
+                        i[j] += 0.5;
+                    else if (crusting == 3)
+                        i[j] += 0.25;
                     if (bleeding == 0)
                         i[j]++;
                     break;
                 case "tinea pedis":
                     if (itching >= 7)
                         i[j]++;
+                    else if (itching == 6)
+                        i[j] += 0.5;
+                    else if (itching == 5)
+                        i[j] += 0.25;
                     if (scaling >= 5)
                         i[j]++;
+                    else if (scaling == 4)
+                        i[j] += 0.5;
+                    else if (scaling == 3)
+                        i[j] += 0.25;
                     if (burning >= 5)
                         i[j]++;
+                    else if (burning == 4)
+                        i[j] += 0.5;
+                    else if (burning == 3)
+                        i[j] += 0.25;
                     if (sweating >= 7)
                         i[j]++;
+                    else if (sweating == 6)
+                        i[j] += 0.5;
+                    else if (sweating == 5)
+                        i[j] += 0.25;
                     if (crusting >= 5)
                         i[j]++;
+                    else if (crusting == 4)
+                        i[j] += 0.5;
+                    else if (crusting == 3)
+                        i[j] += 0.25;
                     if (bleeding == 1)
                         i[j]++;
                     break;
@@ -286,14 +441,18 @@ public class ReviewHistory extends AppCompatActivity {
             j++;
         }
 
-        int max = i[0];
+        max = i[0];
         int idx = 0;
 
         for(int k = 0; k < 3; k++) {
-            idx = k;
-            if(max >= i[k])
+            Log.d("ImageProccesing", "Index: " + idx + "; Value: " + i[k]);
+            if(max <= i[k]) {
                 idx = k;
+                max = i[k];
+            }
         }
+
+        Log.d("ImageProcessing", "Max of correct symptoms: " + max + "; Index: " + idx);
 
         return idx;
     }
