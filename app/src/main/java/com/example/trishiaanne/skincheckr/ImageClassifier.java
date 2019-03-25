@@ -21,7 +21,7 @@ import java.util.PriorityQueue;
 
 public class ImageClassifier implements Classifier {
 
-    private static final String MODEL_PATH = "retrained_new.pb";
+    private static final String MODEL_PATH = "20k_epoch.pb";
     private static final String LABEL_PATH = "retrained_labels.txt";
     private static final int RESULTS_TO_SHOW = 3;
     private static final String INPUT_NAME = "input";

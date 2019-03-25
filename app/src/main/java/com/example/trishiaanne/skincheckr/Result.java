@@ -55,8 +55,8 @@ public class Result extends AppCompatActivity {
     private ArrayList<Bitmap> dImg = new ArrayList<>();
     private ArrayList<String> dImgSummary = new ArrayList<>();
     private ArrayList<String> diagnosed = new ArrayList<>();
-    private ArrayList<String> label = new ArrayList<>();
     private ArrayList<String> percentage = new ArrayList<>();
+    private ArrayList<String> label = new ArrayList<>();
 
     private StorageReference storage;
     private DatabaseReference database;
