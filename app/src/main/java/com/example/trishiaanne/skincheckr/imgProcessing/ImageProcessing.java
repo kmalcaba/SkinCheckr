@@ -228,14 +228,14 @@ public class ImageProcessing extends AppCompatActivity {
             super.onPostExecute(unused);
             progressDialog.dismiss();
             progressDialog = null;
-            isAccurate = Float.parseFloat(percentage.get(0)) >= 0.70;
+//            isAccurate = Float.parseFloat(percentage.get(0)) >= 0.70;
 
             if (diagnosed.get(0).equals("non skin")) {
                 displayMessage(getApplicationContext(), "Not a skin image! Try again");
 
                 startActivity(new Intent(ImageProcessing.this, Camera.class));
                 finish();
-            } else if (isAccurate) {
+            } else {
                 if (TYPE_OF_USER == 0) { //if guest
                     displayMessage(getApplicationContext(), "User type is GUEST = " + TYPE_OF_USER);
                     Intent guestIntent = new Intent(ImageProcessing.this, GuestResult.class);
@@ -255,17 +255,7 @@ public class ImageProcessing extends AppCompatActivity {
                     startActivity(registeredUserIntent);
                     finish();
                 }
-            } else if (!isAccurate) {
-                Intent intent = new Intent(ImageProcessing.this, History.class);
-                intent.putExtra("image_path", chosenImagePath);
-                intent.putExtra("user_type", TYPE_OF_USER);
-                intent.putStringArrayListExtra("result", diagnosed);
-                intent.putExtra("percentage", percentage);
-
-                startActivity(intent);
-                finish();
             }
-
         }
     }
 

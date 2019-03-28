@@ -76,12 +76,12 @@ public class ReviewHistory extends AppCompatActivity {
         result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int idx = narrowDownResults();
-                if(max > 3) {
-                    newDx.add(diagnosed.get(idx));
-                    diagnosed.clear();
-                    diagnosed.addAll(newDx);
-                }
+//                int idx = narrowDownResults();
+//                if(max >g 3) {
+//                    newDx.add(diagnosed.get(idx));
+//                    diagnosed.clear();
+//                    diagnosed.addAll(newDx);
+//                }
 
                 if (TYPE_OF_USER == 0) { //if guest
                     displayMessage(getApplicationContext(), "User type is GUEST = " + TYPE_OF_USER);

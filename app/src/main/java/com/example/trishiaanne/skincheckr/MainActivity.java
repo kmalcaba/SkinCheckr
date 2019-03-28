@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 //Intent userIntent = new Intent(MainActivity.this, Derma.class);
                 startActivity(userIntent);
 
-                getNotification(v);
+//                getNotification(v);
             }
         });
     }

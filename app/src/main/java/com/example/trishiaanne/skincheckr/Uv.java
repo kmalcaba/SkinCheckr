@@ -84,11 +84,15 @@ public class Uv extends AppCompatActivity implements LocationListener {
     private ActionBarDrawerToggle mToggle;
     private SwipeRefreshLayout swipeRefreshLayout;
     private int LOCATION_PERMISSION_CODE = 1;
+    DrawerLayout layout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uv);
+
+        layout = findViewById(R.id.uv_layout);
 
         //Get the location and allow location
         getGPS();
@@ -161,7 +165,7 @@ public class Uv extends AppCompatActivity implements LocationListener {
                         uvLabel.setImageBitmap(veryhigh);
                     } else {
 
-//                        getNotification(getApplicationContext());
+                        getNotification(layout);
                         Bitmap extreme = BitmapFactory.decodeResource(getResources(), R.drawable.uv_extreme);
                         noUV.setText(null);
                         uvLabel.setImageBitmap(extreme);
@@ -294,7 +298,7 @@ public class Uv extends AppCompatActivity implements LocationListener {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
 
-        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.uv_layout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
