@@ -49,6 +49,7 @@ public class ImageProcessing extends AppCompatActivity{
 
         imageView = findViewById(R.id.imageView2);
         confirmPhoto = findViewById(R.id.imgProButton);
+        //confirmPhoto.setEnabled(true);
 
         //get the user type
         TYPE_OF_USER = getIntent().getExtras().getInt("user_type");
@@ -63,6 +64,7 @@ public class ImageProcessing extends AppCompatActivity{
         confirmPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //confirmPhoto.setEnabled(false);
                 long startTime = SystemClock.uptimeMillis();
                 Bitmap original = BitmapFactory.decodeFile(chosenImagePath);
 
@@ -136,8 +138,10 @@ public class ImageProcessing extends AppCompatActivity{
                 intent.putExtra("image_path", chosenImagePath);
                 intent.putExtra("user_type", TYPE_OF_USER);
                 startActivity(intent);
+
             }
         });
+
     }
 
     private void getImage() {
@@ -160,4 +164,5 @@ public class ImageProcessing extends AppCompatActivity{
             chosenImagePath = importPath;
         }
     }
+
 }
