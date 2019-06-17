@@ -41,17 +41,17 @@
                 android:layout_toRightOf="@+id/diagnosed_image"
                 android:padding="5dp"
                 />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/percentage"
-                android:fontFamily="@font/san_francisco"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:layout_below="@+id/disease_name"
-                android:text="%"
-                android:layout_toRightOf="@+id/diagnosed_image"
-                android:padding="5dp"/>
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/percentage"-->
+                <!--android:fontFamily="@font/san_francisco"-->
+                <!--android:textStyle="bold"-->
+                <!--android:textSize="15sp"-->
+                <!--android:layout_below="@+id/disease_name"-->
+                <!--android:text="%"-->
+                <!--android:layout_toRightOf="@+id/diagnosed_image"-->
+                <!--android:padding="5dp"/>-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                 android:fontFamily="@font/san_francisco"
                 android:textStyle="bold"
                 android:textSize="15sp"
-                android:layout_below="@+id/percentage"
+                android:layout_below="@+id/disease_name"
                 android:layout_toRightOf="@+id/diagnosed_image"
                 android:padding="5dp"
                 />

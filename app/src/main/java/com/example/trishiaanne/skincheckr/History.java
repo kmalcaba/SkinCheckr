@@ -14,6 +14,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class History extends AppCompatActivity {
 
     private RadioGroup group;
@@ -45,7 +47,12 @@ public class History extends AppCompatActivity {
     private String imagePath;
     private static int TYPE_OF_USER;
 
-    private float[] inputs;
+    int [] inputs;
+
+//    byte [] byteArray;
+
+    private ArrayList<String> diagnosed = new ArrayList<>();
+    private ArrayList<String> percentage = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +61,12 @@ public class History extends AppCompatActivity {
 
         final int max = 10;
 
-        inputs = getIntent().getFloatArrayExtra("features");
         imagePath = getIntent().getStringExtra("image_path");
         TYPE_OF_USER = getIntent().getExtras().getInt("user_type");
+        diagnosed = getIntent().getStringArrayListExtra("result");
+        percentage = getIntent().getStringArrayListExtra("percentage");
 
-        editText = findViewById(R.id.editDays);
+//        byteArray = getIntent().getByteArrayExtra("image");
 
         seek = findViewById(R.id.itchSeekbar);
         seek1 = findViewById(R.id.scalingSeekbar);
@@ -79,9 +87,7 @@ public class History extends AppCompatActivity {
             public void onClick(View v) {
                 int selectedId = group.getCheckedRadioButtonId();
                 radioButton = (RadioButton) findViewById(selectedId);
-                if (editText.getText().toString().matches("")) {
-                    Toast.makeText(getApplicationContext(), "Days is empty", Toast.LENGTH_LONG).show();
-                } else if (group.getCheckedRadioButtonId() == -1) {
+                if (group.getCheckedRadioButtonId() == -1) {
                     Toast.makeText(getApplicationContext(), "Bleeding is empty", Toast.LENGTH_LONG).show();
                 } else {
                     if (radioButton.getText().equals("Yes")) {
@@ -90,39 +96,19 @@ public class History extends AppCompatActivity {
                         bleeding = 0;
                     }
                     Intent myIntent = new Intent(History.this, ReviewHistory.class);
-                    myIntent.putExtra("days", days);
+                    myIntent.putExtra("avg_color", inputs);
                     myIntent.putExtra("itch", itch + 1);
                     myIntent.putExtra("scale", scaling + 1);
                     myIntent.putExtra("burn", burn + 1);
                     myIntent.putExtra("sweat", sweat + 1);
                     myIntent.putExtra("crust", crust + 1);
                     myIntent.putExtra("bleed", bleeding);
-                    myIntent.putExtra("features", inputs);
                     myIntent.putExtra("image_path", imagePath);
                     myIntent.putExtra("user_type", TYPE_OF_USER);
+                    myIntent.putExtra("diagnosed", diagnosed);
+//                    myIntent.putExtra("image", byteArray);
                     startActivity(myIntent);
                 }
-            }
-        });
-
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (editText.getText().toString().matches("")) {
-
-                } else {
-                    days = Integer.valueOf(editText.getText().toString());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
             }
         });
 

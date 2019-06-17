@@ -50,12 +50,13 @@
         android:layout_marginBottom="7dp"
         android:layout_marginEnd="72dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
         android:text="Itchiness: "
         android:fontFamily="@font/san_francisco"
         app:layout_constraintBottom_toTopOf="@+id/scalingTextview"
         app:layout_constraintEnd_toStartOf="@+id/crustingTextview"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/daysTextview" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <TextView
         android:id="@+id/scalingTextview"
@@ -87,13 +88,15 @@
         android:id="@+id/sweatingTextview"
         android:layout_width="0dp"
         android:layout_height="20dp"
-        android:layout_marginBottom="7dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="46dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="20dp"
         android:text="Sweating: "
         android:fontFamily="@font/san_francisco"
         app:layout_constraintBottom_toTopOf="@+id/crustingTextview"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/daysTextview"
+        app:layout_constraintStart_toEndOf="@+id/itchTextview"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <TextView
@@ -121,20 +124,6 @@
         app:layout_constraintBottom_toTopOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/daysTextview"
-        android:layout_width="140dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="72dp"
-        android:layout_marginStart="16dp"
-        android:text="Days: "
-        android:fontFamily="@font/san_francisco"
-        app:layout_constraintBottom_toTopOf="@+id/itchTextview"
-        app:layout_constraintEnd_toStartOf="@+id/sweatingTextview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <TextView
         android:id="@+id/bleedingTextview"
