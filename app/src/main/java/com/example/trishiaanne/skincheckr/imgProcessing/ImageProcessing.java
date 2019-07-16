@@ -93,7 +93,6 @@ public class ImageProcessing extends AppCompatActivity {
 
         imageView = findViewById(R.id.imageView2);
         confirmPhoto = findViewById(R.id.imgProButton);
-        //confirmPhoto.setEnabled(true);
 
         //get the user type
         TYPE_OF_USER = getIntent().getExtras().getInt("user_type");
@@ -101,19 +100,12 @@ public class ImageProcessing extends AppCompatActivity {
         getImage();
 
         /*
-
                 IMAGE PROCESSING
-
          */
 
         confirmPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
-                //confirmPhoto.setEnabled(false);
-                long startTime = SystemClock.uptimeMillis();
-                Bitmap original = BitmapFactory.decodeFile(chosenImagePath);
-=======
                 new Load().execute();
             }
         });
@@ -140,7 +132,6 @@ public class ImageProcessing extends AppCompatActivity {
             progressDialog.show();
         }
 
->>>>>>> 7f8cb9999c6a541f1b1645f6106481b1e30f3551
 
         @Override
         protected String doInBackground(String... strings) {
@@ -209,50 +200,6 @@ public class ImageProcessing extends AppCompatActivity {
             byte[] byteArray = stream.toByteArray();
 
 //                //Otsu's Method of Thresholding
-<<<<<<< HEAD
-                Otsu o = new Otsu(img, img);
-                int threshold = o.getThreshold();
-                Log.d("Threshold: ", Integer.toString(threshold));
-                Bitmap thresh = o.applyThreshold();
-                Bitmap dilate = o.dilateImage(thresh);
-                Bitmap mask = o.applyMask(dilate);
-
-                MediaStore.Images.Media.insertImage(getContentResolver(), mask, "THRESHOLDED_IMG", "SAMPLE");
-                //Feature Extraction
-                FeatureExtraction fe = new FeatureExtraction(mask);
-                fe.extract();
-
-                long endTime = SystemClock.uptimeMillis();
-                Log.d("SkinCheckr:", "Timecost to run image processing: " + Long.toString((endTime - startTime)/1000));
-
-                float [] arrayInputs = new float[14];
-                arrayInputs[0] = (float) fe.getContrast();
-                arrayInputs[1] = (float) fe.getCorrelation();
-                arrayInputs[2] = (float) fe.getEnergy();
-                arrayInputs[3] = (float) fe.getEntropy();
-                arrayInputs[4] = (float) fe.getHomogeneity();
-                arrayInputs[5] = (float) fe.getMean();
-                arrayInputs[6] = (float) fe.getVariance();
-
-                Log.d("Contrast: ", String.valueOf(fe.getContrast()));
-                Log.d("Correlation: ", String.valueOf(fe.getCorrelation()));
-                Log.d("Energy: ", String.valueOf(fe.getEnergy()));
-                Log.d("Entropy: ", String.valueOf(fe.getEntropy()));
-                Log.d("Homogeneity: ", String.valueOf(fe.getHomogeneity()));
-                Log.d("Mean: ", String.valueOf(fe.getMean()));
-                Log.d("Variance: ", String.valueOf(fe.getVariance()));
-
-                displayMessage(getApplicationContext(), "Image processing complete");
-                Intent intent = new Intent(ImageProcessing.this, History.class);
-                intent.putExtra("features", arrayInputs);
-                intent.putExtra("image_path", chosenImagePath);
-                intent.putExtra("user_type", TYPE_OF_USER);
-                startActivity(intent);
-
-            }
-        });
-
-=======
             Otsu o = new Otsu(img, img);
 //                int threshold = o.getThreshold();
 //                Log.d("Threshold: ", Integer.toString(threshold));
@@ -341,7 +288,6 @@ public class ImageProcessing extends AppCompatActivity {
         }
 
         return matrix;
->>>>>>> 7f8cb9999c6a541f1b1645f6106481b1e30f3551
     }
 
     private void getImage() {
@@ -364,5 +310,4 @@ public class ImageProcessing extends AppCompatActivity {
             chosenImagePath = importPath;
         }
     }
-
 }
